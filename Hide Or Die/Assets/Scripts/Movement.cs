@@ -9,7 +9,8 @@ public class Movement : MonoBehaviour
 	#region Vars
 
 	//Classes
-	[SerializeField] private DynamicJoystick joystick = null;
+	[SerializeField] private FloatingJoystick joystick = null;
+	[SerializeField] private FieldOFView fielOfView = null;
 	private AnimatorController animatorController;
 
 	//Components
@@ -31,6 +32,9 @@ public class Movement : MonoBehaviour
 	{
 		Vector2 direction = GetDirection();
 		rb.AddForce(direction * moveSpeed * Time.deltaTime, ForceMode2D.Force);
+
+		//Set the FOV
+		fielOfView.SetTheOrigin(new Vector2(transform.position.x , transform.position.y));
 
 		//Aniamtions
 		if (direction != Vector2.zero)
