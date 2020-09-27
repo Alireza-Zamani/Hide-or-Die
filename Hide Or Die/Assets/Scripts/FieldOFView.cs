@@ -6,28 +6,36 @@ using UnityEngine;
 public class FieldOFView : MonoBehaviour
 {
 	Mesh mesh;
-	[SerializeField] private float fov = 90f;
-	[SerializeField] private int rayCount = 2;
+	private MeshFilter meshFilter = null;
+
+	[Range(0,360)] [SerializeField] private float fov = 90f;
+	[Range(0, 500)] [SerializeField] private int rayCount = 2;
+
 	[SerializeField] private float viewDistance = 10f;
 	[SerializeField] private LayerMask fovLayerMask = new LayerMask();
-	private Vector3 origin = Vector3.zero;
+
+	private float startingAngle = 0f;
+	private Vector3 origin;
 
 	private void Start()
 	{
+		if(meshFilter == null)
+		{
+			meshFilter = GetComponent<MeshFilter>();
+		}
+		origin = Vector3.zero;
 		mesh = new Mesh();
-		GetComponent<MeshFilter>().mesh = mesh;
+		meshFilter.mesh = mesh;
 	}
 
-	private void Update()
+	private void LateUpdate()
 	{
 		BakeMesh();
-
 	}
 
 	private void BakeMesh()
 	{
-		float angle = 0f;
-		
+		float angle = startingAngle + fov /2;
 		float angleIncrease = fov / rayCount;
 
 		//Mesh Fields
@@ -46,6 +54,7 @@ public class FieldOFView : MonoBehaviour
 		for (int i = 0; i <= rayCount; i++)
 		{
 			Vector3 vertic = Vector3.zero;
+			//Debug.DrawRay(origin, GetVectorFromAngle(angle) * viewDistance , Color.red);
 			RaycastHit2D hit = Physics2D.Raycast(origin, GetVectorFromAngle(angle), viewDistance , fovLayerMask);
 			if (hit.collider == null)
 			{
@@ -74,6 +83,7 @@ public class FieldOFView : MonoBehaviour
 		}
 
 		//Set the mesh
+		mesh.Clear();
 		mesh.vertices = vertices;
 		mesh.uv = uv;
 		mesh.triangles = triangles;
@@ -82,6 +92,11 @@ public class FieldOFView : MonoBehaviour
 	public void SetTheOrigin(Vector3 origin)
 	{
 		this.origin = origin;
+	}
+
+	public void SetAimDirection(Vector3 aimDirection)
+	{
+		startingAngle = GetAngleFromVectorFloat(aimDirection) - fov / 2;
 	}
 
 	private Vector3 GetVectorFromAngle(float angle)

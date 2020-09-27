@@ -2,19 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviourPunCallbacks
 {
 
 	#region Vars
 
 	//Classes
-	[SerializeField] private FloatingJoystick joystick = null;
-	[SerializeField] private FieldOFView fielOfView = null;
-	private AnimatorController animatorController;
+	private FloatingJoystick joystick = null;
+	private FieldOFView fielOfView = null;
+	private AnimatorController animatorController = null;
 
 	//Components
-	private Rigidbody2D rb;
+	private Rigidbody2D rb = null;
 
 	//Fields
 	[SerializeField] private float moveSpeed = 200f;
@@ -24,16 +25,44 @@ public class Movement : MonoBehaviour
 
 	private void Awake()
 	{
+		if (!photonView.IsMine)
+		{
+			return;
+		}
+
+		// Change the layer to Player so that we wont be our own enemy because at the first all of the layers are at Enemy
+		gameObject.layer = LayerMask.NameToLayer("Player");
+
+		// Get the components from the Hierachy
+		joystick = GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).GetComponent<FloatingJoystick>();
+		fielOfView = GameObject.FindGameObjectWithTag("Fov").transform.GetComponent<FieldOFView>();
 		animatorController = GetComponent<AnimatorController>();
+
 		rb = GetComponent<Rigidbody2D>();
+	}
+
+	private void Start()
+	{
+		if (!photonView.IsMine)
+		{
+			return;
+		}
+
+		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>().Player = gameObject;
 	}
 
 	private void Update()
 	{
+		if (!photonView.IsMine)
+		{
+			return;
+		}
+
+		//Get the direction from joystick
 		Vector2 direction = GetDirection();
 		rb.AddForce(direction * moveSpeed * Time.deltaTime, ForceMode2D.Force);
 
-		//Set the FOV
+		//Set the FOV vars
 		fielOfView.SetTheOrigin(new Vector2(transform.position.x , transform.position.y));
 
 		//Aniamtions
