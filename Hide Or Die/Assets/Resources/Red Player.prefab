@@ -18,9 +18,11 @@ GameObject:
   - component: {fileID: 8905920172784027524}
   - component: {fileID: 8905920172784027525}
   - component: {fileID: 8905920172784027526}
+  - component: {fileID: -8240735577452678347}
+  - component: {fileID: 2255585382113786909}
   m_Layer: 10
   m_Name: Red Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -168,6 +170,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 300
+  viewDistance: 5
+  dronePrefab: {fileID: 7689045709740466333, guid: 31f979f34d4b81a4a9922eec26215efb,
+    type: 3}
 --- !u!114 &8905920172784027527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,3 +245,34 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
+--- !u!114 &-8240735577452678347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905920172784027646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 589a9876adf5ba349836e3f6cb07cdcd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2255585382113786909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905920172784027646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ebbb10959e0e214193f44394aa3c9e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  doGizmos: 0
+  radiousOfAction: 1
+  actionableLayerMask:
+    serializedVersion: 2
+    m_Bits: 8192
+  aimingPrefab: {fileID: 2704668702571661127, guid: db43570fdf9149e43aadf72e398aca41,
+    type: 3}

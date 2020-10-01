@@ -1,29 +1,41 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Movement : MonoBehaviourPunCallbacks
+public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 {
 
 	#region Vars
 
 	//Classes
-	private FloatingJoystick joystick = null;
-	private FieldOFView fielOfView = null;
-	private AnimatorController animatorController = null;
+	protected FloatingJoystick joystick = null;
+	protected FieldOFView fielOfView = null;
+	protected AnimatorController animatorController = null;
 
 	//Components
-	private Rigidbody2D rb = null;
+	protected Rigidbody2D rb = null;
 
 	//Fields
-	[SerializeField] private float moveSpeed = 200f;
+	[SerializeField] protected float moveSpeed = 200f;
+	[Range(0, 10)] [SerializeField] protected float viewDistance = 10f;
 
 	#endregion
 
 
-	private void Awake()
+	private void OnEnable()
+	{
+		if (!photonView.IsMine)
+		{
+			return;
+		}
+		if (fielOfView != null)
+		{
+			SetTheFOVSettings();
+		}
+	}
+
+	public virtual void Awake()
 	{
 		if (!photonView.IsMine)
 		{
@@ -41,17 +53,23 @@ public class Movement : MonoBehaviourPunCallbacks
 		rb = GetComponent<Rigidbody2D>();
 	}
 
-	private void Start()
+	public virtual void Start()
 	{
 		if (!photonView.IsMine)
 		{
 			return;
 		}
 
-		GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>().Player = gameObject;
+		SetTheFOVSettings();
+		GameObject.FindGameObjectWithTag("CinemachineCamera").GetComponent<CameraFollow>().SettheFollowTarget(transform);
 	}
 
-	private void Update()
+	public virtual void SetTheFOVSettings()
+	{
+		fielOfView.ViewDistance = viewDistance;
+	}
+
+	public virtual void Update()
 	{
 		if (!photonView.IsMine)
 		{
@@ -63,25 +81,28 @@ public class Movement : MonoBehaviourPunCallbacks
 		rb.AddForce(direction * moveSpeed * Time.deltaTime, ForceMode2D.Force);
 
 		//Set the FOV vars
-		fielOfView.SetTheOrigin(new Vector2(transform.position.x , transform.position.y));
+		fielOfView.SetTheOrigin(new Vector2(transform.position.x, transform.position.y));
 
 		//Aniamtions
-		if (direction != Vector2.zero)
+		if(animatorController != null)
 		{
-			animatorController.CanWalk();
-		}
-		else
-		{
-			animatorController.CanIdle();
+			if (direction != Vector2.zero)
+			{
+				animatorController.CanWalk();
+			}
+			else
+			{
+				animatorController.CanIdle();
+			}
 		}
 	}
 
-	private Vector2 GetDirection()
+	public virtual Vector2 GetDirection()
 	{
 		//Horizontal Input
 		float horizontal = joystick.Horizontal;
 		//Flip ToRight
-		if(horizontal >= 0.2f)
+		if (horizontal >= 0.2f)
 		{
 			if (transform.localScale.x > 0)
 			{
@@ -115,4 +136,5 @@ public class Movement : MonoBehaviourPunCallbacks
 		Vector2 dir = new Vector2(horizontal, vertical);
 		return dir.normalized;
 	}
+
 }

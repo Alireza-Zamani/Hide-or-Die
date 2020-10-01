@@ -1,17 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraFollow : MonoBehaviour
 {
-	private GameObject player = null;
-	public GameObject Player { get => player; set => player = value; }
 
-	private void Update()
+
+	public void SettheFollowTarget(Transform player)
 	{
-		if(player != null)
-		{
-			transform.position = new Vector3(player.transform.position.x, player.transform.position.y , transform.position.z);
-		}
+		GetComponent<CinemachineVirtualCamera>().Follow = player;
 	}
 }

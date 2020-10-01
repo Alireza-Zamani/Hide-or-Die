@@ -6,9 +6,8 @@ using Photon.Realtime;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PunTeam : MonoBehaviourPunCallbacks
+public class PunTeamAuto : MonoBehaviourPunCallbacks
 {
-
 	private int teamNum = 0;
 	public int TeamNum { get => teamNum; set => teamNum = value; }
 
@@ -24,10 +23,6 @@ public class PunTeam : MonoBehaviourPunCallbacks
 	[SerializeField] private GameObject blueTeamPanel = null;
 	[SerializeField] private GameObject redTeamPanel = null;
 
-	[Header("Buttons")]
-	[SerializeField] private GameObject blueTeamButton = null;
-	[SerializeField] private GameObject redTeamButton = null;
-
 	[Header("Teams Status")]
 	[SerializeField] private Text blueTeamReaminer = null;
 	[SerializeField] private Text redTeamReaminer = null;
@@ -39,12 +34,29 @@ public class PunTeam : MonoBehaviourPunCallbacks
 	private void Start()
 	{
 		maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers / 2;
-		CheckTeamCapacity();
+		Invoke("Choose", 1f);
 	}
 
-	public void ChooseTeam(int teamNumber)
+	private void Choose()
 	{
-		// Set the Hashtable for team
+		ChooseTeamAuto();
+	}
+
+	private void ChooseTeamAuto()
+	{
+		// See if blue team is empty full it otherwise full the red team
+		if (BlueTeamPlayerCount != maxPlayerCount)
+		{
+			ChooseTeam(1);
+		}
+		else
+		{
+			ChooseTeam(2);
+		}
+	}
+
+	private void TeamsHashtableSetter(int teamNumber)
+	{
 		if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Team"))
 		{
 			PhotonNetwork.LocalPlayer.CustomProperties["Team"] = teamNumber;
@@ -58,12 +70,40 @@ public class PunTeam : MonoBehaviourPunCallbacks
 
 			PhotonNetwork.SetPlayerCustomProperties(playerProps);
 		}
+	}
+
+	private void GroupsHashtableSetter(int teamNumber)
+	{
+		if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group"))
+		{
+			PhotonNetwork.LocalPlayer.CustomProperties["Group"] = teamNumber;
+		}
+		else
+		{
+			ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+			{
+				{"Group" , teamNumber }
+			};
+
+			PhotonNetwork.SetPlayerCustomProperties(playerProps);
+		}
+	}
+
+	public void ChooseTeam(int teamNumber)
+	{
+		// Set the Hashtable for team
+		TeamsHashtableSetter(teamNumber);
+
+		// Set the Hashtable for group
+		GroupsHashtableSetter(teamNumber);
 
 
 		// Call RPC functions to call in all players
 		TeamNum = teamNumber;
+
 		photonView.RPC("UpdateTeams", RpcTarget.AllBuffered, teamNumber);
 		photonView.RPC("UpdateStats", RpcTarget.AllBuffered, teamNumber);
+
 		if (teamNumber == 1)
 		{
 			SetGameObjectActivity(blueTeamPanel, true);
@@ -78,43 +118,23 @@ public class PunTeam : MonoBehaviourPunCallbacks
 		}
 	}
 
-	private void SetGameObjectActivity(GameObject panelName , bool activity)
-	{
-		panelName.SetActive(activity);
-	}
-
-	private void CheckTeamCapacity()
-	{
-		// See if the team is full set its buttons interactibility to false
-		if (BlueTeamPlayerCount == maxPlayerCount)
-		{
-			blueTeamButton.GetComponent<Button>().interactable = false;
-		}
-		if (RedTeamPlayerCount == maxPlayerCount)
-		{
-			redTeamButton.GetComponent<Button>().interactable = false;
-		}
-	}
-
 	[PunRPC]
 	public void UpdateTeams(int teamNumber)
 	{
-		if(teamNumber == 1)
+		if (teamNumber == 1)
 		{
 			BlueTeamPlayerCount++;
-			CheckTeamCapacity();
 		}
 		else
 		{
 			RedTeamPlayerCount++;
-			CheckTeamCapacity();
 		}
 	}
 
 	[PunRPC]
 	public void UpdateStats(int teamNumber)
 	{
-		if(TeamNum != 0)
+		if (TeamNum != 0)
 		{
 			if (BlueTeamPlayerCount == maxPlayerCount && RedTeamPlayerCount == maxPlayerCount)
 			{
@@ -123,15 +143,20 @@ public class PunTeam : MonoBehaviourPunCallbacks
 
 				Invoke("EnterTheGame", 1f);
 			}
-			else if(BlueTeamPlayerCount == maxPlayerCount)
+			else if (BlueTeamPlayerCount == maxPlayerCount)
 			{
-				blueTeamStats.text = "We are Full Waiting For Epponents Players...";
+				blueTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
 			}
 			else if (RedTeamPlayerCount == maxPlayerCount)
 			{
-				redTeamStats.text = "We are Full Waiting For Epponents Players...";
+				redTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
 			}
 		}
+	}
+
+	private void SetGameObjectActivity(GameObject panelName, bool activity)
+	{
+		panelName.SetActive(activity);
 	}
 
 	private void EnterTheGame()
@@ -143,10 +168,15 @@ public class PunTeam : MonoBehaviourPunCallbacks
 	}
 
 
+	#region Call Backs
+
 	public override void OnPlayerEnteredRoom(Player player)
 	{
 		print(player.NickName + "  Entered in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And rooms player count is : " + PhotonNetwork.CurrentRoom.PlayerCount);
 	}
+
+
+	#endregion
 
 
 }

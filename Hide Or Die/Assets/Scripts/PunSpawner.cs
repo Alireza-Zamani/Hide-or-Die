@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-
+using System;
 
 public class PunSpawner : MonoBehaviourPunCallbacks
 {
@@ -14,10 +14,16 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[Header("Prefabs")]
 	[SerializeField] private GameObject bluePlayerPref = null;
 	[SerializeField] private GameObject redPlayerPref = null;
+	[SerializeField] private GameObject objectivePrefab = null;
 
-	[Header("Spawn Points")]
+
+	[Header("Teams Spawn Points")]
 	[SerializeField] private Transform blueTeamSpawnPoint = null;
 	[SerializeField] private Transform redTeamSpawnPoint = null;
+
+	[Header("Objectives Spawn Points")]
+	[SerializeField] private Transform objectivesSpawnPoint = null;
+
 
 	private void Start()
 	{
@@ -35,19 +41,31 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			// Get the team and spawn related to that
 			if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Team"))
 			{
-				print("Error");
+				Debug.LogError("No hashTable exists for team");
 			}
-				int team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
 
+			int team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+
+			// Team Blue
 			if(team == 1)
 			{
 				player = PhotonNetwork.Instantiate(bluePlayerPref.name, blueTeamSpawnPoint.position , Quaternion.identity);
 			}
+			// Team Red
 			else if(team == 2)
 			{
 				player = PhotonNetwork.Instantiate(redPlayerPref.name, redTeamSpawnPoint.position, Quaternion.identity);
-			}			
+			}
+
+			if (PhotonNetwork.IsMasterClient)
+			{
+				SpawnObjectives();
+			}
 		}
 	}
 
+	private void SpawnObjectives()
+	{
+		PhotonNetwork.Instantiate(objectivePrefab.name, objectivesSpawnPoint.position, Quaternion.identity);
+	}
 }

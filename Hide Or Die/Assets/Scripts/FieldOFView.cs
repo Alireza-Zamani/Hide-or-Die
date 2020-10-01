@@ -11,7 +11,9 @@ public class FieldOFView : MonoBehaviour
 	[Range(0,360)] [SerializeField] private float fov = 90f;
 	[Range(0, 500)] [SerializeField] private int rayCount = 2;
 
-	[SerializeField] private float viewDistance = 10f;
+	[Range(0, 10)] [SerializeField] private float viewDistance = 10f;
+	public float ViewDistance { get => viewDistance; set => viewDistance = value; }
+
 	[SerializeField] private LayerMask fovLayerMask = new LayerMask();
 
 	private float startingAngle = 0f;
@@ -55,11 +57,11 @@ public class FieldOFView : MonoBehaviour
 		{
 			Vector3 vertic = Vector3.zero;
 			//Debug.DrawRay(origin, GetVectorFromAngle(angle) * viewDistance , Color.red);
-			RaycastHit2D hit = Physics2D.Raycast(origin, GetVectorFromAngle(angle), viewDistance , fovLayerMask);
+			RaycastHit2D hit = Physics2D.Raycast(origin, GetVectorFromAngle(angle), ViewDistance, fovLayerMask);
 			if (hit.collider == null)
 			{
 				//No hit
-				vertic = origin + GetVectorFromAngle(angle) * viewDistance;
+				vertic = origin + GetVectorFromAngle(angle) * ViewDistance;
 			}
 			else
 			{
