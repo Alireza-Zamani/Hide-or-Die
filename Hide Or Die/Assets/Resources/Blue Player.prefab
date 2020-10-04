@@ -20,6 +20,9 @@ GameObject:
   - component: {fileID: 8905920172784027526}
   - component: {fileID: 5715613456171376542}
   - component: {fileID: 1070952691969740735}
+  - component: {fileID: 4221923599434245012}
+  - component: {fileID: -7791805006820320567}
+  - component: {fileID: -2759091570996169426}
   m_Layer: 10
   m_Name: Blue Player
   m_TagString: Player
@@ -36,7 +39,7 @@ Transform:
   m_GameObject: {fileID: 8905920172784027646}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.46, y: -1.45, z: 100}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -169,8 +172,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f833c595beba79c459a32c99bc6eb854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 300
-  viewDistance: 5
+  moveSpeed: 1000
+  viewDistance: 10
   dronePrefab: {fileID: 7689045709740466333, guid: 31f979f34d4b81a4a9922eec26215efb,
     type: 3}
 --- !u!114 &8905920172784027527
@@ -276,3 +279,42 @@ MonoBehaviour:
     m_Bits: 8192
   aimingPrefab: {fileID: 2704668702571661127, guid: db43570fdf9149e43aadf72e398aca41,
     type: 3}
+--- !u!114 &4221923599434245012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905920172784027646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1397fcfc7b1fe2f4287fdafe63456a70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-7791805006820320567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905920172784027646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3baeb624f31830479cc3cb8e913f2a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grenadePrefab: {fileID: 3725893773615953528, guid: 71213e5b221a54f439ce12a6c5f730b1,
+    type: 3}
+  throwSpeed: 800
+--- !u!114 &-2759091570996169426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905920172784027646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93632820bdf42f34699156098153c1f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

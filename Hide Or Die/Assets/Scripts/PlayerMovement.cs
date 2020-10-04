@@ -12,19 +12,28 @@ public class PlayerMovement : MovementAbstract
 	public override void Update()
 	{
 		base.Update();
-		if (photonView.IsMine)
-		{
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				// Create new drone
-				GameObject newDrone = null;
-				newDrone = PhotonNetwork.Instantiate(dronePrefab.name, transform.position, Quaternion.identity);
-				newDrone.GetComponent<DroneMovement>().PlayerGameObject = gameObject;
+		//if (photonView.IsMine)
+		//{
+		//	if (Input.GetKeyDown(KeyCode.Space))
+		//	{
+		//		SetToDrone();
+		//	}
+		//}
+	}
 
-				// Tell every one to set player game object off (change character)
-				photonView.RPC("ChangeCharacter", RpcTarget.AllBuffered);
-			}
-		}
+	public DroneMovement SetToDrone()
+	{
+		// Create new drone
+		GameObject newDrone = null;
+		newDrone = PhotonNetwork.Instantiate(dronePrefab.name, transform.position, Quaternion.identity);
+		DroneMovement droneMovement = null;
+		droneMovement = newDrone.GetComponent<DroneMovement>();
+		droneMovement.PlayerGameObject = gameObject;
+
+		// Tell every one to set player game object off (change character)
+		photonView.RPC("ChangeCharacter", RpcTarget.AllBuffered);
+
+		return droneMovement;
 	}
 
 	[PunRPC]

@@ -20,6 +20,8 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private IInteractable interactable = null;
 
+	private AbilityAbstract ability = null;
+
 
 
 	private void OnDrawGizmos()
@@ -40,12 +42,14 @@ public class Action : MonoBehaviourPunCallbacks
 		}
 
 		movementClass = GetComponent<MovementAbstract>();
+		ability = GetComponent<AbilityAbstract>();
 
 		//Set the action button listener
 		UIBtns uiBtns = GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>();
 		uiBtns.onActionBtnDelegate = OnActionBtn;
 		uiBtns.onAimingSelectDelegate = OnAimingSelect;
 		uiBtns.onAimingDeSelectDelegate = OnAimingDeSelect;
+		uiBtns.onShopBtnDelegate = OnShopBtn;
 	}
 
 
@@ -63,22 +67,51 @@ public class Action : MonoBehaviourPunCallbacks
 	private void OnAimingDeSelect()
 	{
 		Destroy(newAiming);
+		ThrowGrenade();
 		movementClass.enabled = true;
+	}
+
+	private void OnShopBtn()
+	{
+		// Open the shop menue
+		print("Shop Menue Opened");
+	}
+
+
+	private void ThrowGrenade()
+	{
+		Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
+		ability.ThrowGrenade(-aimDirection);
 	}
 
 	[PunRPC]
 	public void Interact()
 	{
 		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, actionableLayerMask);
+		float dist = Mathf.Infinity;
+		GameObject newInteractable = null;
 		foreach (RaycastHit2D coll in hit)
 		{
 			if (coll.collider.gameObject.GetComponent<IInteractable>() != null)
 			{
-				interactable = coll.collider.gameObject.GetComponent<IInteractable>();
-				break;
+				if(Vector2.Distance(coll.collider.gameObject.transform.position , transform.position) < dist)
+				{
+					dist = Vector2.Distance(coll.collider.gameObject.transform.position, transform.position);
+					newInteractable = coll.collider.gameObject;
+				}
+			}
+			if(newInteractable != null)
+			{
+				interactable = newInteractable.GetComponent<IInteractable>();
+				print(coll.collider.gameObject.name);
 			}
 		}
-		interactable.Interact(transform);
+
+		if(interactable != null)
+		{
+			interactable.Interact(transform);
+			interactable = null;
+		}
 	}
 
 }

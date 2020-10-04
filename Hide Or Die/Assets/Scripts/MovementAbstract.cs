@@ -17,7 +17,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 	protected Rigidbody2D rb = null;
 
 	//Fields
-	[SerializeField] protected float moveSpeed = 200f;
+	[Range(0, 2000)] [SerializeField] protected float moveSpeed = 1000f;
 	[Range(0, 10)] [SerializeField] protected float viewDistance = 10f;
 
 	#endregion
@@ -107,7 +107,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 			if (transform.localScale.x > 0)
 			{
 				Vector2 newScale = transform.localScale;
-				newScale.x = -1;
+				newScale.x = -5;
 				transform.localScale = newScale;
 			}
 		}
@@ -117,7 +117,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 			if (transform.localScale.x < 0)
 			{
 				Vector2 newScale = transform.localScale;
-				newScale.x = 1;
+				newScale.x = 5;
 				transform.localScale = newScale;
 			}
 		}

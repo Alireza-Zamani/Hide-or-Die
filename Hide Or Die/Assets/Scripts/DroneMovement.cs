@@ -11,19 +11,24 @@ public class DroneMovement : MovementAbstract
 
 	public GameObject PlayerGameObject { get => playerGameObject; set => playerGameObject = value; }
 
+
 	public override void Update()
 	{
 		base.Update();
-		if (photonView.IsMine)
-		{
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				photonView.RPC("ChangeCharacter", RpcTarget.AllBuffered , playerGameObject.GetComponent<PlayerMovement>().photonView.ViewID);
-				PhotonNetwork.Destroy(gameObject);
-			}
-		}
+		//if (photonView.IsMine)
+		//{
+		//	if (Input.GetKeyDown(KeyCode.Space))
+		//	{
+		//		SetToCharacter();
+		//	}
+		//}
 	}
 	
+	public void SetToCharacter()
+	{
+		photonView.RPC("ChangeCharacter", RpcTarget.AllBuffered, playerGameObject.GetComponent<PlayerMovement>().photonView.ViewID);
+		PhotonNetwork.Destroy(gameObject);
+	}
 
 	[PunRPC]
 	private void ChangeCharacter(int viewID)

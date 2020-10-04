@@ -20,15 +20,13 @@ public class ObjectiveInteractability : MonoBehaviourPunCallbacks, IInteractable
 		if (isGrabbed && transform.parent == parent)
 		{
 			isGrabbed = !isGrabbed;
-			transform.position = parent.position;
 			transform.parent = null;
 		}
 		else if (!isGrabbed)
 		{
 			isGrabbed = !isGrabbed;
+			//transform.position = parent.position;
 			transform.parent = parent;
-			transform.position = parent.position;
-
 		}
 	}
 }
