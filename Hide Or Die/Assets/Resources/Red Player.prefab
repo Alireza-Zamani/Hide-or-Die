@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: -8240735577452678347}
   - component: {fileID: 2255585382113786909}
   - component: {fileID: -3910472098843200532}
-  - component: {fileID: 6524857496050621734}
   - component: {fileID: 2297618804712147387}
+  - component: {fileID: 1384773920960641485}
   m_Layer: 10
   m_Name: Red Player
   m_TagString: Player
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1000
-  viewDistance: 10
+  viewDistance: 30
   dronePrefab: {fileID: 7689045709740466333, guid: 31f979f34d4b81a4a9922eec26215efb,
     type: 3}
 --- !u!114 &8905920172784027527
@@ -291,21 +291,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1397fcfc7b1fe2f4287fdafe63456a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6524857496050621734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8905920172784027646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3baeb624f31830479cc3cb8e913f2a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grenadePrefab: {fileID: 3725893773615953528, guid: 71213e5b221a54f439ce12a6c5f730b1,
-    type: 3}
-  throwSpeed: 800
 --- !u!114 &2297618804712147387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,3 +303,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93632820bdf42f34699156098153c1f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1384773920960641485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905920172784027646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2287dbe5f17c9408a2c69f17dd7da8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodyHandler: {fileID: 5723160479327719296, guid: 2fd18c106785dbc4ebdb33c92f1640ae,
+    type: 3}

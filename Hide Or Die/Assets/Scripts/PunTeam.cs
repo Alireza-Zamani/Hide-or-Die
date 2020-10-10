@@ -121,7 +121,7 @@ public class PunTeam : MonoBehaviourPunCallbacks
 				blueTeamStats.text = "Starting The Match...";
 				redTeamStats.text = "Starting The Match...";
 
-				Invoke("EnterTheGame", 1f);
+				Invoke("EnterTheGame", 10f);
 			}
 			else if(BlueTeamPlayerCount == maxPlayerCount)
 			{

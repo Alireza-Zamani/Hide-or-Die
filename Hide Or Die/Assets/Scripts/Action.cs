@@ -14,11 +14,15 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private MovementAbstract movementClass = null;
 
+	private Text lockBtnText = null;
+
 	[SerializeField] private GameObject aimingPrefab = null;
 
 	private GameObject newAiming = null;
 
 	private IInteractable interactable = null;
+
+	private DoorInteractable doorInteractable = null;
 
 	private AbilityAbstract ability = null;
 
@@ -50,6 +54,7 @@ public class Action : MonoBehaviourPunCallbacks
 		uiBtns.onAimingSelectDelegate = OnAimingSelect;
 		uiBtns.onAimingDeSelectDelegate = OnAimingDeSelect;
 		uiBtns.onShopBtnDelegate = OnShopBtn;
+		uiBtns.onLockBtnDelegate = OnLockBtn;
 	}
 
 
@@ -67,7 +72,7 @@ public class Action : MonoBehaviourPunCallbacks
 	private void OnAimingDeSelect()
 	{
 		Destroy(newAiming);
-		ThrowGrenade();
+		CallExecuteAbility();
 		movementClass.enabled = true;
 	}
 
@@ -78,10 +83,79 @@ public class Action : MonoBehaviourPunCallbacks
 	}
 
 
-	private void ThrowGrenade()
+	private void OnLockBtn()
 	{
-		Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
-		ability.ThrowGrenade(-aimDirection);
+		// Lock The Door
+		photonView.RPC("Lock", RpcTarget.AllBuffered);
+		print("Door Locked");
+	}
+
+	private void CallExecuteAbility()
+	{
+		if(ability != null)
+		{
+			Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
+			ability.ExecuteAbility(-aimDirection);
+		}
+		else
+		{
+			ability = GetComponent<AbilityAbstract>();
+			if(ability != null)
+			{
+				Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
+				ability.ExecuteAbility(-aimDirection);
+			}
+			else
+			{
+				Debug.LogError("No ability attached to the player");
+				return;
+			}
+			Debug.LogWarning("No ability attached to the player");
+		}
+	}
+
+	[PunRPC]
+	public void Lock()
+	{
+		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, actionableLayerMask);
+		float dist = Mathf.Infinity;
+		GameObject newInteractable = null;
+		foreach (RaycastHit2D coll in hit)
+		{
+			if (coll.collider.gameObject.GetComponent<DoorInteractable>() != null)
+			{
+				if (Vector2.Distance(coll.collider.gameObject.transform.position, transform.position) < dist)
+				{
+					dist = Vector2.Distance(coll.collider.gameObject.transform.position, transform.position);
+					newInteractable = coll.collider.gameObject;
+				}
+			}
+			if (newInteractable != null)
+			{
+				doorInteractable = newInteractable.GetComponent<DoorInteractable>();
+			}
+		}
+
+		if (doorInteractable != null)
+		{
+			lockBtnText = GameObject.FindGameObjectWithTag("UI").transform.GetChild(5).transform.GetChild(0).gameObject.GetComponent<Text>();
+			if (lockBtnText.text == "Lock")
+			{
+				if (doorInteractable.LockDoor(true))
+				{
+					lockBtnText.text = "UnLock";
+				}
+			}
+			else if(lockBtnText.text == "UnLock")
+			{
+				if (doorInteractable.LockDoor(false))
+				{
+					lockBtnText.text = "Lock";
+				}
+				
+			}
+			doorInteractable = null;
+		}
 	}
 
 	[PunRPC]

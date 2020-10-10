@@ -9,6 +9,9 @@ TagManager:
   - Interactable
   - CinemachineCamera
   - BuyZone
+  - BlueTeam
+  - RedTeam
+  - Environment
   layers:
   - Default
   - TransparentFX
@@ -20,7 +23,7 @@ TagManager:
   - 
   - Mask
   - BG
-  - Enemy
+  - Other
   - Player
   - Level
   - Interactable

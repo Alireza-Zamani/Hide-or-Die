@@ -29,12 +29,36 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	[SerializeField] private Text blueTeamStats = null;
 	[SerializeField] private Text redTeamStats = null;
 
+	[Range(0, 10)] [SerializeField] private float startMatchWaitTimeCountDown = 5f;
+	private bool matchIsStarting = false;
+	private float timeCounter = 0f;
 
 
 	private void Start()
 	{
 		maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers / 2;
 		Invoke("Choose", 1f);
+	}
+
+	private void Update()
+	{
+		if (matchIsStarting)
+		{
+			timeCounter += Time.deltaTime;
+			if(timeCounter >= 1)
+			{
+				timeCounter = 0f;
+				startMatchWaitTimeCountDown--;
+				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
+				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
+				if (startMatchWaitTimeCountDown == 0)
+				{
+					EnterTheGame();
+					matchIsStarting = false;
+					return;
+				}
+			}
+		}
 	}
 
 	private void Choose()
@@ -138,10 +162,9 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		{
 			if (BlueTeamPlayerCount == maxPlayerCount && RedTeamPlayerCount == maxPlayerCount)
 			{
-				blueTeamStats.text = "Starting The Match...";
-				redTeamStats.text = "Starting The Match...";
-
-				Invoke("EnterTheGame", 1f);
+				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
+				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
+				matchIsStarting = true;
 			}
 			else if (BlueTeamPlayerCount == maxPlayerCount)
 			{

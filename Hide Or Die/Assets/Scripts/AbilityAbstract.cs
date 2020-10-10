@@ -5,8 +5,6 @@ using Photon.Pun;
 
 public abstract class AbilityAbstract : MonoBehaviourPunCallbacks
 {
-
-	public virtual void ThrowGrenade(Vector2 aimingDirection) { }
-	
+	public virtual void ExecuteAbility(Vector2 aimingDirection) { }
 
 }

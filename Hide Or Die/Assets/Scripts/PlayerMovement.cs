@@ -12,13 +12,6 @@ public class PlayerMovement : MovementAbstract
 	public override void Update()
 	{
 		base.Update();
-		//if (photonView.IsMine)
-		//{
-		//	if (Input.GetKeyDown(KeyCode.Space))
-		//	{
-		//		SetToDrone();
-		//	}
-		//}
 	}
 
 	public DroneMovement SetToDrone()

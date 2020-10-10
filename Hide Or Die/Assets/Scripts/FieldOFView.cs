@@ -11,7 +11,7 @@ public class FieldOFView : MonoBehaviour
 	[Range(0,360)] [SerializeField] private float fov = 90f;
 	[Range(0, 500)] [SerializeField] private int rayCount = 2;
 
-	[Range(0, 10)] [SerializeField] private float viewDistance = 10f;
+	[Range(0, 50)] [SerializeField] private float viewDistance = 10f;
 	public float ViewDistance { get => viewDistance; set => viewDistance = value; }
 
 	[SerializeField] private LayerMask fovLayerMask = new LayerMask();
@@ -37,6 +37,7 @@ public class FieldOFView : MonoBehaviour
 
 	private void BakeMesh()
 	{
+
 		float angle = startingAngle + fov /2;
 		float angleIncrease = fov / rayCount;
 

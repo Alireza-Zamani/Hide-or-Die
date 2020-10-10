@@ -18,12 +18,22 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 
 	private void Start()
 	{
-		
+
 	}
 
 	public void PlayerEntered()
 	{
-		if(Team == 1)
+		// Get the team and spawn related to that
+		if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Team"))
+		{
+			Debug.LogError("No hashTable exists for team");
+		}
+
+		int team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+		photonView.RPC("SetLayerAndTag", RpcTarget.AllBuffered, team);
+
+
+		if (Team == 1)
 		{
 			// Blue Team ===> the player will change to a drone to spectacle the map
 			BlueTeamFirstCondition();
@@ -35,6 +45,23 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 		}
 	}
 
+	[PunRPC]
+	private void SetLayerAndTag(int team)
+	{
+
+		string tagName = null;
+		if (team == 1)
+		{
+			tagName = "BlueTeam";
+		}
+		else if (team == 2)
+		{
+			tagName = "RedTeam";
+		}
+
+		gameObject.tag = tagName;
+	}
+
 	private void RedTeamFirstCondition()
 	{
 		SetShootBtnActivity(false);
@@ -44,6 +71,7 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 	{
 		droneMovement = GetComponent<PlayerMovement>().SetToDrone();
 		SetShootBtnActivity(false);
+		SetShopBtnActivity(false);
 	}
 
 	public void PlayerEnteredFinished()
@@ -69,10 +97,17 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 	{
 		droneMovement.SetToCharacter();
 		SetShootBtnActivity(true);
+		SetShopBtnActivity(true);
 	}
+
 
 	private void SetShootBtnActivity(bool activity)
 	{
 		GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>().transform.GetChild(2).gameObject.SetActive(activity);
+	}
+
+	private void SetShopBtnActivity(bool activity)
+	{
+		GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>().transform.GetChild(3).gameObject.SetActive(activity);
 	}
 }

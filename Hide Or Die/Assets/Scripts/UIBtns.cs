@@ -10,7 +10,7 @@ public class UIBtns : MonoBehaviour
 	public OnDelegateChanged onAimingSelectDelegate;
 	public OnDelegateChanged onAimingDeSelectDelegate;
 	public OnDelegateChanged onShopBtnDelegate;
-
+	public OnDelegateChanged onLockBtnDelegate;
 
 
 	public void OnActionBtn()
@@ -30,9 +30,15 @@ public class UIBtns : MonoBehaviour
 	}
 
 
-	public void ShopBtn()
+	public void OnShopBtn()
 	{
 		onShopBtnDelegate.Invoke();
 	}
+
+	public void OnLockBtn()
+	{
+		onLockBtnDelegate.Invoke();
+	}
+
 
 }

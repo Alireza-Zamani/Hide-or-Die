@@ -50,6 +50,11 @@ MonoBehaviour:
   - SendInteractableRPC
   - ChangeLocation
   - DOO
+  - RPCTakeDamage
+  - ChangeTagToTeamName
+  - SetLayerAndTag
+  - RPCHeal
+  - Lock
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

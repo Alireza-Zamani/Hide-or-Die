@@ -5,6 +5,15 @@ using UnityEngine;
 public interface IPlayer
 {
 
-	void TakeDamage();
+
+	string TeamGetter();
+
+	void TeamSetter(string team);
+
+	void AddAbility();
+
+	void TakeDamage(float damageAmount);
+
+	void Heal(float healAmount);
 
 }

@@ -18,7 +18,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 
 	//Fields
 	[Range(0, 2000)] [SerializeField] protected float moveSpeed = 1000f;
-	[Range(0, 10)] [SerializeField] protected float viewDistance = 10f;
+	[Range(0, 50)] [SerializeField] protected float viewDistance = 10f;
 
 	#endregion
 
@@ -41,9 +41,6 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 		{
 			return;
 		}
-
-		// Change the layer to Player so that we wont be our own enemy because at the first all of the layers are at Enemy
-		gameObject.layer = LayerMask.NameToLayer("Player");
 
 		// Get the components from the Hierachy
 		joystick = GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).GetComponent<FloatingJoystick>();

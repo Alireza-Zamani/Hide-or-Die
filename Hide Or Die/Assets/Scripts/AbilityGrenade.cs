@@ -3,19 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Ability : AbilityAbstract
+public class AbilityGrenade : AbilityAbstract
 {
 
 	[SerializeField] private GameObject grenadePrefab = null;
-	[Range(0, 1000)] [SerializeField] private float throwSpeed = 200f;
+	private float throwSpeed = 800f;
 	private GameObject newGrenade = null;
 
-	public override void ThrowGrenade(Vector2 aimingDirection)
+	private IPlayer playerInterface = null;
+
+	private void Awake()
+	{
+		grenadePrefab = Resources.Load("Grenade", typeof(GameObject)) as GameObject;
+	}
+
+	private void Start()
+	{
+		playerInterface = GetComponent<IPlayer>();
+	}
+
+	public override void ExecuteAbility(Vector2 aimingDirection)
 	{
 		newGrenade = PhotonNetwork.Instantiate(grenadePrefab.name, transform.position, Quaternion.identity);
+		newGrenade.GetComponent<Grenade>().PlayerInterface = playerInterface;
 		aimingDirection = aimingDirection.normalized * throwSpeed;
 		newGrenade.GetComponent<Rigidbody2D>().AddForce(aimingDirection, ForceMode2D.Force);
-		print(aimingDirection);
 	}
 
 }

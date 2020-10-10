@@ -42,6 +42,14 @@ public class AimingDirection : MonoBehaviour
 		}
 
 		// Rotate towards the joystick direction
+		LookTowards(dir);
+
+		AimDirection = dir;
+	}
+
+	private void LookTowards(Vector2 dir)
+	{
+		// Rotate towards the joystick direction
 		var dirAngular2 = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 		if (dir.x < 0)
 		{
@@ -51,8 +59,6 @@ public class AimingDirection : MonoBehaviour
 		{
 			transform.rotation = Quaternion.AngleAxis(dirAngular2, Vector3.forward);
 		}
-
-		AimDirection = dir;
 	}
 
 	public virtual Vector2 GetDirection()

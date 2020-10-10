@@ -13,7 +13,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[SerializeField] private bool isTestMode = false;
 
 	[Header("CountDown Conditions")]
-	[Range(0,60)] [SerializeField] private float countDownTimer = 30f;
+	[Range(0,60)] [SerializeField] private float countDownTimer = 10f;
 	[SerializeField] private Text timerCounter = null;
 	[SerializeField] private GameObject timeCounterPanel = null;
 
@@ -29,9 +29,13 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[Header("Objectives Spawn Points")]
 	[SerializeField] private Transform objectivesSpawnPoint = null;
 
+	private int team = 0;
+
 	private bool timerStarted = false;
 	private float counter = 0f;
 	private PlayerEnterGameDuty playerEnterGameDuty = null;
+	private IPlayer playerInterface = null;
+
 
 	private void Start()
 	{
@@ -72,19 +76,34 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 				Debug.LogError("No hashTable exists for team");
 			}
 
-			int team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+			team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
 
 			// Team Blue
 			if(team == 1)
 			{
 				player = PhotonNetwork.Instantiate(bluePlayerPref.name, blueTeamSpawnPoint.position , Quaternion.identity);
+
+				// Set Player Statues
+				playerInterface = player.GetComponent<IPlayer>();
+				//playerInterface.AddAbility();
+				playerInterface.TeamSetter("BlueTeam");
 			}
 			// Team Red
 			else if(team == 2)
 			{
 				player = PhotonNetwork.Instantiate(redPlayerPref.name, redTeamSpawnPoint.position, Quaternion.identity);
+
+				// Set Player Statues
+				playerInterface = player.GetComponent<IPlayer>();
+				//playerInterface.AddAbility();
+				playerInterface.TeamSetter("RedTeam");
 			}
 
+
+			// Change the layer to Player so that we wont be our own enemy because at the first all of the layers are at Enemy
+			player.gameObject.layer = LayerMask.NameToLayer("Player");
+
+			
 
 			if (PhotonNetwork.IsMasterClient)
 			{
@@ -97,6 +116,12 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			playerEnterGameDuty.PlayerEntered();
 			StartTimerCountDown();
 		}
+	}
+
+	[PunRPC]
+	private void ChangeTagToTeamName(int team)
+	{
+		
 	}
 
 	private void StartTimerCountDown()

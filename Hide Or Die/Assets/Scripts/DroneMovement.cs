@@ -15,13 +15,6 @@ public class DroneMovement : MovementAbstract
 	public override void Update()
 	{
 		base.Update();
-		//if (photonView.IsMine)
-		//{
-		//	if (Input.GetKeyDown(KeyCode.Space))
-		//	{
-		//		SetToCharacter();
-		//	}
-		//}
 	}
 	
 	public void SetToCharacter()

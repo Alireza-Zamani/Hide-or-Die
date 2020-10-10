@@ -176,6 +176,9 @@ MonoBehaviour:
   explosionTimeCount: 5
   explosionDamage: 50
   radiousOfAction: 5
+  raycastableForInSightLayerMask:
+    serializedVersion: 2
+    m_Bits: 32768
   damagableLayerMask:
     serializedVersion: 2
     m_Bits: 1024
