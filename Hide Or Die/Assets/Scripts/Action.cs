@@ -26,6 +26,8 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private AbilityAbstract ability = null;
 
+	private Miner minerClass = null;
+
 
 
 	private void OnDrawGizmos()
@@ -47,6 +49,7 @@ public class Action : MonoBehaviourPunCallbacks
 
 		movementClass = GetComponent<MovementAbstract>();
 		ability = GetComponent<AbilityAbstract>();
+		minerClass = GetComponent<Miner>();
 
 		//Set the action button listener
 		UIBtns uiBtns = GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>();
@@ -55,6 +58,7 @@ public class Action : MonoBehaviourPunCallbacks
 		uiBtns.onAimingDeSelectDelegate = OnAimingDeSelect;
 		uiBtns.onShopBtnDelegate = OnShopBtn;
 		uiBtns.onLockBtnDelegate = OnLockBtn;
+		uiBtns.onMineBtnDelegate = OnMineBtn;
 	}
 
 
@@ -90,6 +94,13 @@ public class Action : MonoBehaviourPunCallbacks
 		print("Door Locked");
 	}
 
+
+	private void OnMineBtn()
+	{
+		// Set the mine
+		minerClass.SetMine();
+		print("Mine Setted");
+	}
 	private void CallExecuteAbility()
 	{
 		if(ability != null)

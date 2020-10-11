@@ -9,7 +9,15 @@ public class Spear : MonoBehaviourPunCallbacks
 	private IPlayer playerInterface = null;
 	public IPlayer PlayerInterface { get => playerInterface; set => playerInterface = value; }
 
+	[Range(0, 5000)] [SerializeField] private float throwSpeed = 2500f;
+
+
 	[Range(0, 100)] [SerializeField] private float hitDamage = 50f;
+
+	private Vector2 aimingDirection = Vector2.zero;
+	public Vector2 AimingDirection { get => aimingDirection; set => aimingDirection = value; }
+
+	private Rigidbody2D rb = null;
 
 	private string team = null;
 
@@ -23,6 +31,12 @@ public class Spear : MonoBehaviourPunCallbacks
 
 		Invoke("DestroyGameObject", 5f);
 		team = playerInterface.TeamGetter();
+		rb = GetComponent<Rigidbody2D>();
+	}
+
+	private void Update()
+	{
+		rb.AddForce(AimingDirection * throwSpeed * Time.deltaTime, ForceMode2D.Force);
 	}
 
 	private void OnTriggerEnter2D(Collider2D other)

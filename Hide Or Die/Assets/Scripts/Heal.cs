@@ -9,6 +9,8 @@ public class Heal : MonoBehaviour
 	[Range(0, 10)] [SerializeField] private float timeEffectRate = 1f;
 	[Range(0, 100)] [SerializeField] private float healEffectAmount = 50f;
 	[Range(0, 10)] [SerializeField] private float radiousOfAction = 5f;
+	[SerializeField] private LayerMask raycastableForInSightLayerMask = new LayerMask();
+
 	[SerializeField] private LayerMask healableLayerMask = new LayerMask();
 
 	private float timeCounter = 0f;
@@ -51,18 +53,15 @@ public class Heal : MonoBehaviour
 		{
 			// Finds which one of these players are in the sight
 			Vector2 dir = coll.collider.gameObject.transform.position - transform.position;
-			RaycastHit2D hittest = Physics2D.Raycast(transform.position, dir.normalized, 1000);
-			if (hittest.collider != null)
+			float distance = Vector2.Distance(coll.collider.gameObject.transform.position, transform.position);
+			RaycastHit2D hittest = Physics2D.Raycast(transform.position, dir.normalized, distance, raycastableForInSightLayerMask);
+			if (hittest.collider == null)
 			{
-				if (hittest.collider.gameObject == coll.collider.gameObject)
+				if (coll.collider.gameObject.GetComponent<IPlayer>() != null && coll.collider.gameObject.tag == team)
 				{
-					// Finds if the player is in the same team
-					if (coll.collider.gameObject.GetComponent<IPlayer>() != null && coll.collider.gameObject.tag == team)
-					{
-						playerInterface = coll.collider.gameObject.GetComponent<IPlayer>();
-						playerInterface.Heal(healEffectAmount);
-						print("Is Healing");
-					}
+					playerInterface = coll.collider.gameObject.GetComponent<IPlayer>();
+					playerInterface.Heal(healEffectAmount);
+					print("Is Healing");
 				}
 			}
 		}		

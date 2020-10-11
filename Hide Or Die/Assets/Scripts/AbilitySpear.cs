@@ -7,7 +7,6 @@ public class AbilitySpear : AbilityAbstract
 {
 
 	[SerializeField] private GameObject spearPrefab = null;
-	private float throwSpeed = 800f;
 	private GameObject newSpear = null;
 
 	private IPlayer playerInterface = null;
@@ -25,12 +24,13 @@ public class AbilitySpear : AbilityAbstract
 	public override void ExecuteAbility(Vector2 aimingDirection)
 	{
 		newSpear = PhotonNetwork.Instantiate(spearPrefab.name, transform.position, Quaternion.identity);
-		newSpear.GetComponent<Spear>().PlayerInterface = playerInterface;
+		Spear spearClass = newSpear.GetComponent<Spear>();
+		spearClass.PlayerInterface = playerInterface;
 
 		LookTowards(-aimingDirection , newSpear.transform);
 
-		aimingDirection = aimingDirection.normalized * throwSpeed;
-		newSpear.GetComponent<Rigidbody2D>().AddForce(aimingDirection, ForceMode2D.Force);
+		aimingDirection = aimingDirection.normalized;
+		spearClass.AimingDirection = aimingDirection;
 	}
 
 	private void LookTowards(Vector2 dir , Transform spear)

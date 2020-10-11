@@ -71,6 +71,9 @@ MonoBehaviour:
   timeEffectRate: 1
   healEffectAmount: 2
   radiousOfAction: 5
+  raycastableForInSightLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   healableLayerMask:
     serializedVersion: 2
     m_Bits: 1024

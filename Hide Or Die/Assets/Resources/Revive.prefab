@@ -68,6 +68,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radiousOfAction: 5
-  healableLayerMask:
+  raycastableForInSightLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  revivableLayerMask:
     serializedVersion: 2
     m_Bits: 1024

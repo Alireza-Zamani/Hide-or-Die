@@ -12,6 +12,7 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 	private Text lockBtnText = null;
 	private BuyAvailibility buyAvailibility = null;
 	private int team = 0;
+	public int Team { get => team; set => team = value; }
 
 	private void Start()
 	{
@@ -19,15 +20,7 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 		{
 			Destroy(this);
 		}
-		// Get the team and spawn related to that
-		if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Team"))
-		{
-			Debug.LogError("No hashTable exists for team");
-		}
-
-		team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-
-		photonView.RPC("SetLayerAndTag", RpcTarget.AllBuffered, team);
+		
 		actionBtn = GameObject.FindGameObjectWithTag("UI").transform.GetChild(1).gameObject;
 		lockBtn = GameObject.FindGameObjectWithTag("UI").transform.GetChild(5).gameObject;
 		lockBtnText = lockBtn.transform.GetChild(0).gameObject.GetComponent<Text>();
@@ -43,7 +36,7 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 
 			// The other is the door
 			DoorInteractable doorInteractable = other.gameObject.GetComponent<DoorInteractable>();
-			if (doorInteractable != null && team == 2)
+			if (doorInteractable != null && Team == 2)
 			{
 				UpdateLockBtn(true, doorInteractable);
 			}
@@ -52,17 +45,16 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
+		DoorInteractable doorInteractable = other.gameObject.GetComponent<DoorInteractable>();
+		if (doorInteractable != null && Team == 2)
+		{
+			UpdateLockBtn(false, doorInteractable);
+		}
+
 		// If we have exited an interactable object turn off the action btn but if the object is our child then dont because we want to redo the action later
 		if (other.tag == "Interactable" && other.gameObject.transform.parent != transform && transform.childCount == 0)
 		{
 			UpdateActionBtn(false);
-
-			// The other is the door
-			DoorInteractable doorInteractable = other.gameObject.GetComponent<DoorInteractable>();
-			if (doorInteractable != null && team == 2)
-			{
-				UpdateLockBtn(false, doorInteractable);
-			}
 		}
 
 		//If we exited the buy zone we have to disable buy button

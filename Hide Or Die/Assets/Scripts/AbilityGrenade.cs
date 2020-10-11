@@ -7,7 +7,7 @@ public class AbilityGrenade : AbilityAbstract
 {
 
 	[SerializeField] private GameObject grenadePrefab = null;
-	private float throwSpeed = 800f;
+	
 	private GameObject newGrenade = null;
 
 	private IPlayer playerInterface = null;
@@ -25,9 +25,10 @@ public class AbilityGrenade : AbilityAbstract
 	public override void ExecuteAbility(Vector2 aimingDirection)
 	{
 		newGrenade = PhotonNetwork.Instantiate(grenadePrefab.name, transform.position, Quaternion.identity);
-		newGrenade.GetComponent<Grenade>().PlayerInterface = playerInterface;
-		aimingDirection = aimingDirection.normalized * throwSpeed;
-		newGrenade.GetComponent<Rigidbody2D>().AddForce(aimingDirection, ForceMode2D.Force);
+		Grenade grenade = newGrenade.GetComponent<Grenade>();
+		grenade.PlayerInterface = playerInterface;
+		aimingDirection = aimingDirection.normalized;
+		grenade.AimingDirection = aimingDirection;
 	}
 
 }

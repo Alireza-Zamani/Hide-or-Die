@@ -9,6 +9,7 @@ public class Grenade : MonoBehaviour
 	[Range(0 , 10)] [SerializeField] private float explosionTimeCount = 5f;
 	[Range(0, 100)] [SerializeField] private float explosionDamage = 50f;
 	[Range(0, 10)] [SerializeField] private float radiousOfAction = 5f;
+	[Range(0, 5000)] [SerializeField] private float throwSpeed = 1200f;
 	[SerializeField] private LayerMask raycastableForInSightLayerMask = new LayerMask();
 	[SerializeField] private LayerMask damagableLayerMask = new LayerMask();
 
@@ -17,7 +18,12 @@ public class Grenade : MonoBehaviour
 	private IPlayer playerInterface = null;
 	public IPlayer PlayerInterface { get => playerInterface; set => playerInterface = value; }
 
+	private Vector2 aimingDirection = Vector2.zero;
+	public Vector2 AimingDirection { get => aimingDirection; set => aimingDirection = value; }
+
 	private string team = null;
+
+	private Rigidbody2D rb = null;
 
 
 	private void Start()
@@ -31,6 +37,8 @@ public class Grenade : MonoBehaviour
 
 		team = PlayerInterface.TeamGetter();
 		Invoke("Explode", explosionTimeCount);
+		rb = GetComponent<Rigidbody2D>();
+		rb.AddForce(AimingDirection * throwSpeed, ForceMode2D.Force);
 	}
 
 	private void Explode()
@@ -39,7 +47,6 @@ public class Grenade : MonoBehaviour
 		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, damagableLayerMask);
 		foreach (RaycastHit2D coll in hit)
 		{
-			print("one");
 			// Finds which one of these players are in the sight
 			Vector2 dir = coll.collider.gameObject.transform.position - transform.position;
 			float distance = Vector2.Distance(coll.collider.gameObject.transform.position, transform.position);

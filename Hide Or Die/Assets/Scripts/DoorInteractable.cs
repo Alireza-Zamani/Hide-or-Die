@@ -40,6 +40,7 @@ public class DoorInteractable : MonoBehaviourPunCallbacks, IInteractable
 	}
 
 
+
 	public bool LockDoor(bool activity)
 	{
 		if (isLocked == activity)

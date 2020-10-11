@@ -34,6 +34,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	private bool timerStarted = false;
 	private float counter = 0f;
 	private PlayerEnterGameDuty playerEnterGameDuty = null;
+	private CollisionHandler collisionHandler = null;
 	private IPlayer playerInterface = null;
 
 
@@ -111,6 +112,8 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			}
 
 			// Set the first condition for the player
+			collisionHandler = player.GetComponent<CollisionHandler>();
+			collisionHandler.Team = team;
 			playerEnterGameDuty = player.GetComponent<PlayerEnterGameDuty>();
 			playerEnterGameDuty.Team = team;
 			playerEnterGameDuty.PlayerEntered();
@@ -118,11 +121,6 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 		}
 	}
 
-	[PunRPC]
-	private void ChangeTagToTeamName(int team)
-	{
-		
-	}
 
 	private void StartTimerCountDown()
 	{

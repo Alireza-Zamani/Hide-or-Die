@@ -8,7 +8,7 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	[SerializeField] private GameObject bodyHandler = null;
 
-	private float health = 100;
+	[SerializeField] private float health = 100;
 
 	public float Health { get => health; set => health = value; }
 

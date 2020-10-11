@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4035356240360766125}
   - component: {fileID: 3351370078570362281}
   - component: {fileID: 3584409641884832505}
-  m_Layer: 13
+  m_Layer: 10
   m_Name: Dead Body Handler
-  m_TagString: Interactable
+  m_TagString: DeadBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

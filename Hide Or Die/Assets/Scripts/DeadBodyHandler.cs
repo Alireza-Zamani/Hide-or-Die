@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Photon.Pun;
 
-public class DeadInteractable : MonoBehaviourPunCallbacks, IInteractable
+public class DeadBodyHandler : MonoBehaviour
 {
-	public void Interact(Transform parent)
+
+
+	public void ResetPlayer()
 	{
 		GameObject deadPlayer = gameObject.transform.GetChild(0).gameObject;
 		deadPlayer.SetActive(true);
@@ -13,5 +14,4 @@ public class DeadInteractable : MonoBehaviourPunCallbacks, IInteractable
 		deadPlayer.transform.parent = null;
 		Destroy(gameObject);
 	}
-	
 }

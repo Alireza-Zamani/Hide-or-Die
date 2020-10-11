@@ -7,7 +7,8 @@ using Photon.Pun;
 public class Revive : MonoBehaviour
 {
 	[Range(0, 10)] [SerializeField] private float radiousOfAction = 5f;
-	[SerializeField] private LayerMask healableLayerMask = new LayerMask();
+	[SerializeField] private LayerMask raycastableForInSightLayerMask = new LayerMask();
+	[SerializeField] private LayerMask revivableLayerMask = new LayerMask();
 
 	private float timeCounter = 0f;
 
@@ -23,7 +24,6 @@ public class Revive : MonoBehaviour
 		photonView = PhotonView.Get(this);
 		if (!photonView.IsMine)
 		{
-			Destroy(this);
 			return;
 		}
 
@@ -34,24 +34,28 @@ public class Revive : MonoBehaviour
 
 	private void Reviving()
 	{
+		photonView.RPC("RPCReviving", RpcTarget.AllBuffered);
+	}
+
+	[PunRPC]
+	private void RPCReviving()
+	{
 		// Finds all players in the radious
-		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, healableLayerMask);
+		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, revivableLayerMask);
 		foreach (RaycastHit2D coll in hit)
 		{
 			// Finds which one of these players are in the sight
 			Vector2 dir = coll.collider.gameObject.transform.position - transform.position;
-			RaycastHit2D hittest = Physics2D.Raycast(transform.position, dir.normalized, 1000);
-			if (hittest.collider != null)
+			float distance = Vector2.Distance(coll.collider.gameObject.transform.position, transform.position);
+			RaycastHit2D hittest = Physics2D.Raycast(transform.position, dir.normalized, distance, raycastableForInSightLayerMask);
+			if (hittest.collider == null)
 			{
-				if (hittest.collider.gameObject == coll.collider.gameObject)
+				DeadBodyHandler deadBodyHandler = coll.collider.gameObject.GetComponent<DeadBodyHandler>();
+				if (deadBodyHandler != null && coll.collider.gameObject.transform.GetChild(0).gameObject.tag == team)
 				{
-					// Finds if the player is in the same team
-					if (coll.collider.gameObject.GetComponent<IPlayer>() != null && coll.collider.gameObject.tag == team)
-					{
-						playerInterface = coll.collider.gameObject.GetComponent<IPlayer>();
-						print("Is Reviving");
-						return;
-					}
+					deadBodyHandler.ResetPlayer();
+					print("Is Reviving");
+					return;
 				}
 			}
 		}

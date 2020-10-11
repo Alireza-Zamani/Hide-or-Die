@@ -12,6 +12,7 @@ TagManager:
   - BlueTeam
   - RedTeam
   - Environment
+  - DeadBody
   layers:
   - Default
   - TransparentFX
