@@ -177,6 +177,10 @@ MonoBehaviour:
   explosionDamage: 50
   radiousOfAction: 5
   throwSpeed: 1200
+  explosionSoundEffect: {fileID: 8300000, guid: 2b6c6ed1063ae724facce2413b6a8281,
+    type: 3}
+  explosionEffectPrefab: {fileID: 7022194579632101171, guid: 145d7acad4d193645bfdfd53b1719bbb,
+    type: 3}
   raycastableForInSightLayerMask:
     serializedVersion: 2
     m_Bits: 1

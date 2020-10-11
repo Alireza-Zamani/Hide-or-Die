@@ -8,8 +8,21 @@ public class Mine : MonoBehaviourPunCallbacks
 
 	[Range(0, 100)] [SerializeField] private float explosionDamage = 50f;
 
+	[SerializeField] private GameObject explosionEffectPrefab = null;
+
+	[SerializeField] private AudioClip explosionSoundEffect = null;
+	private AudioSource audioSource = null;
 
 
+	private void Start()
+	{
+		if (!photonView.IsMine)
+		{
+			Destroy(this);
+			return;
+		}
+		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
+	}
 
 	public void SetTheTag(string team)
 	{
@@ -33,8 +46,9 @@ public class Mine : MonoBehaviourPunCallbacks
 		{
 			if (other.tag == "BlueTeam" || other.tag == "RedTeam")
 			{
-				print(other.gameObject.name);
 				other.gameObject.GetComponent<IPlayer>().TakeDamage(explosionDamage);
+				PhotonNetwork.Instantiate(explosionEffectPrefab.name, transform.position, Quaternion.identity);
+				audioSource.PlayOneShot(explosionSoundEffect);
 				DestroyGameObject();
 			}
 		}

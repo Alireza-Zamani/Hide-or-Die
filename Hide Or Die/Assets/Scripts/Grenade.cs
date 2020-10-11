@@ -10,6 +10,12 @@ public class Grenade : MonoBehaviour
 	[Range(0, 100)] [SerializeField] private float explosionDamage = 50f;
 	[Range(0, 10)] [SerializeField] private float radiousOfAction = 5f;
 	[Range(0, 5000)] [SerializeField] private float throwSpeed = 1200f;
+
+	[SerializeField] private AudioClip explosionSoundEffect = null;
+	private AudioSource audioSource = null;
+
+	[SerializeField] private GameObject explosionEffectPrefab = null;
+
 	[SerializeField] private LayerMask raycastableForInSightLayerMask = new LayerMask();
 	[SerializeField] private LayerMask damagableLayerMask = new LayerMask();
 
@@ -34,7 +40,7 @@ public class Grenade : MonoBehaviour
 			Destroy(this);
 			return;
 		}
-
+		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
 		team = PlayerInterface.TeamGetter();
 		Invoke("Explode", explosionTimeCount);
 		rb = GetComponent<Rigidbody2D>();
@@ -57,12 +63,19 @@ public class Grenade : MonoBehaviour
 				{
 					playerInterface = coll.collider.gameObject.GetComponent<IPlayer>();
 					playerInterface.TakeDamage(explosionDamage);
-					print("Is Damaging");
+					print("Is Damaging the " + coll.collider.gameObject.name);
 				}
 			}
 		}
 
-		PhotonNetwork.Destroy(gameObject);
+		DestroyGameObject(gameObject);
+	}
+
+	private void DestroyGameObject(GameObject go)
+	{
+		PhotonNetwork.Instantiate(explosionEffectPrefab.name, transform.position, Quaternion.identity);
+		audioSource.PlayOneShot(explosionSoundEffect);
+		PhotonNetwork.Destroy(go.gameObject);
 	}
 
 }

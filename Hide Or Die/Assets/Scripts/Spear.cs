@@ -49,8 +49,8 @@ public class Spear : MonoBehaviourPunCallbacks
 		{
 			if(other.tag == "BlueTeam" || other.tag == "RedTeam")
 			{
-				print(other.gameObject.name);
 				other.gameObject.GetComponent<IPlayer>().TakeDamage(hitDamage);
+				print("Is Damaging the " + other.gameObject.name);
 				DestroyGameObject();
 			}
 			else if(other.tag == "Environment")

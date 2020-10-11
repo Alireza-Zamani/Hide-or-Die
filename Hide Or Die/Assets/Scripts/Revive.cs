@@ -7,6 +7,9 @@ using Photon.Pun;
 public class Revive : MonoBehaviour
 {
 	[Range(0, 10)] [SerializeField] private float radiousOfAction = 5f;
+
+	[SerializeField] private GameObject reviveEffectPrefab = null;
+
 	[SerializeField] private LayerMask raycastableForInSightLayerMask = new LayerMask();
 	[SerializeField] private LayerMask revivableLayerMask = new LayerMask();
 
@@ -40,6 +43,8 @@ public class Revive : MonoBehaviour
 	[PunRPC]
 	private void RPCReviving()
 	{
+		PhotonNetwork.Instantiate(reviveEffectPrefab.name, transform.position, Quaternion.identity);
+
 		// Finds all players in the radious
 		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, revivableLayerMask);
 		foreach (RaycastHit2D coll in hit)
@@ -51,10 +56,10 @@ public class Revive : MonoBehaviour
 			if (hittest.collider == null)
 			{
 				DeadBodyHandler deadBodyHandler = coll.collider.gameObject.GetComponent<DeadBodyHandler>();
-				if (deadBodyHandler != null && coll.collider.gameObject.transform.GetChild(0).gameObject.tag == team)
+				if (deadBodyHandler != null && coll.collider.gameObject.transform.GetChild(0).gameObject.tag != team)
 				{
 					deadBodyHandler.ResetPlayer();
-					print("Is Reviving");
+					print("Is Revivingthe " + coll.collider.gameObject.name);
 					return;
 				}
 			}

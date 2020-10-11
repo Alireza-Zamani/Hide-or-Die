@@ -8,7 +8,12 @@ public class Heal : MonoBehaviour
 	[Range(0, 10)] [SerializeField] private float healEndTimeCounter = 5f;
 	[Range(0, 10)] [SerializeField] private float timeEffectRate = 1f;
 	[Range(0, 100)] [SerializeField] private float healEffectAmount = 50f;
-	[Range(0, 10)] [SerializeField] private float radiousOfAction = 5f;
+	[Range(0, 50)] [SerializeField] private float radiousOfAction = 15f;
+	[SerializeField] private GameObject healEffectPrefab = null;
+
+	[SerializeField] private AudioClip healSoundEffect = null;
+	private AudioSource audioSource = null;
+
 	[SerializeField] private LayerMask raycastableForInSightLayerMask = new LayerMask();
 
 	[SerializeField] private LayerMask healableLayerMask = new LayerMask();
@@ -30,9 +35,9 @@ public class Heal : MonoBehaviour
 			Destroy(this);
 			return;
 		}
-
+		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
 		team = playerInterface.TeamGetter();
-		Invoke("DestroyGameObject", timeEffectRate);
+		Invoke("DestroyGameObject", healEndTimeCounter);
 	}
 
 	private void Update()
@@ -47,6 +52,8 @@ public class Heal : MonoBehaviour
 
 	private void Healing()
 	{
+		PhotonNetwork.Instantiate(healEffectPrefab.name, transform.position, Quaternion.identity);
+		//audioSource.PlayOneShot(healSoundEffect);
 		// Finds all players in the radious
 		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, healableLayerMask);
 		foreach (RaycastHit2D coll in hit)
@@ -61,7 +68,7 @@ public class Heal : MonoBehaviour
 				{
 					playerInterface = coll.collider.gameObject.GetComponent<IPlayer>();
 					playerInterface.Heal(healEffectAmount);
-					print("Is Healing");
+					print("Is Healing the " + coll.collider.gameObject.tag);
 				}
 			}
 		}		

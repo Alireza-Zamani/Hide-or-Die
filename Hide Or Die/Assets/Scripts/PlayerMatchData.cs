@@ -61,6 +61,11 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 			case "Guard":
 				gameObject.AddComponent<AbilityHealer>();
 				break;
+
+			// If no ability was choosed we will give the player grenade ability automaticlly
+			default:
+				gameObject.AddComponent<AbilityGrenade>();
+				break;
 		}
 	}
 
