@@ -34,7 +34,7 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 		{
 			UpdateActionBtn(true);
 
-			// The other is the door
+			// If the other is the door
 			DoorInteractable doorInteractable = other.gameObject.GetComponent<DoorInteractable>();
 			if (doorInteractable != null && Team == 2)
 			{

@@ -28,6 +28,8 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private Miner minerClass = null;
 
+	private UIBtns uiBtns = null;
+
 
 
 	private void OnDrawGizmos()
@@ -52,15 +54,30 @@ public class Action : MonoBehaviourPunCallbacks
 		minerClass = GetComponent<Miner>();
 
 		//Set the action button listener
-		UIBtns uiBtns = GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>();
-		uiBtns.onActionBtnDelegate = OnActionBtn;
-		uiBtns.onAimingSelectDelegate = OnAimingSelect;
-		uiBtns.onAimingDeSelectDelegate = OnAimingDeSelect;
-		uiBtns.onShopBtnDelegate = OnShopBtn;
-		uiBtns.onLockBtnDelegate = OnLockBtn;
-		uiBtns.onMineBtnDelegate = OnMineBtn;
+		uiBtns = GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>();
+		AddDelegates();
 	}
 
+
+	public void AddDelegates()
+	{
+		uiBtns.onActionBtnDelegate += OnActionBtn;
+		uiBtns.onAimingSelectDelegate += OnAimingSelect;
+		uiBtns.onAimingDeSelectDelegate += OnAimingDeSelect;
+		uiBtns.onShopBtnDelegate += OnShopBtn;
+		uiBtns.onLockBtnDelegate += OnLockBtn;
+		uiBtns.onMineBtnDelegate += OnMineBtn;
+	}
+
+	public void RemoveDelegates()
+	{
+		uiBtns.onActionBtnDelegate -= OnActionBtn;
+		uiBtns.onAimingSelectDelegate -= OnAimingSelect;
+		uiBtns.onAimingDeSelectDelegate -= OnAimingDeSelect;
+		uiBtns.onShopBtnDelegate -= OnShopBtn;
+		uiBtns.onLockBtnDelegate -= OnLockBtn;
+		uiBtns.onMineBtnDelegate -= OnMineBtn;
+	}
 
 	private void OnActionBtn()
 	{

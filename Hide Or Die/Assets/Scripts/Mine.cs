@@ -10,18 +10,27 @@ public class Mine : MonoBehaviourPunCallbacks
 
 	[SerializeField] private GameObject explosionEffectPrefab = null;
 
-	[SerializeField] private AudioClip explosionSoundEffect = null;
-	private AudioSource audioSource = null;
 
 
 	private void Start()
 	{
 		if (!photonView.IsMine)
 		{
+
+			// If the mine is in the the enemy game then turn off the sprite renderer
+			if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Team"))
+			{
+				Debug.LogError("No hashTable exists for team");
+			}
+
+			int team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+			if((gameObject.tag == "BlueTeam" && team == 2) || (gameObject.tag == "RedTeam" && team == 1))
+			{
+				GetComponent<SpriteRenderer>().enabled = false;
+			}
 			Destroy(this);
 			return;
 		}
-		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
 	}
 
 	public void SetTheTag(string team)
@@ -29,13 +38,7 @@ public class Mine : MonoBehaviourPunCallbacks
 		photonView.RPC("RPCSetTheTag", RpcTarget.AllBuffered, team);
 	}
 
-	[PunRPC]
-	private void RPCSetTheTag(string team)
-	{
-		gameObject.tag = team;
-	}
-
-
+	
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (!photonView.IsMine)
@@ -46,9 +49,9 @@ public class Mine : MonoBehaviourPunCallbacks
 		{
 			if (other.tag == "BlueTeam" || other.tag == "RedTeam")
 			{
+				// If the other was in the other team and was a player (BlueTeam -- RedTeam) then explode the mine
 				other.gameObject.GetComponent<IPlayer>().TakeDamage(explosionDamage);
 				PhotonNetwork.Instantiate(explosionEffectPrefab.name, transform.position, Quaternion.identity);
-				audioSource.PlayOneShot(explosionSoundEffect);
 				DestroyGameObject();
 			}
 		}
@@ -57,5 +60,12 @@ public class Mine : MonoBehaviourPunCallbacks
 	private void DestroyGameObject()
 	{
 		PhotonNetwork.Destroy(gameObject);
+	}
+
+
+	[PunRPC]
+	private void RPCSetTheTag(string team)
+	{
+		gameObject.tag = team;
 	}
 }

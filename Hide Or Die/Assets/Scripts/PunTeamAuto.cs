@@ -142,6 +142,19 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		}
 	}
 
+	private void SetGameObjectActivity(GameObject panelName, bool activity)
+	{
+		panelName.SetActive(activity);
+	}
+
+	private void EnterTheGame()
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			SceneManager.LoadScene("MainScene");
+		}
+	}
+
 	[PunRPC]
 	public void UpdateTeams(int teamNumber)
 	{
@@ -174,19 +187,6 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 			{
 				redTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
 			}
-		}
-	}
-
-	private void SetGameObjectActivity(GameObject panelName, bool activity)
-	{
-		panelName.SetActive(activity);
-	}
-
-	private void EnterTheGame()
-	{
-		if (PhotonNetwork.IsMasterClient)
-		{
-			SceneManager.LoadScene("MainScene");
 		}
 	}
 

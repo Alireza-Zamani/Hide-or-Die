@@ -32,13 +32,19 @@ public class Revive : MonoBehaviour
 
 		team = playerInterface.TeamGetter();
 		Reviving();
-		PhotonNetwork.Destroy(gameObject);
 	}
 
 	private void Reviving()
 	{
 		photonView.RPC("RPCReviving", RpcTarget.AllBuffered);
 	}
+
+
+	private void DestroyGameObject()
+	{
+		PhotonNetwork.Destroy(gameObject);
+	}
+
 
 	[PunRPC]
 	private void RPCReviving()
@@ -60,14 +66,10 @@ public class Revive : MonoBehaviour
 				{
 					deadBodyHandler.ResetPlayer();
 					print("Is Revivingthe " + coll.collider.gameObject.name);
+					DestroyGameObject();
 					return;
 				}
 			}
 		}
-	}
-
-	private void DestroyGameObject()
-	{
-		PhotonNetwork.Destroy(gameObject);
 	}
 }

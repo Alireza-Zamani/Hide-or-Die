@@ -48,6 +48,7 @@ public class PunTeam : MonoBehaviourPunCallbacks
 
 	private void Update()
 	{
+		// Wait until the match is ready to start the ncount down teh timer to start the match
 		if (matchIsStarting)
 		{
 			timeCounter += Time.deltaTime;
@@ -67,9 +68,8 @@ public class PunTeam : MonoBehaviourPunCallbacks
 		}
 	}
 
-	public void ChooseTeam(int teamNumber)
+	private void TeamsHashtableSetter(int teamNumber)
 	{
-		// Set the Hashtable for team
 		if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Team"))
 		{
 			PhotonNetwork.LocalPlayer.CustomProperties["Team"] = teamNumber;
@@ -83,12 +83,39 @@ public class PunTeam : MonoBehaviourPunCallbacks
 
 			PhotonNetwork.SetPlayerCustomProperties(playerProps);
 		}
+	}
 
+	private void GroupsHashtableSetter(int teamNumber)
+	{
+		if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group"))
+		{
+			PhotonNetwork.LocalPlayer.CustomProperties["Group"] = teamNumber;
+		}
+		else
+		{
+			ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+			{
+				{"Group" , teamNumber }
+			};
 
-		// Call RPC functions to call in all players
+			PhotonNetwork.SetPlayerCustomProperties(playerProps);
+		}
+	}
+
+	public void ChooseTeam(int teamNumber)
+	{
+		// Set the Hashtable for team
+		TeamsHashtableSetter(teamNumber);
+
+		// Set the Hashtable for group
+		GroupsHashtableSetter(teamNumber);
+
+		// Call RPC functions to call in all players because we want all players to know how many players are in the game ready to go
 		TeamNum = teamNumber;
 		photonView.RPC("UpdateTeams", RpcTarget.AllBuffered, teamNumber);
 		photonView.RPC("UpdateStats", RpcTarget.AllBuffered, teamNumber);
+
+		// Change the remained players number
 		if (teamNumber == 1)
 		{
 			SetGameObjectActivity(blueTeamPanel, true);
@@ -119,6 +146,21 @@ public class PunTeam : MonoBehaviourPunCallbacks
 		{
 			redTeamButton.GetComponent<Button>().interactable = false;
 		}
+	}
+
+
+	private void EnterTheGame()
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			SceneManager.LoadScene("MainScene");
+		}
+	}
+
+
+	public override void OnPlayerEnteredRoom(Player player)
+	{
+		print(player.NickName + "  Entered in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And rooms player count is : " + PhotonNetwork.CurrentRoom.PlayerCount);
 	}
 
 	[PunRPC]
@@ -156,20 +198,6 @@ public class PunTeam : MonoBehaviourPunCallbacks
 				redTeamStats.text = "We are Full Waiting For Epponents Players...";
 			}
 		}
-	}
-
-	private void EnterTheGame()
-	{
-		if (PhotonNetwork.IsMasterClient)
-		{
-			SceneManager.LoadScene("MainScene");
-		}
-	}
-
-
-	public override void OnPlayerEnteredRoom(Player player)
-	{
-		print(player.NickName + "  Entered in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And rooms player count is : " + PhotonNetwork.CurrentRoom.PlayerCount);
 	}
 
 

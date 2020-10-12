@@ -11,8 +11,6 @@ public class Heal : MonoBehaviour
 	[Range(0, 50)] [SerializeField] private float radiousOfAction = 15f;
 	[SerializeField] private GameObject healEffectPrefab = null;
 
-	[SerializeField] private AudioClip healSoundEffect = null;
-	private AudioSource audioSource = null;
 
 	[SerializeField] private LayerMask raycastableForInSightLayerMask = new LayerMask();
 
@@ -35,7 +33,6 @@ public class Heal : MonoBehaviour
 			Destroy(this);
 			return;
 		}
-		audioSource = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>();
 		team = playerInterface.TeamGetter();
 		Invoke("DestroyGameObject", healEndTimeCounter);
 	}

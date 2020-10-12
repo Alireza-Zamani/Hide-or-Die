@@ -16,35 +16,53 @@ public class UIBtns : MonoBehaviour
 
 	public void OnActionBtn()
 	{
-		onActionBtnDelegate.Invoke();
+		if(onActionBtnDelegate != null)
+		{
+			onActionBtnDelegate.Invoke();
+		}
 	}
 
 
 	public void OmAimingSelect()
 	{
-		onAimingSelectDelegate.Invoke();
+		if (onAimingSelectDelegate != null)
+		{
+			onAimingSelectDelegate.Invoke();
+		}
 	}
 
 	public void OmAimingDeSelect()
 	{
-		onAimingDeSelectDelegate.Invoke();
+		if (onAimingDeSelectDelegate != null)
+		{
+			onAimingDeSelectDelegate.Invoke();
+		}
 	}
 
 
 	public void OnShopBtn()
 	{
-		onShopBtnDelegate.Invoke();
+		if (onShopBtnDelegate != null)
+		{
+			onShopBtnDelegate.Invoke();
+		}
 	}
 
 	public void OnLockBtn()
 	{
-		onLockBtnDelegate.Invoke();
+		if (onLockBtnDelegate != null)
+		{
+			onLockBtnDelegate.Invoke();
+		}
 	}
 
 
 	public void OnMineBtn()
 	{
-		onMineBtnDelegate.Invoke();
+		if (onMineBtnDelegate != null)
+		{
+			onMineBtnDelegate.Invoke();
+		}
 	}
 
 }

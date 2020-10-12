@@ -74,7 +74,7 @@ public class Grenade : MonoBehaviour
 	private void DestroyGameObject(GameObject go)
 	{
 		PhotonNetwork.Instantiate(explosionEffectPrefab.name, transform.position, Quaternion.identity);
-		audioSource.PlayOneShot(explosionSoundEffect);
+		//audioSource.PlayOneShot(explosionSoundEffect);
 		PhotonNetwork.Destroy(go.gameObject);
 	}
 

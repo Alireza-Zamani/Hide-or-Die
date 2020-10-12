@@ -34,22 +34,6 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 	}
 
 
-	[PunRPC]
-	private void SetLAyerAndTag(int team)
-	{
-		string tagName = null;
-		if (team == 1)
-		{
-			tagName = "BlueTeam";
-		}
-		else if (team == 2)
-		{
-			tagName = "RedTeam";
-		}
-		gameObject.tag = tagName;
-	}
-
-
 	private void RedTeamFirstCondition()
 	{
 		SetShootBtnActivity(false);
@@ -104,5 +88,21 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 	private void SetMineBtnActivity(bool activity)
 	{
 		GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>().transform.GetChild(6).gameObject.SetActive(activity);
+	}
+
+
+	[PunRPC]
+	private void SetLAyerAndTag(int team)
+	{
+		string tagName = null;
+		if (team == 1)
+		{
+			tagName = "BlueTeam";
+		}
+		else if (team == 2)
+		{
+			tagName = "RedTeam";
+		}
+		gameObject.tag = tagName;
 	}
 }
