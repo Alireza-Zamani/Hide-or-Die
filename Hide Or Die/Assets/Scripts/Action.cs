@@ -30,7 +30,15 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private UIBtns uiBtns = null;
 
+	private WeaponManager weaponManager;
 
+	[SerializeField] private GameObject shopCanvas;
+
+	[SerializeField] private GameObject saberPrefab;
+	[SerializeField] private GameObject macePrefab;
+	[SerializeField] private GameObject clubPrefab;
+	[SerializeField] private GameObject knifePrefab;
+	[SerializeField] private GameObject pistolPrefab;
 
 	private void OnDrawGizmos()
 	{
@@ -52,6 +60,16 @@ public class Action : MonoBehaviourPunCallbacks
 		movementClass = GetComponent<MovementAbstract>();
 		ability = GetComponent<AbilityAbstract>();
 		minerClass = GetComponent<Miner>();
+		weaponManager = GetComponent<WeaponManager>();
+
+		shopCanvas = GameObject.Find("Shop Canvas");
+		shopCanvas = shopCanvas.transform.GetChild(0).gameObject;
+
+		saberPrefab = Resources.Load<GameObject>("Melee Weapon Saber");
+		macePrefab = Resources.Load<GameObject>("Melee Weapon Mace");
+		knifePrefab = Resources.Load<GameObject>("Melee Weapon Knife");
+		clubPrefab = Resources.Load<GameObject>("Melee Weapon Club");
+		pistolPrefab = Resources.Load<GameObject>("Gun Vintage Pistol");
 
 		//Set the action button listener
 		uiBtns = GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>();
@@ -67,6 +85,18 @@ public class Action : MonoBehaviourPunCallbacks
 		uiBtns.onShopBtnDelegate += OnShopBtn;
 		uiBtns.onLockBtnDelegate += OnLockBtn;
 		uiBtns.onMineBtnDelegate += OnMineBtn;
+		uiBtns.onWeaponBtnSelectDelegate += OnWeaponSelect;
+		uiBtns.onWeaponBtnDeSelectDelegate += OnWeaponDeSelect;
+
+		uiBtns.onWeaponSaberBuyBtnSelectDelegate += OnSaberBuyBtn;
+		uiBtns.onWeaponMaceBuyBtnSelectDelegate += OnMaceBuyBtn;
+		uiBtns.onWeaponClubBtnSelectDelegate += OnClubBuyBtn;
+		uiBtns.onWeaponKnifeBuyBtnSelectDelegate += OnKnifeBuyBtn;
+		uiBtns.onWeaponPistolBtnSelectDelegate += OnPistolBuyBtn;
+		
+
+		uiBtns.onWeaponMenuCloseBtnSelectDelegate += OnCloseShopBtn;
+
 	}
 
 	public void RemoveDelegates()
@@ -77,8 +107,86 @@ public class Action : MonoBehaviourPunCallbacks
 		uiBtns.onShopBtnDelegate -= OnShopBtn;
 		uiBtns.onLockBtnDelegate -= OnLockBtn;
 		uiBtns.onMineBtnDelegate -= OnMineBtn;
+		uiBtns.onWeaponBtnSelectDelegate -= OnWeaponSelect;
+		uiBtns.onWeaponBtnDeSelectDelegate -= OnWeaponDeSelect;
+		
+		uiBtns.onWeaponSaberBuyBtnSelectDelegate -= OnSaberBuyBtn;
+		uiBtns.onWeaponMaceBuyBtnSelectDelegate -= OnMaceBuyBtn;
+		uiBtns.onWeaponClubBtnSelectDelegate -= OnClubBuyBtn;
+		uiBtns.onWeaponKnifeBuyBtnSelectDelegate -= OnKnifeBuyBtn;
+		uiBtns.onWeaponPistolBtnSelectDelegate -= OnPistolBuyBtn;
+		
+		
+		uiBtns.onWeaponMenuCloseBtnSelectDelegate -= OnCloseShopBtn;
 	}
 
+	private void OnSaberBuyBtn()
+	{
+		weaponManager.AddNewWeapon(saberPrefab);
+		shopCanvas.SetActive(false);
+	}
+	
+	private void OnMaceBuyBtn()
+	{
+		weaponManager.AddNewWeapon(macePrefab);
+		shopCanvas.SetActive(false);
+	}
+	
+	private void OnClubBuyBtn()
+	{
+		weaponManager.AddNewWeapon(clubPrefab);
+		shopCanvas.SetActive(false);
+	}
+	
+	private void OnKnifeBuyBtn()
+	{
+		weaponManager.AddNewWeapon(knifePrefab);
+		shopCanvas.SetActive(false);
+	}
+	
+	private void OnPistolBuyBtn()
+	{
+		weaponManager.AddNewWeapon(pistolPrefab);
+		shopCanvas.SetActive(false);
+	}
+	
+	
+	
+	private void OnWeaponSelect()
+	{
+		if (!weaponManager.currentWeapon)
+		{
+			weaponManager.GetChildedWeapon(this.gameObject);
+
+			if (!weaponManager.currentWeapon)
+				return;
+		}
+
+		if (weaponManager.currentWeaponType == WeaponAbstract.WeaponTypes.Gun)
+		{
+			print("Inside Gun if");
+			movementClass.enabled = false;
+			weaponManager.currentWeapon.Aim();
+		}
+		else
+		{
+			weaponManager.currentWeapon.Attack();
+		}
+		
+		
+	}
+	
+	private void OnWeaponDeSelect()
+	{
+		
+		print("Inside Gun Deselect");
+		if (weaponManager.currentWeaponType == WeaponAbstract.WeaponTypes.Gun)
+		{
+			weaponManager.currentWeapon.Attack();
+			movementClass.enabled = true;
+		}
+	}
+	
 	private void OnActionBtn()
 	{
 		photonView.RPC("Interact", RpcTarget.AllBuffered);
@@ -99,8 +207,12 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private void OnShopBtn()
 	{
-		// Open the shop menue
-		print("Shop Menue Opened");
+		shopCanvas.SetActive(true);
+	}
+
+	private void OnCloseShopBtn()
+	{
+		shopCanvas.SetActive(false);
 	}
 
 

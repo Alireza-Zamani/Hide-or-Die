@@ -18,7 +18,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: 
+    FixedRegion: eu
     Server: 
     Port: 0
     ProxyServer: 
@@ -33,33 +33,21 @@ MonoBehaviour:
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - ChangeCharacter
   - ClickRpc
   - DestroyRpc
   - DestroySpaceship
   - Fire
-  - RespawnSpaceship
-  - UpdateTeams
-  - UpdateStats
-  - GrabbingAvailibility
-  - Hello
-  - hi
   - Interact
-  - SetActivity
-  - ChangeCharacter
-  - SetThePlayerGameObject
-  - SendInteractableRPC
-  - ChangeLocation
-  - DOO
-  - RPCTakeDamage
-  - ChangeTagToTeamName
-  - SetLayerAndTag
-  - RPCHeal
   - Lock
-  - SetLAyerAndTag
-  - RPCResetPlayer
+  - RespawnSpaceship
+  - RPCHeal
   - RPCReviving
-  - SetMineTag
   - RPCSetTheTag
+  - RPCTakeDamage
+  - SetLAyerAndTag
+  - UpdateStats
+  - UpdateTeams
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

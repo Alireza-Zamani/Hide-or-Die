@@ -24,6 +24,7 @@ GameObject:
   - component: {fileID: 2297618804712147387}
   - component: {fileID: 1384773920960641485}
   - component: {fileID: 6193067206073869626}
+  - component: {fileID: 7578806004043672660}
   m_Layer: 10
   m_Name: Red Player
   m_TagString: Player
@@ -173,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f833c595beba79c459a32c99bc6eb854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1000
+  moveSpeed: 1500
   viewDistance: 30
   dronePrefab: {fileID: 7689045709740466333, guid: 31f979f34d4b81a4a9922eec26215efb,
     type: 3}
@@ -280,6 +281,12 @@ MonoBehaviour:
     m_Bits: 8192
   aimingPrefab: {fileID: 2704668702571661127, guid: db43570fdf9149e43aadf72e398aca41,
     type: 3}
+  shopCanvas: {fileID: 0}
+  saberPrefab: {fileID: 0}
+  macePrefab: {fileID: 0}
+  clubPrefab: {fileID: 0}
+  knifePrefab: {fileID: 0}
+  pistolPrefab: {fileID: 0}
 --- !u!114 &-3910472098843200532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,3 +340,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minePrefab: {fileID: 6465058119212906967, guid: 8fd4c264e0c2f2344b2a3498ac1201f6,
     type: 3}
+--- !u!114 &7578806004043672660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905920172784027646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd9faa0ee6a6dbd41971f5a84e7f2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeapon: {fileID: 0}
+  currentWeaponType: 0

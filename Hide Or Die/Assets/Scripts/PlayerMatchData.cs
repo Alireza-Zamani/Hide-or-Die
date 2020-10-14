@@ -5,8 +5,6 @@ using Photon.Pun;
 
 public class PlayerMatchData : MonoBehaviour , IPlayer
 {
-
-
 	private GameObject canvas = null;
 
 	[SerializeField] private GameObject bodyHandler = null;
@@ -60,10 +58,10 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 				gameObject.AddComponent<AbilityRevive>();
 				break;
 			case "Thief":
-				gameObject.AddComponent<AbilityHealer>();
+				gameObject.AddComponent<AbilityThief>();
 				break;
 			case "Guard":
-				gameObject.AddComponent<AbilityHealer>();
+				gameObject.AddComponent<AbilityDoubleDamage>();
 				break;
 
 			// If no ability was choosed we will give the player grenade ability automaticlly
@@ -85,6 +83,7 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	public void TakeDamage(float damageAmount)
 	{
+		print(damageAmount + " ::: Damage Registered");
 		photonView.RPC("RPCTakeDamage", RpcTarget.AllBuffered, damageAmount);
 	}
 

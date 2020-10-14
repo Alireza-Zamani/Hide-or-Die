@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 4221923599434245012}
   - component: {fileID: -2759091570996169426}
   - component: {fileID: 4453416223328008499}
+  - component: {fileID: 6700502965268922146}
   m_Layer: 10
   m_Name: Blue Player
   m_TagString: Player
@@ -172,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f833c595beba79c459a32c99bc6eb854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1000
+  moveSpeed: 1500
   viewDistance: 30
   dronePrefab: {fileID: 7689045709740466333, guid: 31f979f34d4b81a4a9922eec26215efb,
     type: 3}
@@ -279,6 +280,12 @@ MonoBehaviour:
     m_Bits: 8192
   aimingPrefab: {fileID: 2704668702571661127, guid: db43570fdf9149e43aadf72e398aca41,
     type: 3}
+  shopCanvas: {fileID: 0}
+  saberPrefab: {fileID: 0}
+  macePrefab: {fileID: 0}
+  clubPrefab: {fileID: 0}
+  knifePrefab: {fileID: 0}
+  pistolPrefab: {fileID: 0}
 --- !u!114 &4221923599434245012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,3 +325,17 @@ MonoBehaviour:
   bodyHandler: {fileID: 5723160479327719296, guid: 2fd18c106785dbc4ebdb33c92f1640ae,
     type: 3}
   health: 100
+--- !u!114 &6700502965268922146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8905920172784027646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd9faa0ee6a6dbd41971f5a84e7f2f00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWeapon: {fileID: 0}
+  currentWeaponType: 0

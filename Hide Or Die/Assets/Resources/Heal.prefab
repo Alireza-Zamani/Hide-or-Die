@@ -73,7 +73,6 @@ MonoBehaviour:
   radiousOfAction: 15
   healEffectPrefab: {fileID: 4158095470322823013, guid: 81b4458c54a128445bd8e9877803bdbc,
     type: 3}
-  healSoundEffect: {fileID: 8300000, guid: 2b6c6ed1063ae724facce2413b6a8281, type: 3}
   raycastableForInSightLayerMask:
     serializedVersion: 2
     m_Bits: 1

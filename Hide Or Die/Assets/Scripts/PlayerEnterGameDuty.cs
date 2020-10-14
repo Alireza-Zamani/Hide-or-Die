@@ -45,6 +45,7 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 		SetShootBtnActivity(false);
 		SetShopBtnActivity(false);
 		SetMineBtnActivity(false);
+		SetWeaponBtnActivity(false);
 	}
 
 	public void PlayerEnteredFinished()
@@ -71,6 +72,7 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 		droneMovement.SetToCharacter();
 		SetShootBtnActivity(true);
 		SetShopBtnActivity(true);
+		SetWeaponBtnActivity(true);
 	}
 
 
@@ -82,6 +84,11 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 	private void SetShopBtnActivity(bool activity)
 	{
 		GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>().transform.GetChild(3).gameObject.SetActive(activity);
+	}
+	
+	private void SetWeaponBtnActivity(bool activity)
+	{
+		GameObject.FindGameObjectWithTag("UI").GetComponent<UIBtns>().transform.GetChild(7).gameObject.SetActive(activity);
 	}
 
 
