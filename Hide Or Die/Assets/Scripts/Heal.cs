@@ -49,7 +49,7 @@ public class Heal : MonoBehaviour
 
 	private void Healing()
 	{
-		PhotonNetwork.Instantiate(healEffectPrefab.name, transform.position, Quaternion.identity);
+		PhotonNetwork.Instantiate(healEffectPrefab.name, new Vector3(transform.position.x, transform.position.y, healEffectPrefab.transform.position.z), Quaternion.identity);
 		//audioSource.PlayOneShot(healSoundEffect);
 		// Finds all players in the radious
 		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, healableLayerMask);

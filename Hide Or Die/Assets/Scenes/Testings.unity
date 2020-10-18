@@ -1749,6 +1749,12 @@ MonoBehaviour:
     m_Bits: 8192
   aimingPrefab: {fileID: 2704668702571661127, guid: db43570fdf9149e43aadf72e398aca41,
     type: 3}
+  shopCanvas: {fileID: 0}
+  saberPrefab: {fileID: 0}
+  macePrefab: {fileID: 0}
+  clubPrefab: {fileID: 0}
+  knifePrefab: {fileID: 0}
+  pistolPrefab: {fileID: 0}
 --- !u!4 &1604729122
 Transform:
   m_ObjectHideFlags: 0

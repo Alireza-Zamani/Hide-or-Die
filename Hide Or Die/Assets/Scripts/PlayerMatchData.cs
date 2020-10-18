@@ -19,6 +19,10 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	private PhotonView photonView;
 
+	private GameManager gameManager = null;
+
+	private int playerGroup = 0;
+
 	private void Awake()
 	{
 		AddAbility();
@@ -29,14 +33,45 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	{
 		photonView = PhotonView.Get(this);
 		canvas = GameObject.FindGameObjectWithTag("UI").gameObject;
+		gameManager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<GameManager>();
+		if (photonView.IsMine)
+		{
+			SetThePlayersGroup();
+		}
+	}
+
+	private void SetThePlayersGroup()
+	{
+		if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group"))
+		{
+			Debug.LogError("No group setted for teh player");
+		}
+		else
+		{
+			playerGroup = (int)PhotonNetwork.LocalPlayer.CustomProperties["Group"];
+			photonView.RPC("RPCSetThePlayerGroup", RpcTarget.OthersBuffered, playerGroup);
+		}
+
+	}
+
+	[PunRPC]
+	private void RPCSetThePlayerGroup(int playerGroup)
+	{
+		this.playerGroup = playerGroup;
 	}
 
 	public void AddAbility()
 	{
 		if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Class"))
 		{
-			Debug.LogError("No hashTable exists for class");
+			ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+			{
+				{"Class" , "Grenader" }
+			};
+
+			PhotonNetwork.SetPlayerCustomProperties(playerProps);
 		}
+
 
 		className = (string)PhotonNetwork.LocalPlayer.CustomProperties["Class"];
 
@@ -83,7 +118,6 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	public void TakeDamage(float damageAmount)
 	{
-		print(damageAmount + " ::: Damage Registered");
 		photonView.RPC("RPCTakeDamage", RpcTarget.AllBuffered, damageAmount);
 	}
 
@@ -100,13 +134,51 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 			}
 		}
 		transform.parent = newBodyHandler.transform;
+
+
+		// Update the all players of teams in the game manager
+		if(playerGroup == 1)
+		{
+			gameManager.TeamGroup1RemainedPlayers--;
+		}
+		else if(playerGroup == 2)
+		{
+			gameManager.TeamGroup2RemainedPlayers--;
+		}
+
 		gameObject.SetActive(false);
 	}
+
+	public void ObjectiveReached()
+	{
+		photonView.RPC("RPCObjectiveReached", RpcTarget.AllBuffered);
+	}
+
+
 
 	public void Heal(float healAmount)
 	{
 		photonView.RPC("RPCHeal", RpcTarget.AllBuffered, healAmount);
 	}
+
+
+	[PunRPC]
+	private void RPCObjectiveReached()
+	{
+		// Update the all players of teams in the game manager
+		// Update the all players of teams in the game manager
+		if (playerGroup == 1)
+		{
+			gameManager.TeamGroup2RemainedPlayers = 0;
+		}
+		else if (playerGroup == 2)
+		{
+			gameManager.TeamGroup1RemainedPlayers = 0;
+		}
+
+		gameObject.SetActive(false);
+	}
+
 
 	[PunRPC]
 	public void RPCTakeDamage(float damageAmount)

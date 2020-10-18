@@ -119,12 +119,13 @@ public class PunManager : MonoBehaviourPunCallbacks
 
 		// Set the local players stats and then connect to photon
 		PhotonNetwork.LocalPlayer.NickName = nickName.text;
-		if (!PhotonNetwork.IsConnected)
+		if (PhotonNetwork.IsConnected)
 		{
-			PhotonNetwork.ConnectUsingSettings();
-			connectPanel.SetActive(false);
-			waitingPanel.SetActive(true);
+			PhotonNetwork.Disconnect();
 		}
+		PhotonNetwork.ConnectUsingSettings();
+		connectPanel.SetActive(false);
+		waitingPanel.SetActive(true);
 	}
 
 	private void CreateRoom()

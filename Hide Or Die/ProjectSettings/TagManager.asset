@@ -13,6 +13,7 @@ TagManager:
   - RedTeam
   - Environment
   - DeadBody
+  - ObjectiveReachPoint
   layers:
   - Default
   - TransparentFX

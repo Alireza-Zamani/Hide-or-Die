@@ -29,8 +29,15 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 
 	private void OnTriggerEnter2D(Collider2D other)
 	{
+		// Check if we have triggered the objective reachpoint and we have objective with ourself
+		if(other.tag == "ObjectiveReachPoint" && gameObject.tag == "BlueTeam" && transform.childCount != 0 && transform.GetChild(0).gameObject.tag == "Interactable")
+		{
+			PlayerMatchData playerInterface = GetComponent<PlayerMatchData>();
+			playerInterface.ObjectiveReached();
+		}
+
 		// If entered an interactable one then update action btn
-		if(other.tag == "Interactable")
+		if (other.tag == "Interactable")
 		{
 			UpdateActionBtn(true);
 
@@ -61,7 +68,14 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 		if(other.tag == "BuyZone")
 		{
 			buyAvailibility.CanBuy = false;
-			Destroy(other.gameObject);
+			if(gameObject.tag == "BlueTeam")
+			{
+				other.gameObject.tag = "ObjectiveReachPoint";
+			}
+			else
+			{
+				Destroy(other.gameObject);
+			}
 		}
 	}
 

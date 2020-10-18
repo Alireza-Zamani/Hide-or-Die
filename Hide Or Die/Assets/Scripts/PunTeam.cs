@@ -36,6 +36,7 @@ public class PunTeam : MonoBehaviourPunCallbacks
 
 
 	[Range(0, 10)] [SerializeField] private float startMatchWaitTimeCountDown = 5f;
+	private float startMatchWaitTimeCountDownTemp = 0;
 	private bool matchIsStarting = false;
 	private float timeCounter = 0f;
 
@@ -43,6 +44,7 @@ public class PunTeam : MonoBehaviourPunCallbacks
 	private void Start()
 	{
 		maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers / 2;
+		startMatchWaitTimeCountDownTemp = startMatchWaitTimeCountDown;
 		CheckTeamCapacity();
 	}
 
@@ -55,10 +57,10 @@ public class PunTeam : MonoBehaviourPunCallbacks
 			if (timeCounter >= 1)
 			{
 				timeCounter = 0f;
-				startMatchWaitTimeCountDown--;
-				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
-				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
-				if (startMatchWaitTimeCountDown == 0)
+				startMatchWaitTimeCountDownTemp--;
+				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
+				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
+				if (startMatchWaitTimeCountDownTemp == 0)
 				{
 					EnterTheGame();
 					matchIsStarting = false;
@@ -102,6 +104,43 @@ public class PunTeam : MonoBehaviourPunCallbacks
 		}
 	}
 
+	private void ScoresHashtableSetter(int teamNumber)
+	{
+		if(teamNumber == 1)
+		{
+			if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group1"))
+			{
+				PhotonNetwork.LocalPlayer.CustomProperties["Group1"] = 0;
+			}
+			else
+			{
+				ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+			{
+				{"Group1" , 0 }
+			};
+
+				PhotonNetwork.SetPlayerCustomProperties(playerProps);
+			}
+		}
+		else if(teamNumber == 2)
+		{
+			if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group2"))
+			{
+				PhotonNetwork.LocalPlayer.CustomProperties["Group2"] = 0;
+			}
+			else
+			{
+				ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+			{
+				{"Group2" , 0 }
+			};
+
+				PhotonNetwork.SetPlayerCustomProperties(playerProps);
+			}
+		}
+		
+	}
+
 	public void ChooseTeam(int teamNumber)
 	{
 		// Set the Hashtable for team
@@ -110,25 +149,40 @@ public class PunTeam : MonoBehaviourPunCallbacks
 		// Set the Hashtable for group
 		GroupsHashtableSetter(teamNumber);
 
+		// Set the Hashtable for group score
+		ScoresHashtableSetter(teamNumber);
+
 		// Call RPC functions to call in all players because we want all players to know how many players are in the game ready to go
 		TeamNum = teamNumber;
-		photonView.RPC("UpdateTeams", RpcTarget.AllBuffered, teamNumber);
+		photonView.RPC("UpdateTeams", RpcTarget.AllBuffered, teamNumber , +1);
 		photonView.RPC("UpdateStats", RpcTarget.AllBuffered, teamNumber);
 
 		// Change the remained players number
+		ChangeTeamRemainer(teamNumber , true);
+	}
+
+	private void ChangeTeamRemainer(int teamNumber , bool changePanel)
+	{
 		if (teamNumber == 1)
 		{
-			SetGameObjectActivity(blueTeamPanel, true);
+			if (!blueTeamPanel.gameObject.activeInHierarchy && changePanel)
+			{
+				SetGameObjectActivity(blueTeamPanel, true);
+			}
 			int remainedPlayers = maxPlayerCount - BlueTeamPlayerCount;
 			blueTeamReaminer.text = remainedPlayers.ToString();
 		}
 		else
 		{
-			SetGameObjectActivity(redTeamPanel, true);
+			if (!redTeamPanel.gameObject.activeInHierarchy && changePanel)
+			{
+				SetGameObjectActivity(redTeamPanel, true);
+			}
 			int remainedPlayers = maxPlayerCount - RedTeamPlayerCount;
 			redTeamReaminer.text = remainedPlayers.ToString();
 		}
 	}
+
 
 	private void SetGameObjectActivity(GameObject panelName , bool activity)
 	{
@@ -138,13 +192,34 @@ public class PunTeam : MonoBehaviourPunCallbacks
 	private void CheckTeamCapacity()
 	{
 		// See if the team is full set its buttons interactibility to false
+		if(BlueTeamPlayerCount != maxPlayerCount)
+		{
+			if (!blueTeamButton.GetComponent<Button>().interactable)
+			{
+				blueTeamButton.GetComponent<Button>().interactable = true;
+			}
+		}
 		if (BlueTeamPlayerCount == maxPlayerCount)
 		{
-			blueTeamButton.GetComponent<Button>().interactable = false;
+			if (blueTeamButton.GetComponent<Button>().interactable)
+			{
+				blueTeamButton.GetComponent<Button>().interactable = false;
+			}
+		}
+
+		if (RedTeamPlayerCount != maxPlayerCount)
+		{
+			if (!blueTeamButton.GetComponent<Button>().interactable)
+			{
+				redTeamButton.GetComponent<Button>().interactable = true;
+			}
 		}
 		if (RedTeamPlayerCount == maxPlayerCount)
 		{
-			redTeamButton.GetComponent<Button>().interactable = false;
+			if (blueTeamButton.GetComponent<Button>().interactable)
+			{
+				redTeamButton.GetComponent<Button>().interactable = false;
+			}
 		}
 	}
 
@@ -158,22 +233,19 @@ public class PunTeam : MonoBehaviourPunCallbacks
 	}
 
 
-	public override void OnPlayerEnteredRoom(Player player)
-	{
-		print(player.NickName + "  Entered in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And rooms player count is : " + PhotonNetwork.CurrentRoom.PlayerCount);
-	}
-
 	[PunRPC]
-	public void UpdateTeams(int teamNumber)
+	public void UpdateTeams(int teamNumber , int changer)
 	{
 		if(teamNumber == 1)
 		{
-			BlueTeamPlayerCount++;
+			BlueTeamPlayerCount += changer;
+			BlueTeamPlayerCount = Mathf.Clamp(BlueTeamPlayerCount, 0, maxPlayerCount);
 			CheckTeamCapacity();
 		}
 		else
 		{
-			RedTeamPlayerCount++;
+			RedTeamPlayerCount += changer;
+			RedTeamPlayerCount = Mathf.Clamp(RedTeamPlayerCount, 0, maxPlayerCount);
 			CheckTeamCapacity();
 		}
 	}
@@ -181,24 +253,65 @@ public class PunTeam : MonoBehaviourPunCallbacks
 	[PunRPC]
 	public void UpdateStats(int teamNumber)
 	{
-		if(TeamNum != 0)
+		if (TeamNum != 0)
 		{
+			// Change the remained players
+			ChangeTeamRemainer(teamNumber, false);
+
 			if (BlueTeamPlayerCount == maxPlayerCount && RedTeamPlayerCount == maxPlayerCount)
 			{
-				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
-				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
+				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
+				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
 				matchIsStarting = true;
+				timeCounter = 0f;
 			}
-			else if(BlueTeamPlayerCount == maxPlayerCount)
+			else
 			{
-				blueTeamStats.text = "We are Full Waiting For Epponents Players...";
-			}
-			else if (RedTeamPlayerCount == maxPlayerCount)
-			{
-				redTeamStats.text = "We are Full Waiting For Epponents Players...";
+				if (matchIsStarting == true)
+				{
+					matchIsStarting = false;
+					startMatchWaitTimeCountDownTemp = startMatchWaitTimeCountDown;
+				}
+				if (BlueTeamPlayerCount != maxPlayerCount)
+				{
+					blueTeamStats.text = "Waiting For Players...";
+				}
+				else if (BlueTeamPlayerCount == maxPlayerCount)
+				{
+					blueTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
+				}
+				if (RedTeamPlayerCount != maxPlayerCount)
+				{
+					redTeamStats.text = "Waiting For Players...";
+				}
+				else if (RedTeamPlayerCount == maxPlayerCount)
+				{
+					redTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
+				}
 			}
 		}
 	}
 
+
+	#region Call Backs
+
+	public override void OnPlayerEnteredRoom(Player player)
+	{
+		print(player.NickName + "  Entered in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And rooms player count is : " + PhotonNetwork.CurrentRoom.PlayerCount);
+	}
+
+	public override void OnPlayerLeftRoom(Player player)
+	{
+		// If a player leaves the game we have to change all players stats
+		// If the leftef player had choosed its team this is neccesery to be done if not there is no need and we have to wait for a new player
+		if (player.CustomProperties.ContainsKey("Team"))
+		{
+			int leftedPlayerTeam = (int)player.CustomProperties["Team"];
+			UpdateTeams(leftedPlayerTeam, -1);
+			UpdateStats(leftedPlayerTeam);
+		}
+	}
+
+	#endregion
 
 }

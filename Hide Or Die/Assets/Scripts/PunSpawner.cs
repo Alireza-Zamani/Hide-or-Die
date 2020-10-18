@@ -86,7 +86,6 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 				// Set Player Statues
 				playerInterface = player.GetComponent<IPlayer>();
-				//playerInterface.AddAbility();
 				playerInterface.TeamSetter("BlueTeam");
 			}
 			// Team Red
@@ -96,7 +95,6 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 				// Set Player Statues
 				playerInterface = player.GetComponent<IPlayer>();
-				//playerInterface.AddAbility();
 				playerInterface.TeamSetter("RedTeam");
 			}
 

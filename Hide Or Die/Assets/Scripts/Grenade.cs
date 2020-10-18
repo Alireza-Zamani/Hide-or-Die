@@ -63,7 +63,6 @@ public class Grenade : MonoBehaviour
 				{
 					playerInterface = coll.collider.gameObject.GetComponent<IPlayer>();
 					playerInterface.TakeDamage(explosionDamage);
-					print("Is Damaging the " + coll.collider.gameObject.name);
 				}
 			}
 		}
@@ -73,8 +72,7 @@ public class Grenade : MonoBehaviour
 
 	private void DestroyGameObject(GameObject go)
 	{
-		PhotonNetwork.Instantiate(explosionEffectPrefab.name, transform.position, Quaternion.identity);
-		//audioSource.PlayOneShot(explosionSoundEffect);
+		PhotonNetwork.Instantiate(explosionEffectPrefab.name, new Vector3(transform.position.x , transform.position.y ,explosionEffectPrefab.transform.position.z), Quaternion.identity);
 		PhotonNetwork.Destroy(go.gameObject);
 	}
 

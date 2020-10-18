@@ -51,7 +51,7 @@ public class Mine : MonoBehaviourPunCallbacks
 			{
 				// If the other was in the other team and was a player (BlueTeam -- RedTeam) then explode the mine
 				other.gameObject.GetComponent<IPlayer>().TakeDamage(explosionDamage);
-				PhotonNetwork.Instantiate(explosionEffectPrefab.name, transform.position, Quaternion.identity);
+				PhotonNetwork.Instantiate(explosionEffectPrefab.name, new Vector3(transform.position.x, transform.position.y, explosionEffectPrefab.transform.position.z) , Quaternion.identity);
 				DestroyGameObject();
 			}
 		}

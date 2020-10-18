@@ -30,6 +30,7 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	[SerializeField] private Text redTeamStats = null;
 
 	[Range(0, 10)] [SerializeField] private float startMatchWaitTimeCountDown = 5f;
+	private float startMatchWaitTimeCountDownTemp = 0;
 	private bool matchIsStarting = false;
 	private float timeCounter = 0f;
 
@@ -37,6 +38,7 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	private void Start()
 	{
 		maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers / 2;
+		startMatchWaitTimeCountDownTemp = startMatchWaitTimeCountDown;
 		Invoke("Choose", 1f);
 	}
 
@@ -48,10 +50,10 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 			if(timeCounter >= 1)
 			{
 				timeCounter = 0f;
-				startMatchWaitTimeCountDown--;
-				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
-				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
-				if (startMatchWaitTimeCountDown == 0)
+				startMatchWaitTimeCountDownTemp--;
+				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
+				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
+				if (startMatchWaitTimeCountDownTemp == 0)
 				{
 					EnterTheGame();
 					matchIsStarting = false;
@@ -113,6 +115,43 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		}
 	}
 
+	private void ScoresHashtableSetter(int teamNumber)
+	{
+		if (teamNumber == 1)
+		{
+			if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group1"))
+			{
+				PhotonNetwork.LocalPlayer.CustomProperties["Group1"] = 0;
+			}
+			else
+			{
+				ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+			{
+				{"Group1" , 0 }
+			};
+
+				PhotonNetwork.SetPlayerCustomProperties(playerProps);
+			}
+		}
+		else if (teamNumber == 2)
+		{
+			if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group2"))
+			{
+				PhotonNetwork.LocalPlayer.CustomProperties["Group2"] = 0;
+			}
+			else
+			{
+				ExitGames.Client.Photon.Hashtable playerProps = new ExitGames.Client.Photon.Hashtable
+			{
+				{"Group2" , 0 }
+			};
+
+				PhotonNetwork.SetPlayerCustomProperties(playerProps);
+			}
+		}
+
+	}
+
 	public void ChooseTeam(int teamNumber)
 	{
 		// Set the Hashtable for team
@@ -122,21 +161,34 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		GroupsHashtableSetter(teamNumber);
 
 
+		// Set the Hashtable for group score
+		ScoresHashtableSetter(teamNumber);
+
 		// Call RPC functions to call in all players
 		TeamNum = teamNumber;
 
-		photonView.RPC("UpdateTeams", RpcTarget.AllBuffered, teamNumber);
+		photonView.RPC("UpdateTeams", RpcTarget.AllBuffered, teamNumber , 1);
 		photonView.RPC("UpdateStats", RpcTarget.AllBuffered, teamNumber);
+		ChangeTeamRemainer(teamNumber , true);
+	}
 
+	private void ChangeTeamRemainer(int teamNumber, bool changePanel)
+	{
 		if (teamNumber == 1)
 		{
-			SetGameObjectActivity(blueTeamPanel, true);
+			if (!blueTeamPanel.gameObject.activeInHierarchy && changePanel)
+			{
+				SetGameObjectActivity(blueTeamPanel, true);
+			}
 			int remainedPlayers = maxPlayerCount - BlueTeamPlayerCount;
 			blueTeamReaminer.text = remainedPlayers.ToString();
 		}
 		else
 		{
-			SetGameObjectActivity(redTeamPanel, true);
+			if (!redTeamPanel.gameObject.activeInHierarchy && changePanel)
+			{
+				SetGameObjectActivity(redTeamPanel, true);
+			}
 			int remainedPlayers = maxPlayerCount - RedTeamPlayerCount;
 			redTeamReaminer.text = remainedPlayers.ToString();
 		}
@@ -156,15 +208,17 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	}
 
 	[PunRPC]
-	public void UpdateTeams(int teamNumber)
+	public void UpdateTeams(int teamNumber , int changer)
 	{
 		if (teamNumber == 1)
 		{
-			BlueTeamPlayerCount++;
+			BlueTeamPlayerCount += changer;
+			BlueTeamPlayerCount = Mathf.Clamp(BlueTeamPlayerCount, 0, maxPlayerCount);
 		}
 		else
 		{
-			RedTeamPlayerCount++;
+			RedTeamPlayerCount += changer;
+			RedTeamPlayerCount = Mathf.Clamp(RedTeamPlayerCount, 0, maxPlayerCount);
 		}
 	}
 
@@ -173,20 +227,41 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	{
 		if (TeamNum != 0)
 		{
+			// Change the remained players
+			ChangeTeamRemainer(teamNumber , false);
+
 			if (BlueTeamPlayerCount == maxPlayerCount && RedTeamPlayerCount == maxPlayerCount)
 			{
-				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
-				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDown.ToString();
+				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
+				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
 				matchIsStarting = true;
+				timeCounter = 0f;
 			}
-			else if (BlueTeamPlayerCount == maxPlayerCount)
+			else
 			{
-				blueTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
+				if (matchIsStarting == true)
+				{
+					matchIsStarting = false;
+					startMatchWaitTimeCountDownTemp = startMatchWaitTimeCountDown;
+				}
+				if (BlueTeamPlayerCount != maxPlayerCount)
+				{
+					blueTeamStats.text = "Waiting For Players...";
+				}
+				else if (BlueTeamPlayerCount == maxPlayerCount)
+				{
+					blueTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
+				}
+				if (RedTeamPlayerCount != maxPlayerCount)
+				{
+					redTeamStats.text = "Waiting For Players...";
+				}
+				else if (RedTeamPlayerCount == maxPlayerCount)
+				{
+					redTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
+				}
 			}
-			else if (RedTeamPlayerCount == maxPlayerCount)
-			{
-				redTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
-			}
+			
 		}
 	}
 
@@ -196,6 +271,19 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	public override void OnPlayerEnteredRoom(Player player)
 	{
 		print(player.NickName + "  Entered in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And rooms player count is : " + PhotonNetwork.CurrentRoom.PlayerCount);
+	}
+
+	public override void OnPlayerLeftRoom(Player player)
+	{
+		// If a player leaves the game we have to change all players stats
+
+		// If the leftef player had choosed its team this is neccesery to be done if not there is no need and we have to wait for a new player
+		if (player.CustomProperties.ContainsKey("Team"))
+		{
+			int leftedPlayerTeam = (int)player.CustomProperties["Team"];
+			UpdateTeams(leftedPlayerTeam, -1);
+			UpdateStats(leftedPlayerTeam);
+		}
 	}
 
 

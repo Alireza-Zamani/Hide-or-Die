@@ -317,7 +317,6 @@ public class Action : MonoBehaviourPunCallbacks
 			if(newInteractable != null)
 			{
 				interactable = newInteractable.GetComponent<IInteractable>();
-				print(coll.collider.gameObject.name);
 			}
 		}
 

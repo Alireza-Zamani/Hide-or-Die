@@ -49,7 +49,7 @@ public class Revive : MonoBehaviour
 	[PunRPC]
 	private void RPCReviving()
 	{
-		PhotonNetwork.Instantiate(reviveEffectPrefab.name, transform.position, Quaternion.identity);
+		PhotonNetwork.Instantiate(reviveEffectPrefab.name, new Vector3(transform.position.x, transform.position.y, reviveEffectPrefab.transform.position.z), Quaternion.identity);
 
 		// Finds all players in the radious
 		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, revivableLayerMask);
