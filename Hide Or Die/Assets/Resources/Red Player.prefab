@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: -3910472098843200532}
   - component: {fileID: 2297618804712147387}
   - component: {fileID: 1384773920960641485}
-  - component: {fileID: 6193067206073869626}
   - component: {fileID: 7578806004043672660}
   m_Layer: 10
   m_Name: Red Player
@@ -323,23 +322,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b2287dbe5f17c9408a2c69f17dd7da8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  raycastableForInSightLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  detectableLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
   bodyHandler: {fileID: 5723160479327719296, guid: 2fd18c106785dbc4ebdb33c92f1640ae,
     type: 3}
   health: 100
---- !u!114 &6193067206073869626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8905920172784027646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0489f1e6ceccc54ca171cfe93ae98c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  minePrefab: {fileID: 6465058119212906967, guid: 8fd4c264e0c2f2344b2a3498ac1201f6,
-    type: 3}
 --- !u!114 &7578806004043672660
 MonoBehaviour:
   m_ObjectHideFlags: 0

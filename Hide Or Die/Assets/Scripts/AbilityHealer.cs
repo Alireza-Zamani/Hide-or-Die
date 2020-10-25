@@ -11,6 +11,8 @@ public class AbilityHealer : AbilityAbstract
 
 	private IPlayer playerInterface = null;
 
+	GameObject newAiming = null;
+
 	private void Awake()
 	{
 		healPrefab = Resources.Load("Heal", typeof(GameObject)) as GameObject;
@@ -21,8 +23,19 @@ public class AbilityHealer : AbilityAbstract
 		playerInterface = GetComponent<IPlayer>();
 	}
 
-	public override void ExecuteAbility(Vector2 aimingDirection)
+	public override void AbilityIsStarting(GameObject aimingPref)
 	{
+		//newAiming = Instantiate(aimingPref, transform.position, Quaternion.identity);
+	}
+
+
+	public override void ExecuteAbility()
+	{
+		if (newAiming != null)
+		{
+			Destroy(newAiming);
+		}
+		 
 		newHealer = PhotonNetwork.Instantiate(healPrefab.name, transform.position, Quaternion.identity);
 		newHealer.GetComponent<Heal>().PlayerInterface = playerInterface;
 	}

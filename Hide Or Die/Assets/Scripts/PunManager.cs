@@ -27,6 +27,10 @@ public class PunManager : MonoBehaviourPunCallbacks
 	private int teamsPlayerCount = 1;
 	private bool playersCounthasChoosed = false;
 
+	[Header("Join Randome Room Panel")]
+	[SerializeField] private Text joinRandomePlayersCount = null;
+
+
 	[Header("Join Private Room Panel")]
 	[SerializeField] private GameObject joinPrivateRoomPanel = null;
 	[SerializeField] private InputField joinRoomNameInputField = null;
@@ -141,6 +145,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 		roomOptions.IsOpen = true;
 		roomOptions.IsVisible = isVisible;
 		roomOptions.MaxPlayers = maxPlayersCount;
+		roomOptions.PublishUserId = true;
 
 		PhotonNetwork.CreateRoom(roomName, roomOptions);
 	}
@@ -170,6 +175,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 		roomOptions.IsOpen = isOpen;
 		roomOptions.IsVisible = isVisible;
 		roomOptions.MaxPlayers = maxPlayerCount;
+		roomOptions.PublishUserId = true;
 		roomOptions.CustomRoomProperties = new ExitGames.Client.Photon.Hashtable { { "Ranked" , rank } };
 
 		EnterRoomParams enterRoomParams = new EnterRoomParams();
@@ -179,6 +185,13 @@ public class PunManager : MonoBehaviourPunCallbacks
 		loadBalancingClient.OpCreateRoom(enterRoomParams);
 	}
 
+
+	public void RoomSizeChnager(int value)
+	{
+		teamsPlayerCount += value;
+		teamsPlayerCount = Mathf.Clamp(teamsPlayerCount, 1, 5);
+		joinRandomePlayersCount.text = teamsPlayerCount.ToString();
+	}
 
 	
 	#region CallBacks
@@ -195,7 +208,6 @@ public class PunManager : MonoBehaviourPunCallbacks
 		joinPanel.SetActive(true);
 	}
 
-
 	public override void OnJoinRandomFailed(short returnCode, string message)
 	{
 		//print("There was no room trying to create one");
@@ -209,10 +221,10 @@ public class PunManager : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedRoom()
 	{
-		foreach (Player player in PhotonNetwork.PlayerList)
-		{
-			print(player.NickName + "  Is in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And player count is" + PhotonNetwork.CurrentRoom.PlayerCount);
-		}
+		//foreach (Player player in PhotonNetwork.PlayerList)
+		//{
+		//	print(player.NickName + "  Is in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And player count is" + PhotonNetwork.CurrentRoom.PlayerCount);
+		//}
 		if (autoChooseTeamToggle.isOn)
 		{
 			PhotonNetwork.LoadLevel("ChooseTeamAuto");

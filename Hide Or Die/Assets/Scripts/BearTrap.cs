@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Mine : MonoBehaviourPunCallbacks , ITrap
+public class BearTrap : MonoBehaviourPunCallbacks , ITrap
 {
+	[Range(0, 100)] [SerializeField] private float bearTrapDamage = 30f;
+	[Range(0, 100)] [SerializeField] private float bearTrapLifeTimeRate = 5f;
+	[Range(0, 100)] [SerializeField] private float bearTrapStuckTimeRate = 5f;
 
-	[Range(0, 100)] [SerializeField] private float explosionDamage = 50f;
+	[SerializeField] private GameObject bearTrapEffectPrefab = null;
 
-	[SerializeField] private GameObject explosionEffectPrefab = null;
+	private bool isExecuted = false;
 
 
 
@@ -24,7 +27,7 @@ public class Mine : MonoBehaviourPunCallbacks , ITrap
 			}
 
 			int team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
-			if((gameObject.tag == "BlueTeam" && team == 2) || (gameObject.tag == "RedTeam" && team == 1))
+			if ((gameObject.tag == "BlueTeam" && team == 2) || (gameObject.tag == "RedTeam" && team == 1))
 			{
 				GetComponent<SpriteRenderer>().enabled = false;
 			}
@@ -33,26 +36,31 @@ public class Mine : MonoBehaviourPunCallbacks , ITrap
 		}
 	}
 
+
+
 	public void SetTheTag(string team)
 	{
 		photonView.RPC("RPCSetTheTag", RpcTarget.AllBuffered, team);
 	}
 
-	
+
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		if (!photonView.IsMine)
 		{
 			return;
 		}
+
 		if (other.tag != gameObject.tag)
 		{
-			if (other.tag == "BlueTeam" || other.tag == "RedTeam")
+			if (other.tag == "BlueTeam" || other.tag == "RedTeam" && !isExecuted)
 			{
 				// If the other was in the other team and was a player (BlueTeam -- RedTeam) then explode the mine
-				other.gameObject.GetComponent<IPlayer>().TakeDamage(explosionDamage);
-				PhotonNetwork.Instantiate(explosionEffectPrefab.name, new Vector3(transform.position.x, transform.position.y, explosionEffectPrefab.transform.position.z) , Quaternion.identity);
-				DestroyGameObject();
+				other.gameObject.GetComponent<IPlayer>().TakeDamage(bearTrapDamage);
+				other.gameObject.GetComponent<IPlayer>().StuckPlayer(bearTrapStuckTimeRate);
+				PhotonNetwork.Instantiate(bearTrapEffectPrefab.name, new Vector3(transform.position.x, transform.position.y, bearTrapEffectPrefab.transform.position.z), Quaternion.identity);
+				isExecuted = true;
+				Invoke("DestroyGameObject", bearTrapLifeTimeRate);
 			}
 		}
 	}

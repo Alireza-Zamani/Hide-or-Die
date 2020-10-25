@@ -26,7 +26,7 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private AbilityAbstract ability = null;
 
-	private Miner minerClass = null;
+	private TrapAbstract trapClass = null;
 
 	private UIBtns uiBtns = null;
 
@@ -59,7 +59,7 @@ public class Action : MonoBehaviourPunCallbacks
 
 		movementClass = GetComponent<MovementAbstract>();
 		ability = GetComponent<AbilityAbstract>();
-		minerClass = GetComponent<Miner>();
+		trapClass = GetComponent<TrapAbstract>();
 		weaponManager = GetComponent<WeaponManager>();
 
 		shopCanvas = GameObject.Find("Shop Canvas");
@@ -76,7 +76,6 @@ public class Action : MonoBehaviourPunCallbacks
 		AddDelegates();
 	}
 
-
 	public void AddDelegates()
 	{
 		uiBtns.onActionBtnDelegate += OnActionBtn;
@@ -84,7 +83,7 @@ public class Action : MonoBehaviourPunCallbacks
 		uiBtns.onAimingDeSelectDelegate += OnAimingDeSelect;
 		uiBtns.onShopBtnDelegate += OnShopBtn;
 		uiBtns.onLockBtnDelegate += OnLockBtn;
-		uiBtns.onMineBtnDelegate += OnMineBtn;
+		uiBtns.onSetTrapBtnDelegate += OnSetTrapBtn;
 		uiBtns.onWeaponBtnSelectDelegate += OnWeaponSelect;
 		uiBtns.onWeaponBtnDeSelectDelegate += OnWeaponDeSelect;
 
@@ -106,7 +105,7 @@ public class Action : MonoBehaviourPunCallbacks
 		uiBtns.onAimingDeSelectDelegate -= OnAimingDeSelect;
 		uiBtns.onShopBtnDelegate -= OnShopBtn;
 		uiBtns.onLockBtnDelegate -= OnLockBtn;
-		uiBtns.onMineBtnDelegate -= OnMineBtn;
+		uiBtns.onSetTrapBtnDelegate -= OnSetTrapBtn;
 		uiBtns.onWeaponBtnSelectDelegate -= OnWeaponSelect;
 		uiBtns.onWeaponBtnDeSelectDelegate -= OnWeaponDeSelect;
 		
@@ -149,9 +148,7 @@ public class Action : MonoBehaviourPunCallbacks
 		weaponManager.AddNewWeapon(pistolPrefab);
 		shopCanvas.SetActive(false);
 	}
-	
-	
-	
+		
 	private void OnWeaponSelect()
 	{
 		if (!weaponManager.currentWeapon)
@@ -194,13 +191,17 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private void OnAimingSelect()
 	{
-		newAiming = Instantiate(aimingPrefab, transform.position, Quaternion.identity);
+		CallAbilityIsStarting();
+		//newAiming = Instantiate(aimingPrefab, transform.position, Quaternion.identity);
 		movementClass.enabled = false;
 	}
 
 	private void OnAimingDeSelect()
 	{
-		Destroy(newAiming);
+		//if(newAiming != null)
+		//{
+		//	Destroy(newAiming);
+		//}
 		CallExecuteAbility();
 		movementClass.enabled = true;
 	}
@@ -224,26 +225,59 @@ public class Action : MonoBehaviourPunCallbacks
 	}
 
 
-	private void OnMineBtn()
+	private void OnSetTrapBtn()
 	{
 		// Set the mine
-		minerClass.SetMine();
-		print("Mine Setted");
+		if(trapClass == null)
+		{
+			trapClass = GetComponent<TrapAbstract>();
+		}
+		if (trapClass != null)
+		{
+			trapClass.SetTrap();
+			Destroy(trapClass);
+		}
 	}
+
+
+	private void CallAbilityIsStarting()
+	{
+		if (ability != null)
+		{
+			ability.AbilityIsStarting(aimingPrefab);
+		}
+		else
+		{
+			ability = GetComponent<AbilityAbstract>();
+			if (ability != null)
+			{
+				ability.AbilityIsStarting(aimingPrefab);
+			}
+			else
+			{
+				Debug.LogError("No ability attached to the player");
+				return;
+			}
+			Debug.LogWarning("No ability attached to the player");
+		}
+	}
+
 	private void CallExecuteAbility()
 	{
 		if(ability != null)
 		{
-			Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
-			ability.ExecuteAbility(-aimDirection);
+			//Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
+			//ability.ExecuteAbility(-aimDirection);
+			ability.ExecuteAbility();
 		}
 		else
 		{
 			ability = GetComponent<AbilityAbstract>();
 			if(ability != null)
 			{
-				Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
-				ability.ExecuteAbility(-aimDirection);
+				//Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
+				//ability.ExecuteAbility(-aimDirection);
+				ability.ExecuteAbility();
 			}
 			else
 			{

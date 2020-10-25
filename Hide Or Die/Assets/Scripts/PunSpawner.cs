@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using System;
+using Unity.Mathematics;
 
 public class PunSpawner : MonoBehaviourPunCallbacks
 {
@@ -14,6 +15,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 	[Header("CountDown Conditions")]
 	[Range(0,60)] [SerializeField] private float countDownTimer = 10f;
+	public float CountDownTimer { get => countDownTimer; set => countDownTimer = value; }
 	[SerializeField] private Text timerCounter = null;
 	[SerializeField] private GameObject timeCounterPanel = null;
 
@@ -21,6 +23,8 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[SerializeField] private GameObject bluePlayerPref = null;
 	[SerializeField] private GameObject redPlayerPref = null;
 	[SerializeField] private GameObject objectivePrefab = null;
+	[SerializeField] private GameObject trapObjectivePrefab = null;
+	[Range(0, 5)] [SerializeField] private int trapsSpawnCount = 3;
 
 	[Header("Teams Spawn Points")]
 	[SerializeField] private Transform blueTeamSpawnPoint = null;
@@ -28,6 +32,8 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 	[Header("Objectives Spawn Points")]
 	[SerializeField] private Transform objectivesSpawnPoint = null;
+	[SerializeField] private Transform trapDetectorObjectivesSpawnPoint = null;
+	[SerializeField] private Transform[] trapObjectivesSpawnPoints = null;
 
 	private int team = 0;
 
@@ -55,9 +61,9 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			if(counter >= 1)
 			{
 				counter = 0;
-				countDownTimer -= 1;
-				timerCounter.text = countDownTimer.ToString();
-				if(countDownTimer == 0)
+				CountDownTimer -= 1;
+				timerCounter.text = CountDownTimer.ToString();
+				if(CountDownTimer == 0)
 				{
 					playerEnterGameDuty.PlayerEnteredFinished();
 					timeCounterPanel.SetActive(false);
@@ -129,5 +135,31 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	private void SpawnObjectives()
 	{
 		PhotonNetwork.Instantiate(objectivePrefab.name, objectivesSpawnPoint.position, Quaternion.identity);
+
+		GameObject newTrapDetector = PhotonNetwork.Instantiate(trapObjectivePrefab.name, trapDetectorObjectivesSpawnPoint.position, Quaternion.identity);
+		newTrapDetector.GetComponent<TrapObjectiveInteractability>().TrapClassName = "TrapDetectorBeeper";
+
+		for (int i = 0; i < trapsSpawnCount ; i++)
+		{
+			GameObject newTrap =  PhotonNetwork.Instantiate(trapObjectivePrefab.name, trapObjectivesSpawnPoints[i].position, Quaternion.identity);
+			string trapClassName = null;
+			int rand = UnityEngine.Random.Range(1 , 4);
+			switch (rand)
+			{
+				case 1:
+					trapClassName = "Miner";
+					break;
+				case 2:
+					trapClassName = "Poisoner";
+					break;
+				case 3:
+					trapClassName = "BearTraper";
+					break;
+				default:
+					trapClassName = "Miner";
+					break;
+			}
+			newTrap.GetComponent<TrapObjectiveInteractability>().TrapClassName = trapClassName;
+		}
 	}
 }

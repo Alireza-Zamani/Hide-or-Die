@@ -34,15 +34,30 @@ public class PunTeam : MonoBehaviourPunCallbacks
 	[SerializeField] private Text blueTeamStats = null;
 	[SerializeField] private Text redTeamStats = null;
 
+	[Header("Players Status")]
+	[SerializeField] private GameObject bluePlayersContainer = null;
+	[SerializeField] private GameObject redPlayersContainer = null;
+	[SerializeField] private GameObject players = null;
 
-	[Range(0, 10)] [SerializeField] private float startMatchWaitTimeCountDown = 5f;
+	[Range(0, 20)] [SerializeField] private float startMatchWaitTimeCountDown = 5f;
 	private float startMatchWaitTimeCountDownTemp = 0;
 	private bool matchIsStarting = false;
 	private float timeCounter = 0f;
+	private bool canForceSelectAbility = false;
+
+	private PUNUIBtns punUiBtns = null;
+
+	//Master Client
+	private bool masterClientForceSelectAbility = false;
+	private bool masterClientForceSelectAbilityStarted = false;
+	private float forceSelectAbilityCoolDown = 3f;
+	private float forceSelectAbilityTimer = 0f;
+	private List<string> notChoosedAbilityPlayersUserIds = new List<string>();
 
 
 	private void Start()
 	{
+		punUiBtns = GameObject.FindGameObjectWithTag("UI").GetComponent<PUNUIBtns>();
 		maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers / 2;
 		startMatchWaitTimeCountDownTemp = startMatchWaitTimeCountDown;
 		CheckTeamCapacity();
@@ -50,9 +65,27 @@ public class PunTeam : MonoBehaviourPunCallbacks
 
 	private void Update()
 	{
+		if (masterClientForceSelectAbility && !masterClientForceSelectAbilityStarted)
+		{
+			masterClientForceSelectAbilityStarted = true;
+			Invoke("SetARandomeAbilityForClients", 1);
+			masterClientForceSelectAbility = false;
+		}
 		// Wait until the match is ready to start the ncount down teh timer to start the match
 		if (matchIsStarting)
 		{
+			// If match is starting and the player has not selected his ability then match will randomly select a remained ability for him
+			if (canForceSelectAbility && !punUiBtns.ChoosedAbility)
+			{
+				// Send the players user id to master because master will choose a randome class for it
+				photonView.RPC("RPCSendUserIdToMasterClient", RpcTarget.MasterClient, (string)PhotonNetwork.LocalPlayer.UserId);
+
+				// Say to master that u have to start the randome choose function
+				photonView.RPC("RPCMasterClientForceSelectAbility", RpcTarget.MasterClient , true);
+
+				canForceSelectAbility = false;
+			}
+
 			timeCounter += Time.deltaTime;
 			if (timeCounter >= 1)
 			{
@@ -68,6 +101,27 @@ public class PunTeam : MonoBehaviourPunCallbacks
 				}
 			}
 		}
+	}
+
+	private void SetARandomeAbilityForClients()
+	{
+		StartCoroutine("StartRandomeAbilityCoroutine");
+	}
+
+	IEnumerator StartRandomeAbilityCoroutine()
+	{
+		if (notChoosedAbilityPlayersUserIds.Count == 0)
+		{
+			yield return null;
+		}
+		else
+		{
+			string userId = notChoosedAbilityPlayersUserIds[0];
+			notChoosedAbilityPlayersUserIds.RemoveAt(0);
+			photonView.RPC("CheckIfThePlayerCanChooseRandomeAbility", RpcTarget.AllBuffered, userId);
+		}
+		yield return new WaitForSeconds(1f);
+		StartCoroutine("StartRandomeAbilityCoroutine");
 	}
 
 	private void TeamsHashtableSetter(int teamNumber)
@@ -159,6 +213,9 @@ public class PunTeam : MonoBehaviourPunCallbacks
 
 		// Change the remained players number
 		ChangeTeamRemainer(teamNumber , true);
+
+		// Change Player Containers
+		photonView.RPC("RPCPlayerContainer", RpcTarget.AllBuffered, teamNumber , PhotonNetwork.LocalPlayer.NickName , PhotonNetwork.LocalPlayer.UserId);
 	}
 
 	private void ChangeTeamRemainer(int teamNumber , bool changePanel)
@@ -182,7 +239,6 @@ public class PunTeam : MonoBehaviourPunCallbacks
 			redTeamReaminer.text = remainedPlayers.ToString();
 		}
 	}
-
 
 	private void SetGameObjectActivity(GameObject panelName , bool activity)
 	{
@@ -223,7 +279,6 @@ public class PunTeam : MonoBehaviourPunCallbacks
 		}
 	}
 
-
 	private void EnterTheGame()
 	{
 		if (PhotonNetwork.IsMasterClient)
@@ -233,10 +288,55 @@ public class PunTeam : MonoBehaviourPunCallbacks
 	}
 
 
+	#region RPCs
+
 	[PunRPC]
-	public void UpdateTeams(int teamNumber , int changer)
+	private void CheckIfThePlayerCanChooseRandomeAbility(string userId)
 	{
-		if(teamNumber == 1)
+		// If we are the user which the randome ability selections turn is its then choose one
+		if(PhotonNetwork.LocalPlayer.UserId == userId)
+		{
+			punUiBtns.AutoSelectAbility();
+		}
+	}
+
+	[PunRPC]
+	private void RPCSendUserIdToMasterClient(string userId)
+	{
+		notChoosedAbilityPlayersUserIds.Add(userId);
+	}
+
+	[PunRPC]
+	private void RPCMasterClientForceSelectAbility(bool activity)
+	{
+		// Say to master that we have players with non ability choosed
+		if(masterClientForceSelectAbility != activity)
+		{
+			masterClientForceSelectAbility = activity;
+		}
+	}
+
+	[PunRPC]
+	private void RPCPlayerContainer(int teamNumber, string nickName, string userId)
+	{
+		Transform parentContainer = null;
+		if (teamNumber == 1)
+		{
+			parentContainer = bluePlayersContainer.transform;
+		}
+		else if (teamNumber == 2)
+		{
+			parentContainer = redPlayersContainer.transform;
+		}
+		GameObject newPlayer = Instantiate(players, parentContainer);
+		newPlayer.name = userId;
+		newPlayer.transform.GetChild(1).GetComponent<Text>().text = nickName;
+	}
+
+	[PunRPC]
+	public void UpdateTeams(int teamNumber, int changer)
+	{
+		if (teamNumber == 1)
 		{
 			BlueTeamPlayerCount += changer;
 			BlueTeamPlayerCount = Mathf.Clamp(BlueTeamPlayerCount, 0, maxPlayerCount);
@@ -262,6 +362,7 @@ public class PunTeam : MonoBehaviourPunCallbacks
 			{
 				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
 				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
+				canForceSelectAbility = true;
 				matchIsStarting = true;
 				timeCounter = 0f;
 			}
@@ -292,12 +393,14 @@ public class PunTeam : MonoBehaviourPunCallbacks
 		}
 	}
 
+	#endregion
+
 
 	#region Call Backs
 
 	public override void OnPlayerEnteredRoom(Player player)
 	{
-		print(player.NickName + "  Entered in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And rooms player count is : " + PhotonNetwork.CurrentRoom.PlayerCount);
+		//print(player.NickName + "  Entered in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And rooms player count is : " + PhotonNetwork.CurrentRoom.PlayerCount);
 	}
 
 	public override void OnPlayerLeftRoom(Player player)
@@ -306,10 +409,31 @@ public class PunTeam : MonoBehaviourPunCallbacks
 		// If the leftef player had choosed its team this is neccesery to be done if not there is no need and we have to wait for a new player
 		if (player.CustomProperties.ContainsKey("Team"))
 		{
+			// Set the team remainers
 			int leftedPlayerTeam = (int)player.CustomProperties["Team"];
 			UpdateTeams(leftedPlayerTeam, -1);
 			UpdateStats(leftedPlayerTeam);
+
+			// Set the players remainer
+			foreach(Transform trans in bluePlayersContainer.transform)
+			{
+				if(trans.name == player.UserId)
+				{
+					Destroy(trans.gameObject);
+					//return;
+				}
+			}
+
+			foreach (Transform trans in redPlayersContainer.transform)
+			{
+				if (trans.name == player.UserId)
+				{
+					Destroy(trans.gameObject);
+					//return;
+				}
+			}
 		}
+
 	}
 
 	#endregion

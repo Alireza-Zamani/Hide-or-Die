@@ -11,7 +11,7 @@ public class UIBtns : MonoBehaviour
 	public OnDelegateChanged onAimingDeSelectDelegate;
 	public OnDelegateChanged onShopBtnDelegate;
 	public OnDelegateChanged onLockBtnDelegate;
-	public OnDelegateChanged onMineBtnDelegate;
+	public OnDelegateChanged onSetTrapBtnDelegate;
 	public OnDelegateChanged onWeaponBtnSelectDelegate;
 	public OnDelegateChanged onWeaponBtnDeSelectDelegate;
 	
@@ -134,11 +134,11 @@ public class UIBtns : MonoBehaviour
 	}
 
 
-	public void OnMineBtn()
+	public void OnSetTrapBtn()
 	{
-		if (onMineBtnDelegate != null)
+		if (onSetTrapBtnDelegate != null)
 		{
-			onMineBtnDelegate.Invoke();
+			onSetTrapBtnDelegate.Invoke();
 		}
 	}
 

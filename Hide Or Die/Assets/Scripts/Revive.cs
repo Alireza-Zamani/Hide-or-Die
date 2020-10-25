@@ -22,6 +22,7 @@ public class Revive : MonoBehaviour
 
 	private string team = null;
 
+
 	private void Start()
 	{
 		photonView = PhotonView.Get(this);
@@ -29,7 +30,7 @@ public class Revive : MonoBehaviour
 		{
 			return;
 		}
-
+		Invoke("DestroyGameObject", 3f);
 		team = playerInterface.TeamGetter();
 		Reviving();
 	}

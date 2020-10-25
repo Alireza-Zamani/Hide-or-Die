@@ -5,6 +5,12 @@ using UnityEngine;
 public interface IPlayer
 {
 
+	void AddComponent(string component);
+
+
+	bool HasTrapGetter();
+
+	void HasTrapSetter(bool activity);
 
 	string TeamGetter();
 
@@ -15,5 +21,7 @@ public interface IPlayer
 	void TakeDamage(float damageAmount);
 
 	void Heal(float healAmount);
+
+	void StuckPlayer(float timeRate);
 
 }

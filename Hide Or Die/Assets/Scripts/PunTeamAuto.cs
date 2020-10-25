@@ -29,14 +29,30 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	[SerializeField] private Text blueTeamStats = null;
 	[SerializeField] private Text redTeamStats = null;
 
+	[Header("Players Status")]
+	[SerializeField] private GameObject bluePlayersContainer = null;
+	[SerializeField] private GameObject redPlayersContainer = null;
+	[SerializeField] private GameObject players = null;
+
 	[Range(0, 10)] [SerializeField] private float startMatchWaitTimeCountDown = 5f;
 	private float startMatchWaitTimeCountDownTemp = 0;
 	private bool matchIsStarting = false;
 	private float timeCounter = 0f;
+	private bool canForceSelectAbility = false;
 
+
+	private PUNUIBtns punUiBtns = null;
+
+	//Master Client
+	private bool masterClientForceSelectAbility = false;
+	private bool masterClientForceSelectAbilityStarted = false;
+	private float forceSelectAbilityCoolDown = 3f;
+	private float forceSelectAbilityTimer = 0f;
+	private List<string> notChoosedAbilityPlayersUserIds = new List<string>();
 
 	private void Start()
 	{
+		punUiBtns = GameObject.FindGameObjectWithTag("UI").GetComponent<PUNUIBtns>();
 		maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers / 2;
 		startMatchWaitTimeCountDownTemp = startMatchWaitTimeCountDown;
 		Invoke("Choose", 1f);
@@ -44,8 +60,27 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 
 	private void Update()
 	{
+		if (masterClientForceSelectAbility && !masterClientForceSelectAbilityStarted)
+		{
+			masterClientForceSelectAbilityStarted = true;
+			Invoke("SetARandomeAbilityForClients", 1);
+			masterClientForceSelectAbility = false;
+		}
+		// Wait until the match is ready to start the ncount down teh timer to start the match
 		if (matchIsStarting)
 		{
+			// If match is starting and the player has not selected his ability then match will randomly select a remained ability for him
+			if (canForceSelectAbility && !punUiBtns.ChoosedAbility)
+			{
+				// Send the players user id to master because master will choose a randome class for it
+				photonView.RPC("RPCSendUserIdToMasterClient", RpcTarget.MasterClient, (string)PhotonNetwork.LocalPlayer.UserId);
+
+				// Say to master that u have to start the randome choose function
+				photonView.RPC("RPCMasterClientForceSelectAbility", RpcTarget.MasterClient, true);
+
+				canForceSelectAbility = false;
+			}
+
 			timeCounter += Time.deltaTime;
 			if(timeCounter >= 1)
 			{
@@ -61,6 +96,27 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 				}
 			}
 		}
+	}
+
+	private void SetARandomeAbilityForClients()
+	{
+		StartCoroutine("StartRandomeAbilityCoroutine");
+	}
+
+	IEnumerator StartRandomeAbilityCoroutine()
+	{
+		if (notChoosedAbilityPlayersUserIds.Count == 0)
+		{
+			yield return null;
+		}
+		else
+		{
+			string userId = notChoosedAbilityPlayersUserIds[0];
+			notChoosedAbilityPlayersUserIds.RemoveAt(0);
+			photonView.RPC("CheckIfThePlayerCanChooseRandomeAbility", RpcTarget.AllBuffered, userId);
+		}
+		yield return new WaitForSeconds(1f);
+		StartCoroutine("StartRandomeAbilityCoroutine");
 	}
 
 	private void Choose()
@@ -170,6 +226,9 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		photonView.RPC("UpdateTeams", RpcTarget.AllBuffered, teamNumber , 1);
 		photonView.RPC("UpdateStats", RpcTarget.AllBuffered, teamNumber);
 		ChangeTeamRemainer(teamNumber , true);
+
+		// Change Player Containers
+		photonView.RPC("RPCPlayerContainer", RpcTarget.AllBuffered, teamNumber, PhotonNetwork.LocalPlayer.NickName , PhotonNetwork.LocalPlayer.UserId);
 	}
 
 	private void ChangeTeamRemainer(int teamNumber, bool changePanel)
@@ -207,8 +266,55 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		}
 	}
 
+
+	#region RPCs
+
+
 	[PunRPC]
-	public void UpdateTeams(int teamNumber , int changer)
+	private void CheckIfThePlayerCanChooseRandomeAbility(string userId)
+	{
+		// If we are the user which the randome ability selections turn is its then choose one
+		if (PhotonNetwork.LocalPlayer.UserId == userId)
+		{
+			punUiBtns.AutoSelectAbility();
+		}
+	}
+
+	[PunRPC]
+	private void RPCSendUserIdToMasterClient(string userId)
+	{
+		notChoosedAbilityPlayersUserIds.Add(userId);
+	}
+
+	[PunRPC]
+	private void RPCMasterClientForceSelectAbility(bool activity)
+	{
+		// Say to master that we have players with non ability choosed
+		if (masterClientForceSelectAbility != activity)
+		{
+			masterClientForceSelectAbility = activity;
+		}
+	}
+
+	[PunRPC]
+	private void RPCPlayerContainer(int teamNumber, string nickName, string userId)
+	{
+		Transform parentContainer = null;
+		if (teamNumber == 1)
+		{
+			parentContainer = bluePlayersContainer.transform;
+		}
+		else if (teamNumber == 2)
+		{
+			parentContainer = redPlayersContainer.transform;
+		}
+		GameObject newPlayer = Instantiate(players, parentContainer);
+		newPlayer.name = userId;
+		newPlayer.transform.GetChild(1).GetComponent<Text>().text = nickName;
+	}
+
+	[PunRPC]
+	public void UpdateTeams(int teamNumber, int changer)
 	{
 		if (teamNumber == 1)
 		{
@@ -228,12 +334,13 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		if (TeamNum != 0)
 		{
 			// Change the remained players
-			ChangeTeamRemainer(teamNumber , false);
+			ChangeTeamRemainer(teamNumber, false);
 
 			if (BlueTeamPlayerCount == maxPlayerCount && RedTeamPlayerCount == maxPlayerCount)
 			{
 				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
 				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
+				canForceSelectAbility = true;
 				matchIsStarting = true;
 				timeCounter = 0f;
 			}
@@ -261,9 +368,11 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 					redTeamStats.text = "Our Team is Full Waiting For Epponents Players...";
 				}
 			}
-			
+
 		}
 	}
+
+	#endregion
 
 
 	#region Call Backs
@@ -283,6 +392,25 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 			int leftedPlayerTeam = (int)player.CustomProperties["Team"];
 			UpdateTeams(leftedPlayerTeam, -1);
 			UpdateStats(leftedPlayerTeam);
+
+			// Set the players remainer
+			foreach (Transform trans in bluePlayersContainer.transform)
+			{
+				if (trans.name == player.UserId)
+				{
+					Destroy(trans.gameObject);
+					return;
+				}
+			}
+
+			foreach (Transform trans in redPlayersContainer.transform)
+			{
+				if (trans.name == player.UserId)
+				{
+					Destroy(trans.gameObject);
+					return;
+				}
+			}
 		}
 	}
 

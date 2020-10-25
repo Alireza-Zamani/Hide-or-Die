@@ -5,6 +5,12 @@ using Photon.Pun;
 
 public class PlayerMatchData : MonoBehaviour , IPlayer
 {
+
+	private bool hasTrap = false;
+
+	public LayerMask raycastableForInSightLayerMask = new LayerMask();
+	public LayerMask detectableLayerMask = new LayerMask();
+
 	private GameObject canvas = null;
 
 	[SerializeField] private GameObject bodyHandler = null;
@@ -21,6 +27,8 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	private GameManager gameManager = null;
 
+	private PlayerMovement playerMovement = null;
+
 	private int playerGroup = 0;
 
 	private void Awake()
@@ -32,6 +40,7 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	private void Start()
 	{
 		photonView = PhotonView.Get(this);
+		playerMovement = GetComponent<PlayerMovement>();
 		canvas = GameObject.FindGameObjectWithTag("UI").gameObject;
 		gameManager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<GameManager>();
 		if (photonView.IsMine)
@@ -155,12 +164,52 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	}
 
 
-
 	public void Heal(float healAmount)
 	{
 		photonView.RPC("RPCHeal", RpcTarget.AllBuffered, healAmount);
 	}
 
+
+	public void AddComponent(string component)
+	{
+		switch (component)
+		{
+			case "Miner":
+				gameObject.AddComponent<Miner>();
+				break;
+			case "Poisoner":
+				gameObject.AddComponent<Poisoner>();
+				break;
+			case "BearTraper":
+				gameObject.AddComponent<BearTraper>();
+				break;
+			case "TrapDetectorBeeper":
+				gameObject.AddComponent<TrapDetectorBeeper>();
+				break;
+		}
+	}
+
+	public bool HasTrapGetter()
+	{
+		return hasTrap;
+	}
+
+	public void HasTrapSetter(bool activity)
+	{
+		hasTrap = activity;
+	}
+
+	public void StuckPlayer(float timeRate)
+	{
+		playerMovement.IsStucked = true;
+		Invoke("ResetStucked", timeRate);
+	}
+
+
+	private void ResetStucked()
+	{
+		playerMovement.IsStucked = false;
+	}
 
 	[PunRPC]
 	private void RPCObjectiveReached()
@@ -197,4 +246,6 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 		Health += damageAmount;
 		Health = Mathf.Clamp(Health , 0 , 100);
 	}
+
+	
 }

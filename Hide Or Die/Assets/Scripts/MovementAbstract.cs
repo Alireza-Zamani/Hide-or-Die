@@ -19,6 +19,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 	//Fields
 	[Range(0, 2000)] [SerializeField] protected float moveSpeed = 1000f;
 	[Range(0, 50)] [SerializeField] protected float viewDistance = 10f;
+	
 
 	#endregion
 
@@ -72,7 +73,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 		{
 			return;
 		}
-
+		
 		//Get the direction from joystick
 		Vector2 direction = GetDirection();
 		rb.AddForce(direction * moveSpeed * Time.deltaTime, ForceMode2D.Force);
@@ -133,5 +134,6 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 		Vector2 dir = new Vector2(horizontal, vertical);
 		return dir.normalized;
 	}
+
 
 }

@@ -11,6 +11,8 @@ public class AbilitySpear : AbilityAbstract
 
 	private IPlayer playerInterface = null;
 
+	GameObject newAiming = null;
+
 	private void Awake()
 	{
 		spearPrefab = Resources.Load("Spear", typeof(GameObject)) as GameObject;
@@ -21,8 +23,23 @@ public class AbilitySpear : AbilityAbstract
 		playerInterface = GetComponent<IPlayer>();
 	}
 
-	public override void ExecuteAbility(Vector2 aimingDirection)
+	public override void AbilityIsStarting(GameObject aimingPref)
 	{
+		newAiming = Instantiate(aimingPref, transform.position, Quaternion.identity);
+	}
+
+
+	public override void ExecuteAbility()
+	{
+		Vector2 aimingDirection = Vector2.zero;
+		if (newAiming != null)
+		{
+			aimingDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
+			Destroy(newAiming);
+		}
+
+		aimingDirection = -aimingDirection;
+
 		newSpear = PhotonNetwork.Instantiate(spearPrefab.name, transform.position, Quaternion.identity);
 		Spear spearClass = newSpear.GetComponent<Spear>();
 		spearClass.PlayerInterface = playerInterface;

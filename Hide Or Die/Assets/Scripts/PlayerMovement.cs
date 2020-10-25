@@ -9,8 +9,15 @@ public class PlayerMovement : MovementAbstract
 
 	[SerializeField] private GameObject dronePrefab = null;
 
+	private bool isStucked = false;
+	public bool IsStucked { get => isStucked; set => photonView.RPC("RPCSetisStucked", RpcTarget.AllBuffered, value); }
+
 	public override void Update()
 	{
+		if (IsStucked)
+		{
+			return;
+		}
 		base.Update();
 	}
 
@@ -29,6 +36,13 @@ public class PlayerMovement : MovementAbstract
 		return droneMovement;
 	}
 
+
+	private void SetActivity(GameObject go , bool activity)
+	{
+		go.SetActive(activity);
+	}
+
+
 	[PunRPC]
 	private void ChangeCharacter()
 	{
@@ -36,10 +50,10 @@ public class PlayerMovement : MovementAbstract
 		SetActivity(gameObject, false);
 	}
 
-	private void SetActivity(GameObject go , bool activity)
-	{
-		go.SetActive(activity);
-	}
 
-	
+	[PunRPC]
+	private void RPCSetisStucked(bool value)
+	{
+		isStucked = value;
+	}
 }
