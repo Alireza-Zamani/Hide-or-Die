@@ -22,9 +22,6 @@
             </e>
           </e>
         </e>
-        <e p="Bullet.cs" t="Include" />
-        <e p="GunPositioning.cs" t="Include" />
-        <e p="GunVintagePistol.cs" t="Include" />
         <e p="Joystick Pack" t="Include">
           <e p="Scripts" t="Include">
             <e p="Base" t="Include">
@@ -420,6 +417,9 @@
           <e p="Action.cs" t="Include" />
           <e p="AimingDirection.cs" t="Include" />
           <e p="AnimatorController.cs" t="Include" />
+          <e p="BearTrap.cs" t="Include" />
+          <e p="BearTraper.cs" t="Include" />
+          <e p="Bullet.cs" t="Include" />
           <e p="BuyAvailibility.cs" t="Include" />
           <e p="CameraFollow.cs" t="Include" />
           <e p="CollisionHandler.cs" t="Include" />
@@ -427,11 +427,15 @@
           <e p="DoorInteractable.cs" t="Include" />
           <e p="DroneMovement.cs" t="Include" />
           <e p="FieldOFView.cs" t="Include" />
+          <e p="GameManager.cs" t="Include" />
           <e p="Grenade.cs" t="Include" />
+          <e p="GunPositioning.cs" t="Include" />
+          <e p="GunVintagePistol.cs" t="Include" />
           <e p="GunWeaponAbstract.cs" t="Include" />
           <e p="Heal.cs" t="Include" />
           <e p="IInteractable.cs" t="Include" />
           <e p="IPlayer.cs" t="Include" />
+          <e p="ITrap.cs" t="Include" />
           <e p="MeleeWeaponAbstract.cs" t="Include" />
           <e p="MeleeWeaponPositioning.cs" t="Include" />
           <e p="MeleeWeaponSaber.cs" t="Include" />
@@ -440,10 +444,13 @@
           <e p="Miner.cs" t="Include" />
           <e p="MovementAbstract.cs" t="Include" />
           <e p="NewBehaviourScript.cs" t="Include" />
+          <e p="NextMatch.cs" t="Include" />
           <e p="ObjectiveInteractability.cs" t="Include" />
           <e p="PlayerEnterGameDuty.cs" t="Include" />
           <e p="PlayerMatchData.cs" t="Include" />
           <e p="PlayerMovement.cs" t="Include" />
+          <e p="Poison.cs" t="Include" />
+          <e p="Poisoner.cs" t="Include" />
           <e p="PunManager.cs" t="Include" />
           <e p="PunSpawner.cs" t="Include" />
           <e p="PunTeam.cs" t="Include" />
@@ -452,6 +459,9 @@
           <e p="Revive.cs" t="Include" />
           <e p="Spear.cs" t="Include" />
           <e p="Teleport.cs" t="Include" />
+          <e p="TrapAbstract.cs" t="Include" />
+          <e p="TrapDetectorBeeper.cs" t="Include" />
+          <e p="TrapObjectiveInteractability.cs" t="Include" />
           <e p="UIBtns.cs" t="Include" />
           <e p="WeaponAbstract.cs" t="Include" />
           <e p="WeaponManager.cs" t="Include" />

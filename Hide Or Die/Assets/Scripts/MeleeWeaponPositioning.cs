@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 [RequireComponent(typeof(MeleeWeaponTargeting))]
-public class MeleeWeaponPositioning : MonoBehaviour
+public class MeleeWeaponPositioning : MonoBehaviourPunCallbacks
 {
     private Transform parent = null;
     [SerializeField] private Vector3 offset;
@@ -25,6 +26,11 @@ public class MeleeWeaponPositioning : MonoBehaviour
     
     private void Start()
     {
+        if (!photonView.IsMine)
+        {
+            Destroy(this);
+        }
+        
         currentState = States.Targeting;
         
         parent = transform.parent;
@@ -35,7 +41,7 @@ public class MeleeWeaponPositioning : MonoBehaviour
 
     private void Update()
     {
-        weaponOriginalPosition = parent.position + offset;
+        //weaponOriginalPosition = parent.position + offset;
         
         if (currentState == States.Targeting)
         {
@@ -43,7 +49,7 @@ public class MeleeWeaponPositioning : MonoBehaviour
             if (target)
             {
                 LookTowardsTarget(target);
-                ExtendTowardsTarget(weaponOriginalPosition, target, weaponClampRadius);
+                //ExtendTowardsTarget(weaponOriginalPosition, target, weaponClampRadius);
             }
            
         }

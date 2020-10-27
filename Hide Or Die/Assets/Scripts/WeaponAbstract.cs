@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public abstract class WeaponAbstract : MonoBehaviour
+public abstract class WeaponAbstract : MonoBehaviourPunCallbacks
 {
     private int damage = 30;
     

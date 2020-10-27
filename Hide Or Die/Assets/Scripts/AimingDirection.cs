@@ -29,6 +29,12 @@ public class AimingDirection : MonoBehaviour
 	private void Update()
 	{
 		dir = -GetDirection();
+
+		if (GetComponent<GunPositioning>())
+		{
+			if (transform.parent.localScale.x < 0)
+				dir *= -1;
+		}
 		
 		// IF its the first time we are changing joystick then we have to change bool
 		if (!joystickChanged && dir != Vector2.zero)
