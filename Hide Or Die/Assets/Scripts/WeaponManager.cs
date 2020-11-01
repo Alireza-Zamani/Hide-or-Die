@@ -11,16 +11,8 @@ public class WeaponManager : MonoBehaviourPunCallbacks
 
     private GameObject currentWeaponObject;
 
-
-    private void Start()
-    {
-        if (!photonView.IsMine)
-        {
-            Destroy(this);
-        }
-    }
-
-
+    
+    
     public WeaponAbstract GetChildedWeapon(GameObject player)
     {
         for (int i = 0; i < player.transform.childCount; i++)
@@ -41,9 +33,14 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    private void SetParent()
+    private void SetParent(int instanceID)
     {
-        currentWeaponObject.transform.parent = this.transform;
+        PhotonView foundObject = PhotonView.Find(instanceID);
+
+        if (foundObject != null)
+        {
+            foundObject.transform.parent = this.transform;
+        }
     }
     
     public void AddNewWeapon(GameObject weapon)
@@ -58,7 +55,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
 
         GameObject newWeapon = PhotonNetwork.Instantiate(weapon.name, this.transform.position, Quaternion.identity);
         currentWeaponObject = newWeapon;
-        photonView.RPC("SetParent", RpcTarget.AllBuffered);
+        photonView.RPC("SetParent", RpcTarget.AllBuffered, currentWeaponObject.GetComponent<PhotonView>().ViewID);
         //newWeapon.transform.parent = this.transform;
       
         currentWeapon = newWeapon.GetComponent<WeaponAbstract>();
