@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1206358242356785124}
   m_Layer: 14
   m_Name: Gun Vintage Pistol
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -30,7 +30,6 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MeleeWeaponPositioning.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Bullet.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/WeaponAbstract.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MeleeWeaponAbstract.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MeleeWeaponTargeting.cs" root0="FORCE_HIGHLIGHTING" />
@@ -50,21 +49,24 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/AbilityAbstract.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Ability.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponTargeting.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/WeaponAbstract.cs" />
         <option value="$PROJECT_DIR$/Assets/WeaponManager.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponPositioning.cs" />
         <option value="$PROJECT_DIR$/Assets/MeleeWeaponSaber.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponAbstract.cs" />
         <option value="$PROJECT_DIR$/Assets/GunVintagePistol.cs" />
         <option value="$PROJECT_DIR$/Assets/GunPositioning.cs" />
         <option value="$PROJECT_DIR$/Assets/Bullet.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UIBtns.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GunWeaponAbstract.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponSaber.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Action.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/WeaponManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PlayerEnterGameDuty.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponPositioning.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Bullet.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/WeaponManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GunPositioning.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/AimingDirection.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GunWeaponAbstract.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Action.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PlayerMatchData.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/WeaponAbstract.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponAbstract.cs" />
       </list>
     </option>
   </component>
@@ -128,6 +130,10 @@
       <workItem from="1602533134296" duration="745000" />
       <workItem from="1602561139275" duration="29451000" />
       <workItem from="1602637910195" duration="13890000" />
+      <workItem from="1602657016367" duration="681000" />
+      <workItem from="1603126139257" duration="1317000" />
+      <workItem from="1603697875552" duration="868000" />
+      <workItem from="1603767163651" duration="8593000" />
     </task>
     <servers />
   </component>

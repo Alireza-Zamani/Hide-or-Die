@@ -37,9 +37,21 @@ public class GunWeaponAbstract : WeaponAbstract
         bullet.GetComponent<Bullet>().Damage = Damage;
         Vector2 aimDirection = aimingDirection.AimDirection;
         aimDirection *= -1;
-        aimDirection = aimDirection.normalized;
         
-        bullet.GetComponent<Bullet>().movementDirection = aimDirection;
+        if (transform.parent.localScale.x < 0)
+            aimDirection *= -1;
+        
+        aimDirection = aimDirection.normalized;
+
+        var bulletMainScript = bullet.GetComponent<Bullet>();
+        
+        bulletMainScript.movementDirection = aimDirection;
+        bulletMainScript.ShooterTag = gameObject.tag;
+
+        if (gameObject.CompareTag("RedTeam"))
+            bulletMainScript.TargetTag = "BlueTeam";
+        else if (gameObject.CompareTag("BlueTeam"))
+            bulletMainScript.TargetTag = "RedTeam";
         
         aimingDirection.enabled = false;
         aimingLine.SetActive(false);

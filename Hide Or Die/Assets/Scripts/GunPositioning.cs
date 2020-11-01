@@ -31,6 +31,8 @@ public class GunPositioning : MonoBehaviour
     {
         weaponOriginalPosition = parent.position + offset;
         this.transform.position = weaponOriginalPosition;
+        
+        transform.localScale = new Vector3(-0.3f,0.3f, 0.3f);
 
         if (currentState == States.Reloading)
         {

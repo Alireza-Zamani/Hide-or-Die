@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 1687840501395549898}
   m_Layer: 14
   m_Name: Melee Weapon Club
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponType: 0
-  weaponDamage: 20
+  weaponDamage: 55
 --- !u!61 &1687840501395549898
 BoxCollider2D:
   m_ObjectHideFlags: 0

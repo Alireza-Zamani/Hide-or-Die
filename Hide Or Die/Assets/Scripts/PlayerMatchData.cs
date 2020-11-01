@@ -21,6 +21,12 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	public float Health { get => health; set => health = value; }
 
+	public bool CanTakeDamage
+	{
+		get => canTakeDamage;
+		set => canTakeDamage = value;
+	}
+
 	private string team = null;
 
 	private string className = null;
@@ -32,6 +38,8 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	private PlayerMovement playerMovement = null;
 
 	private int playerGroup = 0;
+
+	private bool canTakeDamage = true;
 
 	private void Awake()
 	{
@@ -131,7 +139,12 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	public void TakeDamage(float damageAmount)
 	{
-		photonView.RPC("RPCTakeDamage", RpcTarget.AllBuffered, damageAmount);
+		if (CanTakeDamage)
+		{
+			print("Took Damage >>>  " + damageAmount);
+			photonView.RPC("RPCTakeDamage", RpcTarget.AllBuffered, damageAmount);
+		}
+
 	}
 
 

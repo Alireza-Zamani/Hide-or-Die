@@ -33,9 +33,21 @@ public class MeleeWeaponAbstract : WeaponAbstract
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Other"))
+        if (!photonView.IsMine)
         {
-            other.gameObject.GetComponent<PlayerMatchData>().TakeDamage(this.Damage);
+            return;
         }
+        if (other.tag != transform.parent.tag)
+        {
+            if (other.tag == "BlueTeam" || other.tag == "RedTeam")
+            {
+                other.gameObject.GetComponent<IPlayer>().TakeDamage(Damage);
+
+                this.GetComponent<BoxCollider2D>().enabled = false;
+            }
+        }
+        
+        
+        this.GetComponent<BoxCollider2D>().enabled = false;
     }
 }

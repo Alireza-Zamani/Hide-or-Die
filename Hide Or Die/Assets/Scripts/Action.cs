@@ -66,6 +66,7 @@ public class Action : MonoBehaviourPunCallbacks
 		shopCanvas = shopCanvas.transform.GetChild(0).gameObject;
 
 		saberPrefab = Resources.Load<GameObject>("Melee Weapon Saber");
+		//saberPrefab = Resources.Load<GameObject>("Objective");
 		macePrefab = Resources.Load<GameObject>("Melee Weapon Mace");
 		knifePrefab = Resources.Load<GameObject>("Melee Weapon Knife");
 		clubPrefab = Resources.Load<GameObject>("Melee Weapon Club");
@@ -161,7 +162,6 @@ public class Action : MonoBehaviourPunCallbacks
 
 		if (weaponManager.currentWeaponType == WeaponAbstract.WeaponTypes.Gun)
 		{
-			print("Inside Gun if");
 			movementClass.enabled = false;
 			weaponManager.currentWeapon.Aim();
 		}
@@ -175,8 +175,6 @@ public class Action : MonoBehaviourPunCallbacks
 	
 	private void OnWeaponDeSelect()
 	{
-		
-		print("Inside Gun Deselect");
 		if (weaponManager.currentWeaponType == WeaponAbstract.WeaponTypes.Gun)
 		{
 			weaponManager.currentWeapon.Attack();
