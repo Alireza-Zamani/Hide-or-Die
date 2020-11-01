@@ -12,6 +12,8 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	public LayerMask detectableLayerMask = new LayerMask();
 
 	private GameObject canvas = null;
+	private GameObject healthBar = null;
+	private SpriteRenderer healthBarSprite = null;
 
 	[SerializeField] private GameObject bodyHandler = null;
 
@@ -33,6 +35,8 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	private void Awake()
 	{
+		healthBar = transform.GetChild(0).gameObject;
+		healthBarSprite = healthBar.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
 		AddAbility();
 	}
 
@@ -172,6 +176,7 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	public void AddComponent(string component)
 	{
+
 		switch (component)
 		{
 			case "Miner":
@@ -234,6 +239,9 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	{
 		Health -= damageAmount;
 
+		healthBar.transform.localScale = new Vector3(Health / 100f , healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+		healthBarSprite.color = Color.Lerp(Color.red, Color.green, healthBar.transform.localScale.x);
+
 		if (Health <= 0)
 		{
 			Die();
@@ -245,6 +253,8 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	{
 		Health += damageAmount;
 		Health = Mathf.Clamp(Health , 0 , 100);
+		healthBar.transform.localScale = new Vector3(Health / 100f, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+		healthBarSprite.color = Color.Lerp(Color.red, Color.green, healthBar.transform.localScale.x);
 	}
 
 	

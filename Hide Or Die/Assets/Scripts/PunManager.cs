@@ -231,7 +231,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 		}
 		else
 		{
-			PhotonNetwork.LoadLevel("ChooseTeam");
+			PhotonNetwork.LoadLevel("ChooseTeamAuto");
 		}
 	}
 

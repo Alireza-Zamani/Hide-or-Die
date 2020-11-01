@@ -266,4 +266,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwSpeed: 2500
-  hitDamage: 50
+  hitDamage: 20

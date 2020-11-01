@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Photon.Pun;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(MeleeWeaponTargeting))]
-public class MeleeWeaponPositioning : MonoBehaviour
+public class MeleeWeaponPositioning : MonoBehaviourPunCallbacks
 {
     private Transform parent = null;
     [SerializeField] private Vector3 offset;
