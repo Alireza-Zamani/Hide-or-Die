@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-[RequireComponent(typeof(MeleeWeaponTargeting))]
 public class MeleeWeaponPositioning : MonoBehaviourPunCallbacks
 {
     private Transform parent = null;
@@ -36,7 +35,7 @@ public class MeleeWeaponPositioning : MonoBehaviourPunCallbacks
         currentState = States.Targeting;
         
         parent = transform.parent;
-        weaponOriginalPosition = parent.position + offset;
+        //weaponOriginalPosition = parent.position + offset;
         
         meleeWeaponTargeting = GetComponent<MeleeWeaponTargeting>();
     }

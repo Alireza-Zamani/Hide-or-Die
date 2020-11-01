@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MeleeWeaponTargeting))]
-[RequireComponent(typeof(MeleeWeaponPositioning))]
 public class MeleeWeaponAbstract : WeaponAbstract
 {
     private MeleeWeaponPositioning meleeWeaponPositioning = null;

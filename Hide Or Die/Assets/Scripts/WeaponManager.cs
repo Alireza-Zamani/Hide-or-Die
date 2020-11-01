@@ -9,16 +9,10 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     public WeaponAbstract currentWeapon = null;
     public WeaponAbstract.WeaponTypes currentWeaponType;
 
+    private GameObject currentWeaponObject;
 
-    private void Start()
-    {
-        if (!photonView.IsMine)
-        {
-            Destroy(this);
-        }
-    }
-
-
+    
+    
     public WeaponAbstract GetChildedWeapon(GameObject player)
     {
         for (int i = 0; i < player.transform.childCount; i++)
@@ -38,6 +32,17 @@ public class WeaponManager : MonoBehaviourPunCallbacks
         return null;
     }
 
+    [PunRPC]
+    private void SetParent(int instanceID)
+    {
+        PhotonView foundObject = PhotonView.Find(instanceID);
+
+        if (foundObject != null)
+        {
+            foundObject.transform.parent = this.transform;
+        }
+    }
+    
     public void AddNewWeapon(GameObject weapon)
     {
         if(currentWeapon)
@@ -48,7 +53,9 @@ public class WeaponManager : MonoBehaviourPunCallbacks
             PhotonNetwork.Destroy(currentWeapon.gameObject);
         
         GameObject newWeapon = PhotonNetwork.Instantiate(weapon.name, this.transform.position, Quaternion.identity);
-        newWeapon.transform.parent = this.transform;
+        currentWeaponObject = newWeapon;
+        photonView.RPC("SetParent", RpcTarget.AllBuffered, currentWeaponObject.GetComponent<PhotonView>().ViewID);
+        //newWeapon.transform.parent = this.transform;
       
         currentWeapon = newWeapon.GetComponent<WeaponAbstract>();
         currentWeaponType = currentWeapon.weaponType;
@@ -57,10 +64,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
             newWeapon.transform.localScale = new Vector3(0.6f,0.6f, 0.6f);
         else
             newWeapon.transform.localScale = new Vector3(-0.3f,0.3f, 0.3f);
-            
-            
         
-
     }
-    
+
 }
