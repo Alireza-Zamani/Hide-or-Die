@@ -9,6 +9,8 @@ public class WeaponManager : MonoBehaviourPunCallbacks
     public WeaponAbstract currentWeapon = null;
     public WeaponAbstract.WeaponTypes currentWeaponType;
 
+    private GameObject currentWeaponObject;
+
 
     private void Start()
     {
@@ -38,6 +40,12 @@ public class WeaponManager : MonoBehaviourPunCallbacks
         return null;
     }
 
+    [PunRPC]
+    private void SetParent()
+    {
+        currentWeaponObject.transform.parent = this.transform;
+    }
+    
     public void AddNewWeapon(GameObject weapon)
     {
         if(currentWeapon)
@@ -49,7 +57,9 @@ public class WeaponManager : MonoBehaviourPunCallbacks
         
 
         GameObject newWeapon = PhotonNetwork.Instantiate(weapon.name, this.transform.position, Quaternion.identity);
-        newWeapon.transform.parent = this.transform;
+        currentWeaponObject = newWeapon;
+        photonView.RPC("SetParent", RpcTarget.AllBuffered);
+        //newWeapon.transform.parent = this.transform;
       
         currentWeapon = newWeapon.GetComponent<WeaponAbstract>();
         currentWeaponType = currentWeapon.weaponType;
@@ -58,10 +68,7 @@ public class WeaponManager : MonoBehaviourPunCallbacks
             newWeapon.transform.localScale = new Vector3(0.6f,0.6f, 0.6f);
         else
             newWeapon.transform.localScale = new Vector3(-0.3f,0.3f, 0.3f);
-            
-            
         
-
     }
-    
+
 }

@@ -57,16 +57,16 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/UIBtns.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponSaber.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PlayerEnterGameDuty.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponPositioning.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Bullet.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/WeaponManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GunPositioning.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/AimingDirection.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GunWeaponAbstract.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Action.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PlayerMatchData.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/WeaponAbstract.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponPositioning.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponAbstract.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/WeaponManager.cs" />
       </list>
     </option>
   </component>
@@ -134,6 +134,7 @@
       <workItem from="1603126139257" duration="1317000" />
       <workItem from="1603697875552" duration="868000" />
       <workItem from="1603767163651" duration="8593000" />
+      <workItem from="1604228916262" duration="2323000" />
     </task>
     <servers />
   </component>
