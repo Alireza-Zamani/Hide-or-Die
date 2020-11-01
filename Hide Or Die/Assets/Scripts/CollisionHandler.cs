@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class CollisionHandler : MonoBehaviourPunCallbacks
 {
+	private int hasLock = 0;
+	public int HasLock { get => hasLock; set => hasLock = value; }
 
 	private GameObject actionBtn = null;
 	private GameObject lockBtn = null;
@@ -41,22 +43,30 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 		{
 			UpdateActionBtn(true);
 
-			// If the other is the door
-			DoorInteractable doorInteractable = other.gameObject.GetComponent<DoorInteractable>();
-			if (doorInteractable != null && Team == 2)
+			if (HasLock != 0)
 			{
-				UpdateLockBtn(true, doorInteractable);
+				// If the other is the door
+				DoorInteractable doorInteractable = other.gameObject.GetComponent<DoorInteractable>();
+				if (doorInteractable != null && Team == 2)
+				{
+					UpdateLockBtn(true, doorInteractable);
+				}
 			}
+			
 		}
 	}
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
-		DoorInteractable doorInteractable = other.gameObject.GetComponent<DoorInteractable>();
-		if (doorInteractable != null && Team == 2)
+		if (HasLock != 0)
 		{
-			UpdateLockBtn(false, doorInteractable);
+			DoorInteractable doorInteractable = other.gameObject.GetComponent<DoorInteractable>();
+			if (doorInteractable != null && Team == 2)
+			{
+				UpdateLockBtn(false, doorInteractable);
+			}
 		}
+		
 
 		// If we have exited an interactable object turn off the action btn but if the object is our child then dont because we want to redo the action later
 		if (other.tag == "Interactable" && other.gameObject.transform.parent != transform && transform.childCount == 1)
@@ -81,20 +91,28 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 
 	private void UpdateActionBtn(bool activity)
 	{
-		actionBtn.SetActive(activity);
+		if (photonView.IsMine)
+		{
+			actionBtn.SetActive(activity);
+		}
 	}
 
-	private void UpdateLockBtn(bool activity , DoorInteractable doorInteractable)
+	public void UpdateLockBtn(bool activity , DoorInteractable doorInteractable)
 	{
 		lockBtn.SetActive(activity);
-		if (doorInteractable.isLocked)
+
+		if(doorInteractable != null)
 		{
-			lockBtnText.text = "UnLock";
+			if (doorInteractable.isLocked)
+			{
+				lockBtnText.text = "UnLock";
+			}
+			else
+			{
+				lockBtnText.text = "Lock";
+			}
 		}
-		else
-		{
-			lockBtnText.text = "Lock";
-		}
+		
 	}
 
 }

@@ -38,22 +38,6 @@ public class TrapObjectiveInteractability : MonoBehaviourPunCallbacks, IInteract
 
 				iplayer.AddComponent(TrapClassName);
 
-				//switch (TrapClassName)
-				//{
-				//	case "Miner":
-				//		parent.gameObject.AddComponent<Miner>();
-				//		break;
-				//	case "Poisoner":
-				//		parent.gameObject.AddComponent<Poisoner>();
-				//		break;
-				//	case "BearTraper":
-				//		parent.gameObject.AddComponent<BearTraper>();
-				//		break;
-				//	case "TrapDetectorBeeper":
-				//		parent.gameObject.AddComponent<TrapDetectorBeeper>();
-				//		break;
-				//}
-
 				if (photonView.IsMine)
 				{
 					DestroyGameObject();

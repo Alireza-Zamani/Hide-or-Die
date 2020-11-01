@@ -189,7 +189,15 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	public void AddComponent(string component)
 	{
-
+		// UI
+		if (photonView.IsMine)
+		{
+			if ((int)PhotonNetwork.LocalPlayer.CustomProperties["Team"] == 2)
+			{
+				canvas.transform.GetChild(6).gameObject.SetActive(true);
+			}
+		}
+		
 		switch (component)
 		{
 			case "Miner":
@@ -203,6 +211,13 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 				break;
 			case "TrapDetectorBeeper":
 				gameObject.AddComponent<TrapDetectorBeeper>();
+				break;
+			case "Locker":
+				if (photonView.IsMine)
+				{
+					GetComponent<CollisionHandler>().HasLock = 2;
+					canvas.transform.GetChild(6).gameObject.SetActive(false);
+				}
 				break;
 		}
 	}

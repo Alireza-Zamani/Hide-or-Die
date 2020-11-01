@@ -30,8 +30,9 @@ public class MeleeWeaponPositioning : MonoBehaviourPunCallbacks
         if (!photonView.IsMine)
         {
             Destroy(this);
+            return;
         }
-        
+
         currentState = States.Targeting;
         
         parent = transform.parent;

@@ -143,7 +143,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 		{
 			GameObject newTrap =  PhotonNetwork.Instantiate(trapObjectivePrefab.name, trapObjectivesSpawnPoints[i].position, Quaternion.identity);
 			string trapClassName = null;
-			int rand = UnityEngine.Random.Range(1 , 4);
+			int rand = UnityEngine.Random.Range(1 , 5);
 			switch (rand)
 			{
 				case 1:
@@ -155,9 +155,13 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 				case 3:
 					trapClassName = "BearTraper";
 					break;
+				case 4:
+					trapClassName = "Locker";
+					break;
 				default:
 					trapClassName = "Miner";
 					break;
+
 			}
 			newTrap.GetComponent<TrapObjectiveInteractability>().TrapClassName = trapClassName;
 		}

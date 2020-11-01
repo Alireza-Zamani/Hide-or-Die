@@ -12,6 +12,8 @@ public class Action : MonoBehaviourPunCallbacks
 	[Range(0, 5)] [SerializeField] private float radiousOfAction = 0f;
 	[SerializeField] private LayerMask actionableLayerMask = new LayerMask();
 
+	private GameObject canvas = null;
+
 	private MovementAbstract movementClass = null;
 
 	private Text lockBtnText = null;
@@ -56,7 +58,7 @@ public class Action : MonoBehaviourPunCallbacks
 		{
 			return;
 		}
-
+		canvas = GameObject.FindGameObjectWithTag("UI").gameObject;
 		movementClass = GetComponent<MovementAbstract>();
 		ability = GetComponent<AbilityAbstract>();
 		trapClass = GetComponent<TrapAbstract>();
@@ -217,6 +219,11 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private void OnLockBtn()
 	{
+		if (GetComponent<CollisionHandler>().HasLock == 0)
+		{
+			GetComponent<CollisionHandler>().UpdateLockBtn(false , null);
+			return;
+		}
 		// Lock The Door
 		photonView.RPC("Lock", RpcTarget.AllBuffered);
 		print("Door Locked");
@@ -233,6 +240,7 @@ public class Action : MonoBehaviourPunCallbacks
 		if (trapClass != null)
 		{
 			trapClass.SetTrap();
+			canvas.transform.GetChild(6).gameObject.SetActive(false);
 			Destroy(trapClass);
 		}
 	}
@@ -289,6 +297,7 @@ public class Action : MonoBehaviourPunCallbacks
 	[PunRPC]
 	public void Lock()
 	{
+		
 		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, actionableLayerMask);
 		float dist = Mathf.Infinity;
 		GameObject newInteractable = null;
@@ -315,6 +324,10 @@ public class Action : MonoBehaviourPunCallbacks
 			{
 				if (doorInteractable.LockDoor(true))
 				{
+					if (photonView.IsMine)
+					{
+						GetComponent<CollisionHandler>().HasLock--;
+					}
 					lockBtnText.text = "UnLock";
 				}
 			}
@@ -326,6 +339,7 @@ public class Action : MonoBehaviourPunCallbacks
 				}
 				
 			}
+			
 			doorInteractable = null;
 		}
 	}

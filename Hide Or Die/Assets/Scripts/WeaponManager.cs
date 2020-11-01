@@ -47,7 +47,6 @@ public class WeaponManager : MonoBehaviourPunCallbacks
         if(currentWeapon)
             PhotonNetwork.Destroy(currentWeapon.gameObject);
         
-
         GameObject newWeapon = PhotonNetwork.Instantiate(weapon.name, this.transform.position, Quaternion.identity);
         newWeapon.transform.parent = this.transform;
       

@@ -37,7 +37,7 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 	private void RedTeamFirstCondition()
 	{
 		SetShootBtnActivity(false);
-		//SetMineBtnActivity(false);
+		SetMineBtnActivity(false);
 	}
 
 	private void BlueTeamFirstCondition()
