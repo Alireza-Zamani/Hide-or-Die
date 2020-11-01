@@ -9,6 +9,7 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 	private int hasLock = 0;
 	public int HasLock { get => hasLock; set => hasLock = value; }
 
+	private bool hasExitedBuyZone = false;
 	private GameObject actionBtn = null;
 	private GameObject lockBtn = null;
 	private Text lockBtnText = null;
@@ -32,10 +33,18 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		// Check if we have triggered the objective reachpoint and we have objective with ourself
-		if(other.tag == "ObjectiveReachPoint" && gameObject.tag == "BlueTeam" && transform.childCount != 1 && transform.GetChild(1).gameObject.tag == "Interactable")
+		if(other.tag == "ObjectiveReachPoint" && gameObject.tag == "BlueTeam" && transform.childCount != 1)
 		{
-			PlayerMatchData playerInterface = GetComponent<PlayerMatchData>();
-			playerInterface.ObjectiveReached();
+			foreach(Transform trans in transform)
+			{
+				if(trans.gameObject.tag == "Interactable")
+				{
+					PlayerMatchData playerInterface = GetComponent<PlayerMatchData>();
+					playerInterface.ObjectiveReached();
+					break;
+				}
+			}
+			
 		}
 
 		// If entered an interactable one then update action btn
@@ -78,9 +87,10 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 		if(other.tag == "BuyZone")
 		{
 			buyAvailibility.CanBuy = false;
-			if(gameObject.tag == "BlueTeam")
+			if (gameObject.tag == "BlueTeam" && !hasExitedBuyZone)
 			{
 				other.gameObject.tag = "ObjectiveReachPoint";
+				hasExitedBuyZone = true;
 			}
 			else
 			{
