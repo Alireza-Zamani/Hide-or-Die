@@ -16,6 +16,10 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 
 	private DroneMovement droneMovement = null;
 
+	[Header("Colors OF Teams")]
+	[SerializeField] private Color blueTeamColor = Color.white;
+	[SerializeField] private Color redTeamColor = Color.white;
+
 
 	public void PlayerEntered()
 	{
@@ -103,14 +107,21 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 	private void SetLAyerAndTag(int team)
 	{
 		string tagName = null;
+		SpriteRenderer sprite = GetComponent<SpriteRenderer>();
 		if (team == 1)
 		{
 			tagName = "BlueTeam";
+			sprite.color = blueTeamColor;
+			gameObject.name = "Blue Player";
 		}
 		else if (team == 2)
 		{
 			tagName = "RedTeam";
+			sprite.color = redTeamColor;
+			gameObject.name = "Red Player";
 		}
 		gameObject.tag = tagName;
+
+		// Set the players color
 	}
 }

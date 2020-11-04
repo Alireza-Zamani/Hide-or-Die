@@ -29,6 +29,7 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 	public bool ChoosedAbility { get => choosedAbility; set => choosedAbility = value; }
 
 
+
 	private void Awake()
 	{
 		foreach(Transform trans in blueTeamClasses.transform)
@@ -109,7 +110,11 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 			}
 		}
 
-		ClassBtn(className);
+		if (!ChoosedAbility)
+		{
+			ClassBtn(className);
+
+		}
 	}
 
 	[PunRPC]

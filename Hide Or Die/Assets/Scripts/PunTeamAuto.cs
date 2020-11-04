@@ -34,6 +34,11 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	[SerializeField] private GameObject redPlayersContainer = null;
 	[SerializeField] private GameObject players = null;
 
+	[Header("Players Status")]
+	[Range(0, 2)] [SerializeField] private float autoClassSelectWaitForMasterCheck = 1f;
+	[Range(0, 2)] [SerializeField] private float autoClassSelectWaitForSecondCurrentSelection= 1f;
+
+
 	[Range(0, 10)] [SerializeField] private float startMatchWaitTimeCountDown = 5f;
 	private float startMatchWaitTimeCountDownTemp = 0;
 	private bool matchIsStarting = false;
@@ -63,7 +68,7 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		if (masterClientForceSelectAbility && !masterClientForceSelectAbilityStarted)
 		{
 			masterClientForceSelectAbilityStarted = true;
-			Invoke("SetARandomeAbilityForClients", 1);
+			Invoke("SetARandomeAbilityForClients", autoClassSelectWaitForMasterCheck);
 			masterClientForceSelectAbility = false;
 		}
 		// Wait until the match is ready to start the ncount down teh timer to start the match
@@ -115,7 +120,7 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 			notChoosedAbilityPlayersUserIds.RemoveAt(0);
 			photonView.RPC("CheckIfThePlayerCanChooseRandomeAbility", RpcTarget.AllBuffered, userId);
 		}
-		yield return new WaitForSeconds(1f);
+		yield return new WaitForSeconds(autoClassSelectWaitForSecondCurrentSelection);
 		StartCoroutine("StartRandomeAbilityCoroutine");
 	}
 

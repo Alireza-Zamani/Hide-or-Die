@@ -4283,6 +4283,10 @@ MonoBehaviour:
   countDownTimer: 10
   timerCounter: {fileID: 2137736086}
   timeCounterPanel: {fileID: 1121460863}
+  playersPrefab:
+  - {fileID: 6881557109121812190, guid: 7d7377f2894b73648bfee652295c47e6, type: 3}
+  - {fileID: 3739296205695652388, guid: 7290449f519d56641a7b888d357bdfbf, type: 3}
+  - {fileID: 276301377280079740, guid: 517802bd1ed047e4fbf5ad407e820c59, type: 3}
   bluePlayerPref: {fileID: 8905920172784027646, guid: f0d807da7a77cc44f91d19fd19e2b6c2,
     type: 3}
   redPlayerPref: {fileID: 8905920172784027646, guid: db468d9295075f744befc499a75fc684,

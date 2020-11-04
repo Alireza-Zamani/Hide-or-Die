@@ -1500,6 +1500,8 @@ MonoBehaviour:
   bluePlayersContainer: {fileID: 623045362}
   redPlayersContainer: {fileID: 1226589385}
   players: {fileID: 5196940320297933885, guid: cbf9c306a5b1b464c958a1c70a3ddd8a, type: 3}
+  autoClassSelectWaitForMasterCheck: 1
+  autoClassSelectWaitForSecondCurrentSelection: 1
   startMatchWaitTimeCountDown: 10
 --- !u!1 &832084315
 GameObject:

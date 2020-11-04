@@ -19,8 +19,10 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[SerializeField] private Text timerCounter = null;
 	[SerializeField] private GameObject timeCounterPanel = null;
 
+
 	[Header("Prefabs")]
-	[SerializeField] private GameObject bluePlayerPref = null;
+	[SerializeField] private GameObject[] playersPrefab = null;
+ 	[SerializeField] private GameObject bluePlayerPref = null;
 	[SerializeField] private GameObject redPlayerPref = null;
 	[SerializeField] private GameObject objectivePrefab = null;
 	[SerializeField] private GameObject trapObjectivePrefab = null;
@@ -36,6 +38,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[SerializeField] private Transform[] trapObjectivesSpawnPoints = null;
 
 	private int team = 0;
+	private string className = null;
 
 	private bool timerStarted = false;
 	private float counter = 0f;
@@ -85,6 +88,45 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 			team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
 
+			if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Class"))
+			{
+				Debug.LogError("No hashTable exists for class");
+			}
+
+			className = (string)PhotonNetwork.LocalPlayer.CustomProperties["Class"];
+
+			GameObject spawnablePlayerPrefab = playersPrefab[0];
+			foreach (GameObject go in playersPrefab)
+			{
+				if(go.name == className)
+				{
+					spawnablePlayerPrefab = go;
+					break;
+				}
+			}
+			
+
+			// Team Blue
+			if (team == 1)
+			{
+				player = PhotonNetwork.Instantiate(spawnablePlayerPrefab.name, blueTeamSpawnPoint.position, Quaternion.identity);
+
+				// Set Player Statues
+				playerInterface = player.GetComponent<IPlayer>();
+				playerInterface.TeamSetter("BlueTeam");
+			}
+			// Team Red
+			else if (team == 2)
+			{
+				player = PhotonNetwork.Instantiate(spawnablePlayerPrefab.name, redTeamSpawnPoint.position, Quaternion.identity);
+
+				// Set Player Statues
+				playerInterface = player.GetComponent<IPlayer>();
+				playerInterface.TeamSetter("RedTeam");
+			}
+
+
+			/*
 			// Team Blue
 			if(team == 1)
 			{
@@ -103,7 +145,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 				playerInterface = player.GetComponent<IPlayer>();
 				playerInterface.TeamSetter("RedTeam");
 			}
-
+			*/
 
 			// Change the layer to Player so that we wont be our own enemy because at the first all of the layers are at Enemy
 			player.gameObject.layer = LayerMask.NameToLayer("Player");

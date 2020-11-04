@@ -14,17 +14,17 @@ public class AnimatorController : MonoBehaviour
 
 	public void CanWalk()
 	{
-		if (!anim.GetBool("Walk"))
+		if (!anim.GetBool("walk"))
 		{
-			anim.SetBool("Walk", true);
+			anim.SetBool("walk", true);
 		}
 	}
 
 	public void CanIdle()
 	{
-		if (anim.GetBool("Walk"))
+		if (anim.GetBool("walk"))
 		{
-			anim.SetBool("Walk", false);
+			anim.SetBool("walk", false);
 		}
 	}
 
