@@ -1,18 +1,44 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityShield : MonoBehaviour
+public class AbilityShield : AbilityAbstract
 {
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField]
+    private float shieldLength = 3f;
+
+    
+    private PlayerMatchData playerMatchData;
+
+    private void Start()
     {
-        
+        playerMatchData = GetComponent<PlayerMatchData>();
+        if (!playerMatchData)
+            throw new Exception("Player has no PlayerMatchData! WTF!!!!");
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void ExecuteAbility()
     {
-        
+        playerMatchData.CanTakeDamage = false;
+
+        StartCoroutine(ShieldLengthCountDown(shieldLength, playerMatchData));
+
     }
+
+    IEnumerator ShieldLengthCountDown(float shieldLengthTime, PlayerMatchData playerMatchData)
+    {
+        yield return new WaitForSeconds(shieldLengthTime);
+
+        playerMatchData.CanTakeDamage = true;
+    }
+
+    public override void AbilityIsStarting(GameObject aimingPref)
+    {
+        base.AbilityIsStarting(aimingPref);
+    }
+    
+    
+    
 }

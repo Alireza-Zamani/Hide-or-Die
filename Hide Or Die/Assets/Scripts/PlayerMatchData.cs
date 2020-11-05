@@ -20,13 +20,7 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	[SerializeField] private float health = 100;
 
 	public float Health { get => health; set => health = value; }
-
-	public bool CanTakeDamage
-	{
-		get => canTakeDamage;
-		set => canTakeDamage = value;
-	}
-
+	
 	private string team = null;
 
 	private string className = null;
@@ -40,6 +34,7 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	private int playerGroup = 0;
 
 	private bool canTakeDamage = true;
+	public bool CanTakeDamage { get => canTakeDamage; set => canTakeDamage = value; }
 
 	private void Awake()
 	{
@@ -265,6 +260,9 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	[PunRPC]
 	public void RPCTakeDamage(float damageAmount)
 	{
+		if (!canTakeDamage)
+			return;
+		
 		Health -= damageAmount;
 
 		healthBar.transform.localScale = new Vector3(Health / 100f , healthBar.transform.localScale.y, healthBar.transform.localScale.z);
