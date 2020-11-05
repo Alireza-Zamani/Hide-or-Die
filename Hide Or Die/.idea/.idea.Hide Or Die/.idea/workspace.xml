@@ -69,8 +69,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/PlayerMatchData.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/AbilityDoubleDamage.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/AbilityShield.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/PunTeamAuto.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PunTeam.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/PunTeamAuto.cs" />
       </list>
     </option>
   </component>
@@ -141,6 +141,7 @@
       <workItem from="1604228916262" duration="5950000" />
       <workItem from="1604475571571" duration="2465000" />
       <workItem from="1604573442268" duration="1242000" />
+      <workItem from="1604580271131" duration="1087000" />
     </task>
     <servers />
   </component>

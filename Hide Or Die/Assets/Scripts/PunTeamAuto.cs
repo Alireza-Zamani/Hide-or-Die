@@ -362,7 +362,7 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 				}
 				else if (BlueTeamPlayerCount == maxPlayerCount)
 				{
-					blueTeamStats.text = "Our Team is Full Waiting For Opponents Players...";
+					blueTeamStats.text = "Waiting For Opponents Team...";
 				}
 				if (RedTeamPlayerCount != maxPlayerCount)
 				{
@@ -370,7 +370,7 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 				}
 				else if (RedTeamPlayerCount == maxPlayerCount)
 				{
-					redTeamStats.text = "Our Team is Full Waiting For Opponents Players...";
+					redTeamStats.text = "Waiting For Opponents Team...";
 				}
 			}
 
