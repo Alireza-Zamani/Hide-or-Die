@@ -85,23 +85,21 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 
 				canForceSelectAbility = false;
 			}
-
-			timeCounter += Time.deltaTime;
-			if(timeCounter >= 1)
+			if (PhotonNetwork.IsMasterClient)
 			{
-				timeCounter = 0f;
-				startMatchWaitTimeCountDownTemp--;
-				blueTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
-				redTeamStats.text = "Starting The Match in : " + startMatchWaitTimeCountDownTemp.ToString();
-				if (startMatchWaitTimeCountDownTemp == 0)
+				timeCounter += Time.deltaTime;
+				if (timeCounter >= 1)
 				{
-					EnterTheGame();
-					matchIsStarting = false;
-					return;
+					timeCounter = 0f;
+					startMatchWaitTimeCountDownTemp--;
+					photonView.RPC("EnteringGameTimeCounteDown", RpcTarget.AllBuffered, startMatchWaitTimeCountDownTemp);
 				}
 			}
+			
 		}
 	}
+
+	
 
 	private void SetARandomeAbilityForClients()
 	{
@@ -274,6 +272,18 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 
 	#region RPCs
 
+	[PunRPC]
+	private void EnteringGameTimeCounteDown(float timer)
+	{
+		blueTeamStats.text = "Starting The Match in : " + timer.ToString();
+		redTeamStats.text = "Starting The Match in : " + timer.ToString();
+		if (timer == 0)
+		{
+			EnterTheGame();
+			matchIsStarting = false;
+			return;
+		}
+	}
 
 	[PunRPC]
 	private void CheckIfThePlayerCanChooseRandomeAbility(string userId)

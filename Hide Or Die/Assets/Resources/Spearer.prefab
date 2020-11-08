@@ -333,7 +333,11 @@ MonoBehaviour:
     m_Bits: 16384
   bodyHandler: {fileID: 5723160479327719296, guid: 2fd18c106785dbc4ebdb33c92f1640ae,
     type: 3}
+  spectDeathDrone: {fileID: 7689045709740466333, guid: 8d865d0000ef6324193012a2157e2249,
+    type: 3}
   health: 100
+  gameManager: {fileID: 0}
+  playerGroup: 0
 --- !u!114 &2643971867092963232
 MonoBehaviour:
   m_ObjectHideFlags: 0

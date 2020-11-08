@@ -58,23 +58,22 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 	private void Update()
 	{
-		if (timerStarted)
+		if (PhotonNetwork.IsMasterClient)
 		{
-			counter += Time.deltaTime;
-			if(counter >= 1)
+			if (timerStarted)
 			{
-				counter = 0;
-				CountDownTimer -= 1;
-				timerCounter.text = CountDownTimer.ToString();
-				if(CountDownTimer == 0)
+				counter += Time.deltaTime;
+				if (counter >= 1)
 				{
-					playerEnterGameDuty.PlayerEnteredFinished();
-					timeCounterPanel.SetActive(false);
-					timerStarted = false;
+					counter = 0;
+					CountDownTimer -= 1;
+					photonView.RPC("PlayerEnteryWaiting", RpcTarget.AllBuffered, countDownTimer);
 				}
 			}
 		}
 	}
+
+	
 
 	private void SpawnHeros()
 	{
@@ -206,6 +205,18 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 			}
 			newTrap.GetComponent<TrapObjectiveInteractability>().TrapClassName = trapClassName;
+		}
+	}
+
+	[PunRPC]
+	private void PlayerEnteryWaiting(float CountDownTimer)
+	{
+		timerCounter.text = CountDownTimer.ToString();
+		if (CountDownTimer == 0)
+		{
+			playerEnterGameDuty.PlayerEnteredFinished();
+			timeCounterPanel.SetActive(false);
+			timerStarted = false;
 		}
 	}
 }

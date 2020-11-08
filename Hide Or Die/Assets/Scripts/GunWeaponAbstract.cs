@@ -14,8 +14,7 @@ public class GunWeaponAbstract : WeaponAbstract
     [SerializeField] private GameObject shootingPoint;
     [SerializeField] private GameObject aimingLine;
     [SerializeField] private GameObject bulletPrefab;
-    
-    
+
 
     public bool isReloading = false;
     protected virtual void Awake()
@@ -26,11 +25,13 @@ public class GunWeaponAbstract : WeaponAbstract
         weaponType = WeaponTypes.Gun;
     }
 
+
     public override void Attack()
     {
         if (isReloading)
             return;
-        
+
+
         GameObject bullet =
             PhotonNetwork.Instantiate(bulletPrefab.name, shootingPoint.transform.position, Quaternion.identity);
 
@@ -54,6 +55,8 @@ public class GunWeaponAbstract : WeaponAbstract
             bulletMainScript.TargetTag = "RedTeam";
         
         aimingDirection.enabled = false;
+
+
         aimingLine.SetActive(false);
         isReloading = true;
         gunPositioning.currentState = GunPositioning.States.Reloading;
@@ -64,14 +67,16 @@ public class GunWeaponAbstract : WeaponAbstract
     {
         if (isReloading)
             return;
-        
+
+
         aimingDirection.enabled = true;
         aimingLine.SetActive(true);
+
         
     }
 
 
-    private IEnumerator ReloadingCounter()
+	private IEnumerator ReloadingCounter()
     {
         yield return new WaitForSeconds(6f);
         isReloading = false;

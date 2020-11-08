@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 
 
-public class Revive : MonoBehaviour
+public class Revive : MonoBehaviourPunCallbacks
 {
 	[Range(0, 10)] [SerializeField] private float radiousOfAction = 5f;
 
@@ -18,14 +18,12 @@ public class Revive : MonoBehaviour
 	private IPlayer playerInterface = null;
 	public IPlayer PlayerInterface { get => playerInterface; set => playerInterface = value; }
 
-	private PhotonView photonView;
 
 	private string team = null;
 
 
 	private void Start()
 	{
-		photonView = PhotonView.Get(this);
 		if (!photonView.IsMine)
 		{
 			return;
@@ -50,7 +48,7 @@ public class Revive : MonoBehaviour
 	[PunRPC]
 	private void RPCReviving()
 	{
-		PhotonNetwork.Instantiate(reviveEffectPrefab.name, new Vector3(transform.position.x, transform.position.y, reviveEffectPrefab.transform.position.z), Quaternion.identity);
+		Instantiate(reviveEffectPrefab, new Vector3(transform.position.x, transform.position.y, reviveEffectPrefab.transform.position.z), Quaternion.identity);
 
 		// Finds all players in the radious
 		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, revivableLayerMask);
@@ -63,14 +61,13 @@ public class Revive : MonoBehaviour
 			if (hittest.collider == null)
 			{
 				DeadBodyHandler deadBodyHandler = coll.collider.gameObject.GetComponent<DeadBodyHandler>();
-				if (deadBodyHandler != null && coll.collider.gameObject.transform.GetChild(0).gameObject.tag != team)
+				if (deadBodyHandler != null && coll.collider.gameObject.transform.GetChild(0).gameObject.tag == team)
 				{
 					deadBodyHandler.ResetPlayer();
-					print("Is Revivingthe " + coll.collider.gameObject.name);
-					DestroyGameObject();
 					return;
 				}
 			}
 		}
+
 	}
 }

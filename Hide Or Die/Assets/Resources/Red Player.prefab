@@ -411,6 +411,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1397fcfc7b1fe2f4287fdafe63456a70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blueTeamColor: {r: 1, g: 1, b: 1, a: 1}
+  redTeamColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &2297618804712147387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +444,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   bodyHandler: {fileID: 5723160479327719296, guid: 2fd18c106785dbc4ebdb33c92f1640ae,
+    type: 3}
+  spectDeathDrone: {fileID: 7689045709740466333, guid: 8d865d0000ef6324193012a2157e2249,
     type: 3}
   health: 100
 --- !u!114 &7578806004043672660

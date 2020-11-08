@@ -13,9 +13,12 @@ public class AbilityHealer : AbilityAbstract
 
 	GameObject newAiming = null;
 
+	private GameObject fixedJoyStick = null;
+
 	private void Awake()
 	{
 		healPrefab = Resources.Load("Heal", typeof(GameObject)) as GameObject;
+		fixedJoyStick = GameObject.FindGameObjectWithTag("UI").transform.GetChild(8).gameObject;
 	}
 
 	private void Start()
@@ -25,7 +28,10 @@ public class AbilityHealer : AbilityAbstract
 
 	public override void AbilityIsStarting(GameObject aimingPref)
 	{
-		//newAiming = Instantiate(aimingPref, transform.position, Quaternion.identity);
+		if (fixedJoyStick.activeInHierarchy)
+		{
+			fixedJoyStick.SetActive(false);
+		}
 	}
 
 

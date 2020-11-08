@@ -14,6 +14,8 @@ public class AbilityGrenade : AbilityAbstract
 
 	GameObject newAiming = null;
 
+	private AimingDirection aiminingScaler = null;
+
 	private void Awake()
 	{
 		grenadePrefab = Resources.Load("Grenade", typeof(GameObject)) as GameObject;
@@ -27,8 +29,37 @@ public class AbilityGrenade : AbilityAbstract
 	public override void AbilityIsStarting(GameObject aimingPref)
 	{
 		newAiming = Instantiate(aimingPref, transform.position, Quaternion.identity);
+		aiminingScaler = newAiming.GetComponent<AimingDirection>();
 	}
 
+	private void Update()
+	{
+		Vector2 aimingDirection = Vector2.zero;
+
+		if (newAiming != null && aiminingScaler != null)
+		{
+			aimingDirection = aiminingScaler.AimDirection;
+			if (aimingDirection.x <= 0.2f)
+			{
+				if (transform.localScale.x > 0)
+				{
+					Vector2 newScale = transform.localScale;
+					newScale.x = -5;
+					transform.localScale = newScale;
+				}
+			}
+			//Flip ToLeft
+			else if (aimingDirection.x >= -0.2f)
+			{
+				if (transform.localScale.x < 0)
+				{
+					Vector2 newScale = transform.localScale;
+					newScale.x = 5;
+					transform.localScale = newScale;
+				}
+			}
+		}
+	}
 
 	public override void ExecuteAbility()
 	{
@@ -37,6 +68,7 @@ public class AbilityGrenade : AbilityAbstract
 		{
 			aimingDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
 			Destroy(newAiming);
+			newAiming = null;
 		}
 
 		aimingDirection = -aimingDirection;

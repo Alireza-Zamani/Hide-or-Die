@@ -68,6 +68,10 @@ MonoBehaviour:
   - DestroyComponent
   - RPCSetisStucked
   - SetParent
+  - RPCResetPlayer
+  - RPCAttachTheDeadBody
+  - PlayerEnteryWaiting
+  - EnteringGameTimeCounteDown
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

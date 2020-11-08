@@ -13,6 +13,8 @@ public class AbilitySpear : AbilityAbstract
 
 	GameObject newAiming = null;
 
+	private AimingDirection aiminingScaler = null;
+
 	private void Awake()
 	{
 		spearPrefab = Resources.Load("Spear", typeof(GameObject)) as GameObject;
@@ -26,6 +28,36 @@ public class AbilitySpear : AbilityAbstract
 	public override void AbilityIsStarting(GameObject aimingPref)
 	{
 		newAiming = Instantiate(aimingPref, transform.position, Quaternion.identity);
+		aiminingScaler = newAiming.GetComponent<AimingDirection>();
+	}
+
+	private void Update()
+	{
+		Vector2 aimingDirection = Vector2.zero;
+
+		if (newAiming != null && aiminingScaler != null)
+		{
+			aimingDirection = aiminingScaler.AimDirection;
+			if (aimingDirection.x <= 0.2f)
+			{
+				if (transform.localScale.x > 0)
+				{
+					Vector2 newScale = transform.localScale;
+					newScale.x = -5;
+					transform.localScale = newScale;
+				}
+			}
+			//Flip ToLeft
+			else if (aimingDirection.x >= -0.2f)
+			{
+				if (transform.localScale.x < 0)
+				{
+					Vector2 newScale = transform.localScale;
+					newScale.x = 5;
+					transform.localScale = newScale;
+				}
+			}
+		}
 	}
 
 
@@ -36,6 +68,7 @@ public class AbilitySpear : AbilityAbstract
 		{
 			aimingDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
 			Destroy(newAiming);
+			newAiming = null;
 		}
 
 		aimingDirection = -aimingDirection;

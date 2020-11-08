@@ -28,6 +28,10 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 	private bool choosedAbility = false;
 	public bool ChoosedAbility { get => choosedAbility; set => choosedAbility = value; }
 
+	private float waitUntilNextTap = 0.5f;
+	private float waitingtimer = 0f;
+	private bool shouldWait = false;
+
 
 
 	private void Awake()
@@ -43,8 +47,26 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 		}
 	}
 
+	private void Update()
+	{
+		if (shouldWait)
+		{
+			waitingtimer += Time.deltaTime;
+			if(waitingtimer >= waitUntilNextTap)
+			{
+				waitingtimer = 0f;
+				shouldWait = false;
+			}
+		}
+	}
+
 	public void ClassBtn(string className)
 	{
+		if (shouldWait)
+		{
+			return;
+		}
+		shouldWait = true;
 		ChoosedAbility = true;
 		// See which team he is in
 		if (blueTeamClasses.activeInHierarchy)

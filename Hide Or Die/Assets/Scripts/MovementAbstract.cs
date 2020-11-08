@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Unity.Mathematics;
 
 public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 {
@@ -19,7 +20,8 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 	//Fields
 	[Range(0, 2000)] [SerializeField] protected float moveSpeed = 1000f;
 	[Range(0, 50)] [SerializeField] protected float viewDistance = 10f;
-	
+
+
 
 	#endregion
 
@@ -59,6 +61,11 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 		}
 
 		SetTheFOVSettings();
+		SetTheFollowTarget();
+	}
+
+	public void SetTheFollowTarget()
+	{
 		GameObject.FindGameObjectWithTag("CinemachineCamera").GetComponent<CameraFollow>().SettheFollowTarget(transform);
 	}
 

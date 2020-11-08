@@ -34,6 +34,8 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private WeaponManager weaponManager;
 
+	private GameObject weaponFixedJoyStick = null;
+
 	[SerializeField] private GameObject shopCanvas;
 
 	[SerializeField] private GameObject saberPrefab;
@@ -50,6 +52,11 @@ public class Action : MonoBehaviourPunCallbacks
 		}
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, radiousOfAction);
+	}
+
+	private void Awake()
+	{
+		weaponFixedJoyStick = GameObject.FindGameObjectWithTag("UI").transform.GetChild(9).gameObject;
 	}
 
 	private void Start()
@@ -169,6 +176,10 @@ public class Action : MonoBehaviourPunCallbacks
 		}
 		else
 		{
+			if (weaponFixedJoyStick.activeInHierarchy)
+			{
+				weaponFixedJoyStick.SetActive(false);
+			}
 			weaponManager.currentWeapon.Attack();
 		}
 		

@@ -4,15 +4,20 @@ using UnityEngine;
 using Photon.Pun;
 
 
-public class DroneMovement : MovementAbstract
+public class DeathDroneMovement : MovementAbstract
 {
-
 	private GameObject playerGameObject = null;
 
 	public GameObject PlayerGameObject { get => playerGameObject; set => playerGameObject = value; }
 
+
 	public override void Start()
 	{
+		if (!photonView.IsMine)
+		{
+			Destroy(gameObject);
+			return;
+		}
 		base.Start();
 	}
 
@@ -20,7 +25,7 @@ public class DroneMovement : MovementAbstract
 	{
 		base.Update();
 	}
-	
+
 	public void SetToCharacter()
 	{
 		photonView.RPC("ChangeCharacter", RpcTarget.AllBuffered, playerGameObject.GetComponent<PlayerMovement>().photonView.ViewID);
@@ -37,5 +42,4 @@ public class DroneMovement : MovementAbstract
 	{
 		go.SetActive(activity);
 	}
-
 }

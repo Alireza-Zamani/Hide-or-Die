@@ -10,4 +10,6 @@ public abstract class AbilityAbstract : MonoBehaviourPunCallbacks
 
 	public virtual void ExecuteAbility() { }
 
+
+
 }

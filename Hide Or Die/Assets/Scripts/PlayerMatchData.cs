@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 
 public class PlayerMatchData : MonoBehaviour , IPlayer
@@ -16,6 +17,7 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	private SpriteRenderer healthBarSprite = null;
 
 	[SerializeField] private GameObject bodyHandler = null;
+	[SerializeField] private GameObject spectDeathDrone = null;
 
 	[SerializeField] private float health = 100;
 
@@ -27,11 +29,11 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	private PhotonView photonView;
 
-	private GameManager gameManager = null;
+	public GameManager gameManager = null;
 
 	private PlayerMovement playerMovement = null;
 
-	private int playerGroup = 0;
+	public int playerGroup = 0;
 
 	private bool canTakeDamage = true;
 	public bool CanTakeDamage { get => canTakeDamage; set => canTakeDamage = value; }
@@ -145,20 +147,31 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	public void Die()
 	{
-		GameObject newBodyHandler = Instantiate(bodyHandler, transform.position, Quaternion.identity);
+
 		if (photonView.IsMine)
 		{
-			if (canvas.activeInHierarchy)
-			{
-				newBodyHandler.GetComponent<DeadBodyHandler>().Canavs = canvas;
-				canvas.SetActive(false);
-			}
-		}
-		transform.parent = newBodyHandler.transform;
+			GameObject newBodyHandler = PhotonNetwork.Instantiate(bodyHandler.name, transform.position, Quaternion.identity);
+			newBodyHandler.GetComponent<DeadBodyHandler>().AtatchTheDeadBody(photonView.ViewID);
 
+			// Set the spect drone active
+			GameObject newSpectDeathDrone = PhotonNetwork.Instantiate(spectDeathDrone.name, transform.position, Quaternion.identity);
+			newBodyHandler.GetComponent<DeadBodyHandler>().SpectDeathDrone = newSpectDeathDrone;
+
+			// Set the canvas to not active
+			newBodyHandler.GetComponent<DeadBodyHandler>().Canavs = canvas;
+			for (int i = 1; i < canvas.transform.childCount; i++)
+			{
+				Button btn = canvas.transform.GetChild(i).gameObject.GetComponent<Button>();
+				if (btn != null)
+				{
+					btn.interactable = false;
+				}
+			}
+
+		}
 
 		// Update the all players of teams in the game manager
-		if(playerGroup == 1)
+		if (playerGroup == 1)
 		{
 			gameManager.TeamGroup1RemainedPlayers--;
 		}

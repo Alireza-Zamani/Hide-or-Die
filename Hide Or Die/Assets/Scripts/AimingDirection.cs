@@ -8,7 +8,9 @@ public class AimingDirection : MonoBehaviour
 	private Vector2 aimDirection = Vector2.zero;
 	public Vector2 AimDirection { get => aimDirection; set => aimDirection = value; }
 
-	private FloatingJoystick joystick = null;
+	//private FloatingJoystick joystick = null;
+	private FixedJoystick joystick = null;
+
 	private bool joystickChanged = false;
 
 
@@ -16,11 +18,19 @@ public class AimingDirection : MonoBehaviour
 
 	public virtual void Awake()
 	{
-		joystick = GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).GetComponent<FloatingJoystick>();
 	}
 
 	private void Start()
 	{
+		//joystick = GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).GetComponent<FloatingJoystick>();
+		if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(8).gameObject.activeInHierarchy)
+		{
+			joystick = GameObject.FindGameObjectWithTag("UI").transform.GetChild(8).GetComponent<FixedJoystick>();
+		}
+		else if (GameObject.FindGameObjectWithTag("UI").transform.GetChild(9).gameObject.activeInHierarchy)
+		{
+			joystick = GameObject.FindGameObjectWithTag("UI").transform.GetChild(9).GetComponent<FixedJoystick>();
+		}
 		Vector3 pos = transform.position;
 		pos.z = 100;
 		transform.position = pos;
@@ -69,9 +79,14 @@ public class AimingDirection : MonoBehaviour
 
 	public virtual Vector2 GetDirection()
 	{
+		//if(joystick == null)
+		//{
+		//	joystick = GameObject.FindGameObjectWithTag("UI").transform.GetChild(9).GetComponent<FixedJoystick>();
+		//}
 		//Horizontal Input
 		float horizontal = joystick.Horizontal;
 		
+
 
 		//Vertical Input
 		float vertical = joystick.Vertical;
