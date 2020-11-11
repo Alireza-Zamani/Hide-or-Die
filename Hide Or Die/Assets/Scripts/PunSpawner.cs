@@ -5,11 +5,14 @@ using UnityEngine.UI;
 using Photon.Pun;
 using System;
 using Unity.Mathematics;
+using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class PunSpawner : MonoBehaviourPunCallbacks
 {
 
 	private GameObject player = null;
+	private List<int> spawnedPlayers = new List<int>();
 
 	[SerializeField] private bool isTestMode = false;
 
@@ -17,6 +20,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[Range(0,60)] [SerializeField] private float countDownTimer = 10f;
 	public float CountDownTimer { get => countDownTimer; set => countDownTimer = value; }
 	[SerializeField] private Text timerCounter = null;
+	[SerializeField] private Text disconnectionError = null;
 	[SerializeField] private GameObject timeCounterPanel = null;
 
 
@@ -42,10 +46,11 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 	private bool timerStarted = false;
 	private float counter = 0f;
+	private GameManager gameManager = null;
 	private PlayerEnterGameDuty playerEnterGameDuty = null;
 	private CollisionHandler collisionHandler = null;
 	private IPlayer playerInterface = null;
-
+	private int playerGroup = 0;
 
 	private void Start()
 	{
@@ -54,6 +59,21 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			return;
 		}
 		SpawnHeros();
+		gameManager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<GameManager>();
+
+		if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group"))
+		{
+			Debug.LogError("No group setted for teh player");
+		}
+		else
+		{
+			playerGroup = (int)PhotonNetwork.LocalPlayer.CustomProperties["Group"];
+		}
+
+		if (PhotonNetwork.IsMasterClient)
+		{
+			Invoke("CheckIfAllThePlayersHaveJoined", 10f);
+		}
 	}
 
 	private void Update()
@@ -73,7 +93,40 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 		}
 	}
 
-	
+	private void CheckIfAllThePlayersHaveJoined()
+	{
+		int eachTeamPlayerSize = (int)PhotonNetwork.CurrentRoom.MaxPlayers / 2;
+		print(spawnedPlayers.Count);
+		if((spawnedPlayers.Count - 1) != (eachTeamPlayerSize * 2))
+		{
+			int team1Players = 0;
+			int team2Players = 0;
+			foreach (int spawnedPlayersteamNumber in spawnedPlayers)
+			{
+				if(spawnedPlayersteamNumber == 1)
+				{
+					team1Players++;
+				}
+				else
+				{
+					team2Players++;
+				}
+			}
+
+			int team1Remained = eachTeamPlayerSize - team1Players;
+			for (int i = 1; i <= team1Remained; i++)
+			{
+				photonView.RPC("DisconnectedPlayerNotSpawnedSenedFromMaster", RpcTarget.AllBuffered, 1);
+			}
+
+			int team2Remained = eachTeamPlayerSize - team2Players;
+			for (int i = 1; i <= team2Remained; i++)
+			{
+				photonView.RPC("DisconnectedPlayerNotSpawnedSenedFromMaster", RpcTarget.AllBuffered, 2);
+			}
+			print(team1Remained + "...................." + team2Remained);
+		}
+	}
 
 	private void SpawnHeros()
 	{
@@ -86,6 +139,13 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			}
 
 			team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
+
+			if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group"))
+			{
+				Debug.LogError("No hashTable exists for team");
+			}
+			photonView.RPC("RPCSendTheMasterWhenSpawnedThePlayer", RpcTarget.MasterClient, (int)PhotonNetwork.LocalPlayer.CustomProperties["Group"]);
+
 
 			if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Class"))
 			{
@@ -124,32 +184,8 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 				playerInterface.TeamSetter("RedTeam");
 			}
 
-
-			/*
-			// Team Blue
-			if(team == 1)
-			{
-				player = PhotonNetwork.Instantiate(bluePlayerPref.name, blueTeamSpawnPoint.position , Quaternion.identity);
-
-				// Set Player Statues
-				playerInterface = player.GetComponent<IPlayer>();
-				playerInterface.TeamSetter("BlueTeam");
-			}
-			// Team Red
-			else if(team == 2)
-			{
-				player = PhotonNetwork.Instantiate(redPlayerPref.name, redTeamSpawnPoint.position, Quaternion.identity);
-
-				// Set Player Statues
-				playerInterface = player.GetComponent<IPlayer>();
-				playerInterface.TeamSetter("RedTeam");
-			}
-			*/
-
 			// Change the layer to Player so that we wont be our own enemy because at the first all of the layers are at Enemy
 			player.gameObject.layer = LayerMask.NameToLayer("Player");
-
-			
 
 			if (PhotonNetwork.IsMasterClient)
 			{
@@ -165,7 +201,6 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			StartTimerCountDown();
 		}
 	}
-
 
 	private void StartTimerCountDown()
 	{
@@ -218,5 +253,55 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			timeCounterPanel.SetActive(false);
 			timerStarted = false;
 		}
+	}
+
+	[PunRPC]
+	private void DisconnectedPlayerNotSpawnedSenedFromMaster(int lostTeamNumber)
+	{
+		print("hmmm");
+		if(lostTeamNumber == 1)
+		{
+			gameManager.TeamGroup1RemainedPlayers--;
+
+		}
+		else if(lostTeamNumber == 2)
+		{
+			gameManager.TeamGroup2RemainedPlayers--;
+		}
+	}
+
+	[PunRPC]
+	private void RPCSendTheMasterWhenSpawnedThePlayer(int spawnedTeam)
+	{
+		spawnedPlayers.Add(spawnedTeam);
+	}
+
+	public override void OnDisconnected(DisconnectCause cause)
+	{
+		disconnectionError.gameObject.SetActive(true);
+		disconnectionError.text = cause.ToString();
+		Invoke("Disconnected", 2f);
+	}
+
+	public override void OnPlayerLeftRoom(Player otherPlayer)
+	{
+		if(otherPlayer != PhotonNetwork.LocalPlayer)
+		{
+			int disconnectedPlayerGroup = (int)otherPlayer.CustomProperties["Group"];
+			if (disconnectedPlayerGroup == 1)
+			{
+				gameManager.TeamGroup1RemainedPlayers--;
+			}
+			else if (disconnectedPlayerGroup == 2)
+			{
+				gameManager.TeamGroup2RemainedPlayers--;
+			}
+		}
+	}
+
+
+	private void Disconnected()
+	{
+		SceneManager.LoadScene("Pun");
 	}
 }

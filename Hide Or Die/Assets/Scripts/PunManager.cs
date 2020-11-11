@@ -221,10 +221,6 @@ public class PunManager : MonoBehaviourPunCallbacks
 
 	public override void OnJoinedRoom()
 	{
-		//foreach (Player player in PhotonNetwork.PlayerList)
-		//{
-		//	print(player.NickName + "  Is in   << " + PhotonNetwork.CurrentRoom.Name + " >>  And player count is" + PhotonNetwork.CurrentRoom.PlayerCount);
-		//}
 		if (autoChooseTeamToggle.isOn)
 		{
 			PhotonNetwork.LoadLevel("ChooseTeamAuto");

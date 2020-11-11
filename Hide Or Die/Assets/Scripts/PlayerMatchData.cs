@@ -138,7 +138,6 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	{
 		if (CanTakeDamage)
 		{
-			print("Took Damage >>>  " + damageAmount);
 			photonView.RPC("RPCTakeDamage", RpcTarget.AllBuffered, damageAmount);
 		}
 

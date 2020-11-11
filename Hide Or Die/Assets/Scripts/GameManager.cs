@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 		team = (int)PhotonNetwork.LocalPlayer.CustomProperties["Team"];
 		
 		// Get the teams remained players count
-		int allPlayersCount = PhotonNetwork.CurrentRoom.PlayerCount;
+		int allPlayersCount = PhotonNetwork.CurrentRoom.MaxPlayers;
 		TeamGroup1RemainedPlayers = TeamGroup2RemainedPlayers = allPlayersCount / 2;
 
 		// Get the teams scores
