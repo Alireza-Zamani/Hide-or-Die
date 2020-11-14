@@ -124,7 +124,6 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			{
 				photonView.RPC("DisconnectedPlayerNotSpawnedSenedFromMaster", RpcTarget.AllBuffered, 2);
 			}
-			print(team1Remained + "...................." + team2Remained);
 		}
 	}
 
@@ -258,7 +257,6 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[PunRPC]
 	private void DisconnectedPlayerNotSpawnedSenedFromMaster(int lostTeamNumber)
 	{
-		print("hmmm");
 		if(lostTeamNumber == 1)
 		{
 			gameManager.TeamGroup1RemainedPlayers--;

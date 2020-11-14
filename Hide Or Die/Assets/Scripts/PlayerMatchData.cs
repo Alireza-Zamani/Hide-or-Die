@@ -29,6 +29,7 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	private PhotonView photonView;
 
+	[HideInInspector]
 	public GameManager gameManager = null;
 
 	private PlayerMovement playerMovement = null;

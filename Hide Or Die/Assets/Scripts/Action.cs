@@ -36,13 +36,13 @@ public class Action : MonoBehaviourPunCallbacks
 
 	private GameObject weaponFixedJoyStick = null;
 
-	[SerializeField] private GameObject shopCanvas;
+	private GameObject shopCanvas;
 
-	[SerializeField] private GameObject saberPrefab;
-	[SerializeField] private GameObject macePrefab;
-	[SerializeField] private GameObject clubPrefab;
-	[SerializeField] private GameObject knifePrefab;
-	[SerializeField] private GameObject pistolPrefab;
+	private GameObject saberPrefab;
+	private GameObject macePrefab;
+	private GameObject clubPrefab;
+	private GameObject knifePrefab;
+	private GameObject pistolPrefab;
 
 	private void OnDrawGizmos()
 	{
