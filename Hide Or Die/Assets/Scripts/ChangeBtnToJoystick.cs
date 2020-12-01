@@ -20,9 +20,20 @@ public class ChangeBtnToJoystick : MonoBehaviour, IPointerDownHandler, IDragHand
 
 	[SerializeField] private UIBtns uIBtns = null;
 
+	private Button abilityBtn = null;
+
+	private void Awake()
+	{
+		abilityBtn = GetComponent<Button>();
+	}
+
 
 	public void OnDrag(PointerEventData eventData)
 	{
+		if (!abilityBtn.interactable)
+		{
+			return;
+		}
 		if (joystick.activeInHierarchy)
 		{
 			joystick.GetComponent<FixedJoystick>().OnDrag(eventData);
@@ -31,6 +42,10 @@ public class ChangeBtnToJoystick : MonoBehaviour, IPointerDownHandler, IDragHand
 
 	public void OnPointerDown(PointerEventData eventData)
 	{
+		if (!abilityBtn.interactable)
+		{
+			return;
+		}
 		joystick.GetComponent<FixedJoystick>().OnPointerDown(eventData);
 		shoot.enabled = false;
 		joystick.SetActive(true);
@@ -48,6 +63,10 @@ public class ChangeBtnToJoystick : MonoBehaviour, IPointerDownHandler, IDragHand
 
 	public void OnPointerUp(PointerEventData eventData)
 	{
+		if (!abilityBtn.interactable)
+		{
+			return;
+		}
 		joystick.GetComponent<FixedJoystick>().OnPointerUp(eventData);
 		shoot.enabled = true;
 		joystick.SetActive(false);

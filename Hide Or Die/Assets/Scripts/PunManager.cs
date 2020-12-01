@@ -13,8 +13,26 @@ public class PunManager : MonoBehaviourPunCallbacks
 	[Header("MatchMaking Type")]
 	[SerializeField] private Toggle autoChooseTeamToggle = null;
 
+	[Header("Top UI")]
+	[SerializeField] private Text playerInfoName = null;
+
+	[Header("Flag")]
+	[SerializeField] private GameObject nameInFlagImage = null;
+	[SerializeField] private GameObject roomInFlagImage = null;
+	[SerializeField] private GameObject classInFlagImage = null;
+
+	[Header("Book Rooms")]
+	[SerializeField] private GameObject RandomeRoomPanel = null;
+	[SerializeField] private GameObject CreatRoomPanel = null;
+	[SerializeField] private GameObject JoinRoomPanel = null;
+
+	[Header("Increase Decrease Btns")]
+	[SerializeField] private Text randomeRoomCountText = null;
+	[SerializeField] private Text creatRoomCountText = null;
+
 	[Header("Enter Pun Panel")]
 	[SerializeField] private InputField nickName = null;
+	[SerializeField] private GameObject warningNoName = null;
 	[SerializeField] private GameObject connectPanel = null;
 	[SerializeField] private GameObject waitingPanel = null;
 	[SerializeField] private GameObject joinPanel = null;
@@ -37,6 +55,74 @@ public class PunManager : MonoBehaviourPunCallbacks
 
 
 	#region Btns
+
+	public void OnIncreaseRoomSize(int panelNum)
+	{
+		int count = 1;
+		switch (panelNum)
+		{
+			case 1:
+				count = int.Parse(randomeRoomCountText.text);
+				count++;
+				count = Mathf.Clamp(count, 1, 5);
+				randomeRoomCountText.text = count.ToString();
+				break;
+			case 2:
+				count = int.Parse(creatRoomCountText.text);
+				count++;
+				count = Mathf.Clamp(count, 1, 5);
+				creatRoomCountText.text = count.ToString();
+				break;
+		}
+		teamsPlayerCount = count;
+	}
+
+	public void OnDecreaseRoomSize(int panelNum)
+	{
+		int count = 1;
+		switch (panelNum)
+		{
+			case 1:
+				count = int.Parse(randomeRoomCountText.text);
+				count--;
+				count = Mathf.Clamp(count, 1, 5);
+				randomeRoomCountText.text = count.ToString();
+				break;
+			case 2:
+				count = int.Parse(creatRoomCountText.text);
+				count--;
+				count = Mathf.Clamp(count, 1, 5);
+				creatRoomCountText.text = count.ToString();
+				break;
+		}
+		teamsPlayerCount = count;
+	}
+
+	public void OnBookRandomeRoomBtn()
+	{
+		RandomeRoomPanel.SetActive(true);
+		creatRoomPanel.SetActive(false);
+		joinPrivateRoomPanel.SetActive(false);
+	}
+
+	public void OnBookCreatRoomBtn()
+	{
+		RandomeRoomPanel.SetActive(false);
+		creatRoomPanel.SetActive(true);
+		joinPrivateRoomPanel.SetActive(false);
+	}
+
+	public void OnBookJoinRoomBtn()
+	{
+		RandomeRoomPanel.SetActive(false);
+		creatRoomPanel.SetActive(false);
+		joinPrivateRoomPanel.SetActive(true);
+	}
+
+	public void OnExitBtn()
+	{
+		Application.Quit();
+	}
 
 	public virtual void OnJoinRandomeRoomBtn()
 	{
@@ -64,11 +150,6 @@ public class PunManager : MonoBehaviourPunCallbacks
 
 	public void OnCreateBtn()
 	{
-		if (!playersCounthasChoosed)
-		{
-			print("Room player count is empty");
-			return;
-		}
 		string roomName = null;
 		if (privateRoomToggle.isOn)
 		{
@@ -84,6 +165,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 			roomName = "Public Room" + randomeCode.text;
 		}
 
+		teamsPlayerCount = int.Parse(creatRoomCountText.text);
 		CreateRoomOptions(roomName , !privateRoomToggle.isOn , (byte)(teamsPlayerCount * 2));
 	}
 
@@ -111,16 +193,23 @@ public class PunManager : MonoBehaviourPunCallbacks
 	private void Awake()
 	{
 		PhotonNetwork.AutomaticallySyncScene = true;
+		if (PlayerPrefs.HasKey("NickName"))
+		{
+			nickName.text = PlayerPrefs.GetString("NickName");
+		}
 	}
 
 	public void ConnectedToServerBtn()
 	{
 		if(string.IsNullOrEmpty(nickName.text))
 		{
-			print("Nick name is empty");
+			warningNoName.SetActive(true);
 			return;
 		}
 
+		warningNoName.SetActive(false);
+		playerInfoName.text = nickName.text;
+		PlayerPrefs.SetString("NickName", nickName.text);
 		// Set the local players stats and then connect to photon
 		PhotonNetwork.LocalPlayer.NickName = nickName.text;
 		if (PhotonNetwork.IsConnected)
@@ -136,6 +225,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 	{
 		// Create a room with given room options
 		string roomName = "Room" + Random.Range(0, 10000);
+		teamsPlayerCount = int.Parse(randomeRoomCountText.text);
 		CreateRoomOptions(roomName , true , (byte)(teamsPlayerCount * 2));
 	}
 
@@ -206,6 +296,8 @@ public class PunManager : MonoBehaviourPunCallbacks
 		//print(PhotonNetwork.NickName + " ====>  Connected to server");
 		waitingPanel.SetActive(false);
 		joinPanel.SetActive(true);
+		nameInFlagImage.SetActive(true);
+		roomInFlagImage.SetActive(false);
 	}
 
 	public override void OnJoinRandomFailed(short returnCode, string message)

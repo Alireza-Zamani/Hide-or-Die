@@ -24,4 +24,6 @@ public interface IPlayer
 
 	void StuckPlayer(float timeRate);
 
+	void AbilityUsed(float abilityCoolDown);
+
 }

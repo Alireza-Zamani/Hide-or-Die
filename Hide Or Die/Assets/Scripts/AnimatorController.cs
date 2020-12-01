@@ -12,6 +12,35 @@ public class AnimatorController : MonoBehaviour
 		anim = GetComponent<Animator>();
 	}
 
+
+	public void CanDoAbility()
+	{
+		if (!anim.GetBool("ability"))
+		{
+			anim.SetBool("ability", true);
+			Invoke("ResetAbilityBool", 0.1f);
+		}
+	}
+
+	private void ResetAbilityBool()
+	{
+		anim.SetBool("ability", false);
+	}
+
+	public void CanTakeHit()
+	{
+		if (!anim.GetBool("hit"))
+		{
+			anim.SetBool("hit", true);
+			Invoke("ResetHitBool", 0.1f);
+		}
+	}
+
+	private void ResetHitBool()
+	{
+		anim.SetBool("hit", false);
+	}
+
 	public void CanWalk()
 	{
 		if (!anim.GetBool("walk"))

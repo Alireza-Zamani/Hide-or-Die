@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
-public class PlayerMatchData : MonoBehaviour , IPlayer
+public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 {
 
 	private bool hasTrap = false;
@@ -12,9 +12,12 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 	public LayerMask raycastableForInSightLayerMask = new LayerMask();
 	public LayerMask detectableLayerMask = new LayerMask();
 
+	private Image healthBarMain = null;
+	private Image abilityCoolDownBarMain = null;
 	private GameObject canvas = null;
 	private GameObject healthBar = null;
 	private SpriteRenderer healthBarSprite = null;
+	private AnimatorController animatorController = null;
 
 	[SerializeField] private GameObject bodyHandler = null;
 	[SerializeField] private GameObject spectDeathDrone = null;
@@ -27,7 +30,6 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	private string className = null;
 
-	private PhotonView photonView;
 
 	[HideInInspector]
 	public GameManager gameManager = null;
@@ -36,11 +38,19 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	public int playerGroup = 0;
 
+	private Button abilityBtn = null;
+
+	private float abilityCoolDownTimer = 10f;
+	private float abilitytimer = 0f;
+	private bool abilityUsed = false;
+
 	private bool canTakeDamage = true;
 	public bool CanTakeDamage { get => canTakeDamage; set => canTakeDamage = value; }
 
 	private void Awake()
 	{
+		animatorController = GetComponent<AnimatorController>();
+
 		healthBar = transform.GetChild(0).gameObject;
 		healthBarSprite = healthBar.transform.GetChild(0).gameObject.GetComponent<SpriteRenderer>();
 		AddAbility();
@@ -49,13 +59,35 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 
 	private void Start()
 	{
-		photonView = PhotonView.Get(this);
 		playerMovement = GetComponent<PlayerMovement>();
 		canvas = GameObject.FindGameObjectWithTag("UI").gameObject;
+
+		abilityBtn = canvas.transform.GetChild(2).transform.gameObject.GetComponent<Button>();
+
+		healthBarMain = canvas.transform.GetChild(11).gameObject.transform.GetChild(0).gameObject.GetComponent<Image>();
+		abilityCoolDownBarMain = canvas.transform.GetChild(11).gameObject.transform.GetChild(1).gameObject.GetComponent<Image>();
+
 		gameManager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<GameManager>();
 		if (photonView.IsMine)
 		{
+			healthBar.SetActive(false);
 			SetThePlayersGroup();
+		}
+	}
+
+
+	private void Update()
+	{
+		if (abilityUsed)
+		{
+			abilitytimer += Time.deltaTime;
+			abilityCoolDownBarMain.fillAmount = (abilitytimer / abilityCoolDownTimer);
+			if(abilitytimer >= abilityCoolDownTimer)
+			{
+				abilitytimer = 0f;
+				abilityUsed = false;
+				abilityBtn.interactable = true;
+			}
 		}
 	}
 
@@ -141,7 +173,6 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 		{
 			photonView.RPC("RPCTakeDamage", RpcTarget.AllBuffered, damageAmount);
 		}
-
 	}
 
 
@@ -246,6 +277,14 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 		Invoke("ResetStucked", timeRate);
 	}
 
+	public void AbilityUsed(float abilityCoolDownValue)
+	{
+		abilityCoolDownTimer = abilityCoolDownValue;
+		abilityUsed = true;
+		abilityCoolDownBarMain.fillAmount = 0f;
+		abilityBtn.interactable = false;
+	}
+
 
 	private void ResetStucked()
 	{
@@ -277,9 +316,15 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 			return;
 		
 		Health -= damageAmount;
-
+		// Animation
+		animatorController.CanTakeHit();
 		healthBar.transform.localScale = new Vector3(Health / 100f , healthBar.transform.localScale.y, healthBar.transform.localScale.z);
 		healthBarSprite.color = Color.Lerp(Color.red, Color.green, healthBar.transform.localScale.x);
+
+		if (photonView.IsMine)
+		{
+			healthBarMain.fillAmount = (Health / 100f);
+		}
 
 		if (Health <= 0)
 		{
@@ -294,6 +339,10 @@ public class PlayerMatchData : MonoBehaviour , IPlayer
 		Health = Mathf.Clamp(Health , 0 , 100);
 		healthBar.transform.localScale = new Vector3(Health / 100f, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
 		healthBarSprite.color = Color.Lerp(Color.red, Color.green, healthBar.transform.localScale.x);
+		if (photonView.IsMine)
+		{
+			healthBarMain.fillAmount = (Health / 100f);
+		}
 	}
 
 	

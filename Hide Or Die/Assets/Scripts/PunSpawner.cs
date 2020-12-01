@@ -18,7 +18,9 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 	[Header("CountDown Conditions")]
 	[Range(0,60)] [SerializeField] private float countDownTimer = 10f;
+	private float countDownTimerTemp = 0f;
 	public float CountDownTimer { get => countDownTimer; set => countDownTimer = value; }
+	[SerializeField] private Image enterGameWaitLoadBar = null;
 	[SerializeField] private Text timerCounter = null;
 	[SerializeField] private Text disconnectionError = null;
 	[SerializeField] private GameObject timeCounterPanel = null;
@@ -60,7 +62,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 		}
 		SpawnHeros();
 		gameManager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<GameManager>();
-
+		countDownTimerTemp = countDownTimer;
 		if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group"))
 		{
 			Debug.LogError("No group setted for teh player");
@@ -86,7 +88,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 				if (counter >= 1)
 				{
 					counter = 0;
-					CountDownTimer -= 1;
+					CountDownTimer --;
 					photonView.RPC("PlayerEnteryWaiting", RpcTarget.AllBuffered, countDownTimer);
 				}
 			}
@@ -245,7 +247,8 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[PunRPC]
 	private void PlayerEnteryWaiting(float CountDownTimer)
 	{
-		timerCounter.text = CountDownTimer.ToString();
+		//timerCounter.text = CountDownTimer.ToString();
+		enterGameWaitLoadBar.fillAmount = (1 - CountDownTimer / countDownTimerTemp);
 		if (CountDownTimer == 0)
 		{
 			playerEnterGameDuty.PlayerEnteredFinished();
@@ -276,9 +279,12 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 	public override void OnDisconnected(DisconnectCause cause)
 	{
-		disconnectionError.gameObject.SetActive(true);
-		disconnectionError.text = cause.ToString();
-		Invoke("Disconnected", 2f);
+		if (disconnectionError.gameObject)
+		{
+			disconnectionError.gameObject.SetActive(true);
+			disconnectionError.text = cause.ToString();
+			Invoke("Disconnected", 2f);
+		}
 	}
 
 	public override void OnPlayerLeftRoom(Player otherPlayer)

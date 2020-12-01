@@ -9,6 +9,16 @@ using Photon.Realtime;
 public class PUNUIBtns : MonoBehaviourPunCallbacks
 {
 
+	[Header("Classes Infos")]
+	[SerializeField] private Sprite healerIcon = null;
+	[SerializeField] private Sprite rammalIcon = null;
+	[SerializeField] private Sprite sarbazIcon = null;
+	[SerializeField] private Sprite jalladIcon = null;
+	[SerializeField] private Sprite healerCharacter = null;
+	[SerializeField] private Sprite rammalCharacter = null;
+	[SerializeField] private Sprite sarbazCharacter = null;
+	[SerializeField] private Sprite jalladCharacter = null;
+
 	[Header("Players Status")]
 	[SerializeField] private GameObject bluePlayersContainer = null;
 	[SerializeField] private GameObject redPlayersContainer = null;
@@ -78,6 +88,9 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 			teamNumber = 2;
 		}
 
+		// Chaneg the color of ability to green only for us
+		SetTheChoosedAbilityToBeGreen(className , teamNumber , true);
+
 		// change this ability for all players to be off
 		photonView.RPC("RPCSetTheChoosedAbilities", RpcTarget.AllBuffered, className , teamNumber);
 
@@ -85,6 +98,7 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 		if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Class"))
 		{
 			// change this ability for all players to be off because we have selected another ability
+			SetTheChoosedAbilityToBeGreen(PhotonNetwork.LocalPlayer.CustomProperties["Class"].ToString(), teamNumber, false);
 			photonView.RPC("RPCReSetTheChoosedAbilities", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.CustomProperties["Class"], teamNumber);
 			PhotonNetwork.LocalPlayer.CustomProperties["Class"] = className;
 		}
@@ -102,6 +116,33 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 		photonView.RPC("RPCPlayerContainer", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.UserId , className);
 	}
 
+	private void SetTheChoosedAbilityToBeGreen(string className, int teamNumber , bool activity)
+	{
+		Transform parentOfClass = null;
+		if (teamNumber == 1)
+		{
+			parentOfClass = blueTeamClasses.transform;
+			foreach (Transform child in parentOfClass)
+			{
+				if (child.name == className)
+				{
+					child.gameObject.transform.GetChild(4).gameObject.SetActive(activity);
+				}
+			}
+		}
+		else if (teamNumber == 2)
+		{
+			parentOfClass = redTeamClasses.transform;
+			foreach (Transform child in parentOfClass)
+			{
+				if (child.name == className)
+				{
+					child.gameObject.transform.GetChild(4).gameObject.SetActive(activity);
+				}
+			}
+		}
+	}
+
 	public void AutoSelectAbility()
 	{
 		string className = null;
@@ -112,7 +153,7 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 			// See which ability is free to choose
 			foreach (GameObject go in blueTeamAbilities)
 			{
-				if (go.name != "Text" && !blueChoosedAbilities.Contains(go.name))
+				if (go.name != "Text" && go.name != "Soon" && !blueChoosedAbilities.Contains(go.name))
 				{
 					className = go.name;
 					break;
@@ -135,7 +176,6 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 		if (!ChoosedAbility)
 		{
 			ClassBtn(className);
-
 		}
 	}
 
@@ -147,7 +187,26 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 		{
 			if (trans.name == userId)
 			{
-				trans.GetChild(3).GetComponent<Text>().text = className;
+				switch (className)
+				{
+					case "Healer":
+						trans.GetChild(0).GetComponent<Image>().sprite = healerIcon;
+						trans.GetChild(1).GetComponent<Image>().sprite = healerCharacter;
+						break;
+					case "Reviver":
+						trans.GetChild(0).GetComponent<Image>().sprite = rammalIcon;
+						trans.GetChild(1).GetComponent<Image>().sprite = rammalCharacter;
+						break;
+					case "Spearer":
+						trans.GetChild(0).GetComponent<Image>().sprite = sarbazIcon;
+						trans.GetChild(1).GetComponent<Image>().sprite = sarbazCharacter;
+						break;
+					case "Grenader":
+						trans.GetChild(0).GetComponent<Image>().sprite = jalladIcon;
+						trans.GetChild(1).GetComponent<Image>().sprite = jalladCharacter;
+						break;
+				}
+				
 				return;
 			}
 		}
@@ -156,7 +215,26 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 		{
 			if (trans.name == userId)
 			{
-				trans.GetChild(3).GetComponent<Text>().text = className;
+				switch (className)
+				{
+					case "Healer":
+						trans.GetChild(0).GetComponent<Image>().sprite = healerIcon;
+						trans.GetChild(1).GetComponent<Image>().sprite = healerCharacter;
+						break;
+					case "Reviver":
+						trans.GetChild(0).GetComponent<Image>().sprite = rammalIcon;
+						trans.GetChild(1).GetComponent<Image>().sprite = rammalCharacter;
+						break;
+					case "Spearer":
+						trans.GetChild(0).GetComponent<Image>().sprite = sarbazIcon;
+						trans.GetChild(1).GetComponent<Image>().sprite = sarbazCharacter;
+						break;
+					case "Grenader":
+						trans.GetChild(0).GetComponent<Image>().sprite = jalladIcon;
+						trans.GetChild(1).GetComponent<Image>().sprite = jalladCharacter;
+						break;
+				}
+
 				return;
 			}
 		}
@@ -178,7 +256,9 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 				{
 					if (child.name == className)
 					{
-						child.gameObject.GetComponent<Button>().interactable = false;
+						child.gameObject.transform.GetChild(2).gameObject.SetActive(false);
+						child.gameObject.transform.GetChild(3).gameObject.SetActive(true);
+						//child.gameObject.GetComponent<Button>().interactable = false;
 					}
 				}
 			}
@@ -193,7 +273,9 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 				{
 					if (child.name == className)
 					{
-						child.gameObject.GetComponent<Button>().interactable = false;
+						child.gameObject.transform.GetChild(2).gameObject.SetActive(false);
+						child.gameObject.transform.GetChild(3).gameObject.SetActive(true);
+						//child.gameObject.GetComponent<Button>().interactable = false;
 					}
 				}
 			}
@@ -215,7 +297,9 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 				{
 					if (child.name == className)
 					{
-						child.gameObject.GetComponent<Button>().interactable = true;
+						child.gameObject.transform.GetChild(2).gameObject.SetActive(true);
+						child.gameObject.transform.GetChild(3).gameObject.SetActive(false);
+						//child.gameObject.GetComponent<Button>().interactable = true;
 					}
 				}
 			}
@@ -230,7 +314,9 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 				{
 					if (child.name == className)
 					{
-						child.gameObject.GetComponent<Button>().interactable = true;
+						child.gameObject.transform.GetChild(2).gameObject.SetActive(true);
+						child.gameObject.transform.GetChild(3).gameObject.SetActive(false);
+						//child.gameObject.GetComponent<Button>().interactable = true;
 					}
 				}
 			}

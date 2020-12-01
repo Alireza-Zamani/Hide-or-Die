@@ -22,6 +22,8 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	[Header("Panels")]
 	[SerializeField] private GameObject blueTeamPanel = null;
 	[SerializeField] private GameObject redTeamPanel = null;
+	[SerializeField] private Image blueTeamLoadBar = null;
+	[SerializeField] private Image redTeamLoadBar = null;
 
 	[Header("Teams Status")]
 	[SerializeField] private Text blueTeamReaminer = null;
@@ -30,6 +32,10 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	[SerializeField] private Text redTeamStats = null;
 
 	[Header("Players Status")]
+	[SerializeField] private Text bluePlayerNameInfo = null;
+	[SerializeField] private Text redPlayerNameInfo = null;
+	[SerializeField] private Text blueRoomNameInfo = null;
+	[SerializeField] private Text redRoomNameInfo = null;
 	[SerializeField] private GameObject bluePlayersContainer = null;
 	[SerializeField] private GameObject redPlayersContainer = null;
 	[SerializeField] private GameObject players = null;
@@ -57,6 +63,10 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 
 	private void Start()
 	{
+		blueRoomNameInfo.text = PhotonNetwork.CurrentRoom.Name;
+		redRoomNameInfo.text = PhotonNetwork.CurrentRoom.Name;
+		bluePlayerNameInfo.text = PhotonNetwork.NickName;
+		redPlayerNameInfo.text = PhotonNetwork.NickName;
 		punUiBtns = GameObject.FindGameObjectWithTag("UI").GetComponent<PUNUIBtns>();
 		maxPlayerCount = PhotonNetwork.CurrentRoom.MaxPlayers / 2;
 		startMatchWaitTimeCountDownTemp = startMatchWaitTimeCountDown;
@@ -99,7 +109,10 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		}
 	}
 
-	
+	public void OnExitBtn()
+	{
+		SceneManager.LoadScene("Pun");
+	}
 
 	private void SetARandomeAbilityForClients()
 	{
@@ -275,14 +288,19 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 	[PunRPC]
 	private void EnteringGameTimeCounteDown(float timer)
 	{
+		/*
 		blueTeamStats.text = "Starting The Match in : " + timer.ToString();
 		redTeamStats.text = "Starting The Match in : " + timer.ToString();
+		*/
+		blueTeamLoadBar.fillAmount = (1 - timer / startMatchWaitTimeCountDown);
+		redTeamLoadBar.fillAmount = (1 - timer / startMatchWaitTimeCountDown);
 		if (timer == 0)
 		{
 			EnterTheGame();
 			matchIsStarting = false;
 			return;
 		}
+		
 	}
 
 	[PunRPC]
@@ -325,7 +343,7 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		}
 		GameObject newPlayer = Instantiate(players, parentContainer);
 		newPlayer.name = userId;
-		newPlayer.transform.GetChild(1).GetComponent<Text>().text = nickName;
+		newPlayer.transform.GetChild(2).GetComponent<Text>().text = nickName;
 	}
 
 	[PunRPC]
@@ -369,18 +387,22 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 				if (BlueTeamPlayerCount != maxPlayerCount)
 				{
 					blueTeamStats.text = "Waiting For Players...";
+					blueTeamLoadBar.fillAmount = 0;
 				}
 				else if (BlueTeamPlayerCount == maxPlayerCount)
 				{
 					blueTeamStats.text = "Waiting For Opponents Team...";
+					blueTeamLoadBar.fillAmount = 0;
 				}
 				if (RedTeamPlayerCount != maxPlayerCount)
 				{
 					redTeamStats.text = "Waiting For Players...";
+					redTeamLoadBar.fillAmount = 0;
 				}
 				else if (RedTeamPlayerCount == maxPlayerCount)
 				{
 					redTeamStats.text = "Waiting For Opponents Team...";
+					redTeamLoadBar.fillAmount = 0;
 				}
 			}
 

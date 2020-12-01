@@ -12,6 +12,9 @@ public class Action : MonoBehaviourPunCallbacks
 	[Range(0, 5)] [SerializeField] private float radiousOfAction = 0f;
 	[SerializeField] private LayerMask actionableLayerMask = new LayerMask();
 
+	[SerializeField] private Sprite lockSprite = null;
+	[SerializeField] private Sprite unLockSprite = null;
+
 	private GameObject canvas = null;
 
 	private MovementAbstract movementClass = null;
@@ -23,10 +26,13 @@ public class Action : MonoBehaviourPunCallbacks
 	private GameObject newAiming = null;
 
 	private IInteractable interactable = null;
+	private IPlayer iplayer = null;
 
 	private DoorInteractable doorInteractable = null;
 
 	private AbilityAbstract ability = null;
+
+	private AnimatorController animatorController = null;
 
 	private TrapAbstract trapClass = null;
 
@@ -66,7 +72,9 @@ public class Action : MonoBehaviourPunCallbacks
 			return;
 		}
 		canvas = GameObject.FindGameObjectWithTag("UI").gameObject;
+		animatorController = GetComponent<AnimatorController>();
 		movementClass = GetComponent<MovementAbstract>();
+		iplayer = GetComponent<IPlayer>();
 		ability = GetComponent<AbilityAbstract>();
 		trapClass = GetComponent<TrapAbstract>();
 		weaponManager = GetComponent<WeaponManager>();
@@ -285,7 +293,9 @@ public class Action : MonoBehaviourPunCallbacks
 		{
 			//Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
 			//ability.ExecuteAbility(-aimDirection);
-			ability.ExecuteAbility();
+			animatorController.CanDoAbility();
+			Invoke("AbilityAfterAnimation", 1f);
+			iplayer.AbilityUsed(ability.abilityCoolDown);
 		}
 		else
 		{
@@ -294,7 +304,9 @@ public class Action : MonoBehaviourPunCallbacks
 			{
 				//Vector2 aimDirection = newAiming.GetComponent<AimingDirection>().AimDirection;
 				//ability.ExecuteAbility(-aimDirection);
-				ability.ExecuteAbility();
+				animatorController.CanDoAbility();
+				Invoke("AbilityAfterAnimation", 1f);
+				iplayer.AbilityUsed(ability.abilityCoolDown);
 			}
 			else
 			{
@@ -303,6 +315,11 @@ public class Action : MonoBehaviourPunCallbacks
 			}
 			Debug.LogWarning("No ability attached to the player");
 		}
+	}
+
+	private void AbilityAfterAnimation()
+	{
+		ability.ExecuteAbility();
 	}
 
 	[PunRPC]
@@ -340,6 +357,8 @@ public class Action : MonoBehaviourPunCallbacks
 						GetComponent<CollisionHandler>().HasLock--;
 					}
 					lockBtnText.text = "UnLock";
+					lockBtnText.transform.parent.gameObject.transform.GetChild(1).gameObject.SetActive(true);
+					lockBtnText.transform.parent.gameObject.transform.GetChild(2).gameObject.SetActive(false);
 				}
 			}
 			else if(lockBtnText.text == "UnLock")
@@ -347,6 +366,8 @@ public class Action : MonoBehaviourPunCallbacks
 				if (doorInteractable.LockDoor(false))
 				{
 					lockBtnText.text = "Lock";
+					lockBtnText.transform.parent.gameObject.transform.GetChild(2).gameObject.SetActive(true);
+					lockBtnText.transform.parent.gameObject.transform.GetChild(1).gameObject.SetActive(false);
 				}
 				
 			}

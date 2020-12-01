@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class AbilityGrenade : AbilityAbstract
 {
-
+	
 	[SerializeField] private GameObject grenadePrefab = null;
 	
 	private GameObject newGrenade = null;
