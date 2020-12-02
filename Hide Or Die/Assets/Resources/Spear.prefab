@@ -266,4 +266,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   throwSpeed: 2500
+  explosionEffectPrefab: {fileID: 171432, guid: 0ebcd60dd020022408e53f535d12f313,
+    type: 3}
   hitDamage: 20

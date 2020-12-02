@@ -71,8 +71,7 @@ MonoBehaviour:
   timeEffectRate: 1
   healEffectAmount: 2
   radiousOfAction: 15
-  healEffectPrefab: {fileID: 5159401129475252414, guid: e1f428da3a4fddf4fab97f6460e95074,
-    type: 3}
+  healEffectPrefab: {fileID: 169216, guid: 737959db973360b43bdeb1a4874f1af8, type: 3}
   raycastableForInSightLayerMask:
     serializedVersion: 2
     m_Bits: 1

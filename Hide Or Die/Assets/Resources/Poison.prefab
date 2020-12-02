@@ -137,5 +137,4 @@ MonoBehaviour:
   poisingDamage: 10
   poisonEffectRate: 1
   poisonLifeTimeRate: 3
-  poisonEffectPrefab: {fileID: 3294379344657423193, guid: 8b6ae192834c43044a45d5795acd3f3c,
-    type: 3}
+  poisonEffectPrefab: {fileID: 150592, guid: 2c82b2af38b82f442bd9a24539b8d33c, type: 3}

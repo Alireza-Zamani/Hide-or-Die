@@ -137,5 +137,4 @@ MonoBehaviour:
   bearTrapDamage: 30
   bearTrapLifeTimeRate: 5
   bearTrapStuckTimeRate: 5
-  bearTrapEffectPrefab: {fileID: 7022194579632101171, guid: 145d7acad4d193645bfdfd53b1719bbb,
-    type: 3}
+  bearTrapEffectPrefab: {fileID: 188698, guid: d59453060233d2f49884f7de0b768335, type: 3}

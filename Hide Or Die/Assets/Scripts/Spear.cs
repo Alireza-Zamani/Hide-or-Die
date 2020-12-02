@@ -11,6 +11,8 @@ public class Spear : MonoBehaviourPunCallbacks
 
 	[Range(0, 5000)] [SerializeField] private float throwSpeed = 2500f;
 
+	[SerializeField] private GameObject explosionEffectPrefab = null;
+
 
 	[Range(0, 100)] [SerializeField] private float hitDamage = 50f;
 
@@ -50,7 +52,7 @@ public class Spear : MonoBehaviourPunCallbacks
 			if(other.tag == "BlueTeam" || other.tag == "RedTeam")
 			{
 				other.gameObject.GetComponent<IPlayer>().TakeDamage(hitDamage);
-				print("Is Damaging the " + other.gameObject.name);
+				PhotonNetwork.Instantiate(explosionEffectPrefab.name, new Vector3(transform.position.x, transform.position.y, explosionEffectPrefab.transform.position.z), Quaternion.identity);
 				DestroyGameObject();
 			}
 			else if(other.tag == "Environment")
