@@ -1,0 +1,968 @@
+fileFormatVersion: 2
+guid: 428e4942dfe2420459866de7400349ba
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1991101480543777483
+    second: Garden Elements_0
+  - first:
+      213: -8671866569110737925
+    second: Garden Elements_1
+  - first:
+      213: -5223311096628471488
+    second: Garden Elements_2
+  - first:
+      213: -7540097816688216243
+    second: Garden Elements_3
+  - first:
+      213: 2844784154386215224
+    second: Garden Elements_4
+  - first:
+      213: 8524898096415455190
+    second: Garden Elements_5
+  - first:
+      213: -6533739806175243433
+    second: Garden Elements_6
+  - first:
+      213: -4049249219830454685
+    second: Garden Elements_7
+  - first:
+      213: -1787727661142195686
+    second: Garden Elements_8
+  - first:
+      213: 3125924652213224547
+    second: Garden Elements_9
+  - first:
+      213: -4296083130642137463
+    second: Garden Elements_10
+  - first:
+      213: 4075386761358357331
+    second: Garden Elements_11
+  - first:
+      213: 4901615359766668102
+    second: Garden Elements_12
+  - first:
+      213: 7489807861280356116
+    second: Garden Elements_13
+  - first:
+      213: 7477374746022037884
+    second: Garden Elements_14
+  - first:
+      213: 5387769956050937558
+    second: Garden Elements_15
+  - first:
+      213: 6396823644910124620
+    second: Garden Elements_16
+  - first:
+      213: 5954142317026390195
+    second: Garden Elements_17
+  - first:
+      213: 3502551952091936815
+    second: Garden Elements_18
+  - first:
+      213: 5702387616838705108
+    second: Garden Elements_19
+  - first:
+      213: 8266979189093521267
+    second: Garden Elements_20
+  - first:
+      213: 1823220687875370172
+    second: Garden Elements_21
+  - first:
+      213: 957687471231889877
+    second: Garden Elements_22
+  - first:
+      213: 1931503229808493777
+    second: Garden Elements_23
+  - first:
+      213: 1747453330263550830
+    second: Garden Elements_24
+  - first:
+      213: 6438170487807614207
+    second: Garden Elements_25
+  - first:
+      213: -4437309123284380920
+    second: Garden Elements_26
+  - first:
+      213: -7404546789303167957
+    second: Garden Elements_27
+  - first:
+      213: 1473332714490335653
+    second: Garden Elements_28
+  - first:
+      213: 9093470568925854762
+    second: Garden Elements_29
+  - first:
+      213: 931850712339862442
+    second: Garden Elements_30
+  - first:
+      213: 1515210879140824375
+    second: Garden Elements_31
+  - first:
+      213: 4489208163946081377
+    second: Garden Elements_32
+  - first:
+      213: 8096818678160421978
+    second: Garden Elements_33
+  - first:
+      213: -2863749840358514605
+    second: Garden Elements_34
+  - first:
+      213: 1679765916060877173
+    second: Garden Elements_35
+  - first:
+      213: 3079721901006609367
+    second: Garden Elements_36
+  - first:
+      213: 8989897217260984534
+    second: Garden Elements_37
+  - first:
+      213: -7517267695532240954
+    second: Garden Elements_38
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 200
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Garden Elements_0
+      rect:
+        serializedVersion: 2
+        x: 14
+        y: 1977
+        width: 623
+        height: 622
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 53d0f64b0cf2e54e0800000000000000
+      internalID: -1991101480543777483
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_1
+      rect:
+        serializedVersion: 2
+        x: 1993
+        y: 2408
+        width: 78
+        height: 86
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfba1980d4757a780800000000000000
+      internalID: -8671866569110737925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_2
+      rect:
+        serializedVersion: 2
+        x: 2251
+        y: 2428
+        width: 129
+        height: 109
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0499a1e5b321387b0800000000000000
+      internalID: -5223311096628471488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_3
+      rect:
+        serializedVersion: 2
+        x: 2456
+        y: 2382
+        width: 142
+        height: 169
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d47b9902cf03c5790800000000000000
+      internalID: -7540097816688216243
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_4
+      rect:
+        serializedVersion: 2
+        x: 2783
+        y: 1182
+        width: 758
+        height: 1417
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 831b9d8bd14ba7720800000000000000
+      internalID: 2844784154386215224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_5
+      rect:
+        serializedVersion: 2
+        x: 3604
+        y: 1557
+        width: 727
+        height: 1042
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d73f3fd6a58e4670800000000000000
+      internalID: 8524898096415455190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_6
+      rect:
+        serializedVersion: 2
+        x: 4514
+        y: 1174
+        width: 164
+        height: 1425
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7535816734e7355a0800000000000000
+      internalID: -6533739806175243433
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_7
+      rect:
+        serializedVersion: 2
+        x: 4803
+        y: 1278
+        width: 386
+        height: 1321
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3666af4d94d2ec7c0800000000000000
+      internalID: -4049249219830454685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_9
+      rect:
+        serializedVersion: 2
+        x: 1096
+        y: 1765
+        width: 1044
+        height: 569
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3644ec9c8e3816b20800000000000000
+      internalID: 3125924652213224547
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_10
+      rect:
+        serializedVersion: 2
+        x: 2193
+        y: 1678
+        width: 600
+        height: 568
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 98ef680872f3164c0800000000000000
+      internalID: -4296083130642137463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1053
+        width: 1065
+        height: 640
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 643ad782339060440800000000000000
+      internalID: 4901615359766668102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_13
+      rect:
+        serializedVersion: 2
+        x: 1342
+        y: 915
+        width: 433
+        height: 768
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4173b8f219421f760800000000000000
+      internalID: 7489807861280356116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_14
+      rect:
+        serializedVersion: 2
+        x: 1904
+        y: 1065
+        width: 889
+        height: 494
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c79ce15f6b8f4c760800000000000000
+      internalID: 7477374746022037884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_15
+      rect:
+        serializedVersion: 2
+        x: 3252
+        y: 665
+        width: 479
+        height: 405
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d620f9ba3435ca40800000000000000
+      internalID: 5387769956050937558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_16
+      rect:
+        serializedVersion: 2
+        x: 3784
+        y: 642
+        width: 296
+        height: 476
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4effa5963516c850800000000000000
+      internalID: 6396823644910124620
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_17
+      rect:
+        serializedVersion: 2
+        x: 4846
+        y: 673
+        width: 343
+        height: 407
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b0ba7414ec51a250800000000000000
+      internalID: 5954142317026390195
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_19
+      rect:
+        serializedVersion: 2
+        x: 4628
+        y: 693
+        width: 187
+        height: 327
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4dfd1413353f22f40800000000000000
+      internalID: 5702387616838705108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 858
+        height: 931
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 377577ba5c53ab270800000000000000
+      internalID: 8266979189093521267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_21
+      rect:
+        serializedVersion: 2
+        x: 1765
+        y: 128
+        width: 1132
+        height: 691
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cbc64f74e816d4910800000000000000
+      internalID: 1823220687875370172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_22
+      rect:
+        serializedVersion: 2
+        x: 3037
+        y: 693
+        width: 154
+        height: 304
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5d17e985ea36a4d00800000000000000
+      internalID: 957687471231889877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_23
+      rect:
+        serializedVersion: 2
+        x: 4167
+        y: 647
+        width: 174
+        height: 342
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d4414734f31eca10800000000000000
+      internalID: 1931503229808493777
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_24
+      rect:
+        serializedVersion: 2
+        x: 4372
+        y: 665
+        width: 210
+        height: 332
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6baee3ab83304810800000000000000
+      internalID: 1747453330263550830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_25
+      rect:
+        serializedVersion: 2
+        x: 3006
+        y: 0
+        width: 185
+        height: 412
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffc1d21a2f9f85950800000000000000
+      internalID: 6438170487807614207
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_26
+      rect:
+        serializedVersion: 2
+        x: 3257
+        y: 0
+        width: 104
+        height: 467
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 803d80cbcd28b62c0800000000000000
+      internalID: -4437309123284380920
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_27
+      rect:
+        serializedVersion: 2
+        x: 3346
+        y: 82
+        width: 63
+        height: 349
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b2453d41de3cd3990800000000000000
+      internalID: -7404546789303167957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_28
+      rect:
+        serializedVersion: 2
+        x: 3475
+        y: 87
+        width: 129
+        height: 342
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a1982b3c44527410800000000000000
+      internalID: 1473332714490335653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_29
+      rect:
+        serializedVersion: 2
+        x: 3949
+        y: 0
+        width: 314
+        height: 543
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2c7b4c9d4f723e70800000000000000
+      internalID: 9093470568925854762
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_30
+      rect:
+        serializedVersion: 2
+        x: 4367
+        y: 379
+        width: 228
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa356b429499eec00800000000000000
+      internalID: 931850712339862442
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_31
+      rect:
+        serializedVersion: 2
+        x: 4648
+        y: 394
+        width: 188
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7350ff2444c170510800000000000000
+      internalID: 1515210879140824375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_32
+      rect:
+        serializedVersion: 2
+        x: 4872
+        y: 381
+        width: 308
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16c2ace4a0fdc4e30800000000000000
+      internalID: 4489208163946081377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_33
+      rect:
+        serializedVersion: 2
+        x: 3209
+        y: 174
+        width: 33
+        height: 195
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a54ff7260bdad5070800000000000000
+      internalID: 8096818678160421978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_34
+      rect:
+        serializedVersion: 2
+        x: 3657
+        y: 0
+        width: 144
+        height: 259
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35069d761bae148d0800000000000000
+      internalID: -2863749840358514605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_35
+      rect:
+        serializedVersion: 2
+        x: 4380
+        y: 0
+        width: 227
+        height: 293
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5710e9c633abf4710800000000000000
+      internalID: 1679765916060877173
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_36
+      rect:
+        serializedVersion: 2
+        x: 4658
+        y: 115
+        width: 190
+        height: 192
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7db5d7c70ce5dba20800000000000000
+      internalID: 3079721901006609367
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Garden Elements_37
+      rect:
+        serializedVersion: 2
+        x: 4884
+        y: 0
+        width: 305
+        height: 320
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6d81d1a73e782cc70800000000000000
+      internalID: 8989897217260984534
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
