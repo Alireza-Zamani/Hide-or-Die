@@ -33,8 +33,8 @@ TagManager:
   - Interactable
   - Gun
   - Particle
-  - 
-  - 
+  - Props
+  - Wall
   - 
   - 
   - 
@@ -50,6 +50,18 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Tiles
+    uniqueID: 1203392823
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Walls
+    uniqueID: 2002294827
+    locked: 0
+  - name: Props
+    uniqueID: 1738229801
+    locked: 0
+  - name: Bg
+    uniqueID: 1840145293
     locked: 0

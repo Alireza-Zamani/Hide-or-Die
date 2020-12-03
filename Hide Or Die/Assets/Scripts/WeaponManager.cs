@@ -61,9 +61,9 @@ public class WeaponManager : MonoBehaviourPunCallbacks
         currentWeaponType = currentWeapon.weaponType;
         
         if (currentWeaponType == WeaponAbstract.WeaponTypes.MeleeWeapon)
-            newWeapon.transform.localScale = new Vector3(0.6f,0.6f, 0.6f);
+            newWeapon.transform.localScale = new Vector3(0.4f,0.4f, 0.4f);
         else
-            newWeapon.transform.localScale = new Vector3(-0.3f,0.3f, 0.3f);
+            newWeapon.transform.localScale = new Vector3(-0.2f,0.2f, 0.2f);
         
     }
 
