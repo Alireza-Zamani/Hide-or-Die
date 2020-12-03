@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7689045709740466407}
   - component: {fileID: 7689045709740466406}
   - component: {fileID: 6780425264166217241}
+  - component: {fileID: 2082961459329672681}
   m_Layer: 10
   m_Name: Death Spect
   m_TagString: Untagged
@@ -75,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 748d669cd1735874cb43d72610643e1b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ca2dce4bc4129aa4599467ac950f190a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,24 +94,24 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7689045709740466333}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0011480004, y: 0.31032538}
+  m_Offset: {x: 0.009581603, y: -0.02504906}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.2828572, y: 1.0657142}
+    oldSize: {x: 1.1294118, y: 0.7529412}
     newSize: {x: 1.015, y: 0.855}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.38786379, y: 0.855}
+  m_Size: {x: 0.40932298, y: 0.5706027}
   m_EdgeRadius: 0
 --- !u!50 &7689045709740466401
 Rigidbody2D:
@@ -185,3 +186,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1000
   viewDistance: 50
+--- !u!95 &2082961459329672681
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7689045709740466333}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 956dcd35a5065b94cad16713db377216, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -393,12 +393,6 @@ MonoBehaviour:
     m_Bits: 8192
   aimingPrefab: {fileID: 2704668702571661127, guid: db43570fdf9149e43aadf72e398aca41,
     type: 3}
-  shopCanvas: {fileID: 0}
-  saberPrefab: {fileID: 0}
-  macePrefab: {fileID: 0}
-  clubPrefab: {fileID: 0}
-  knifePrefab: {fileID: 0}
-  pistolPrefab: {fileID: 0}
 --- !u!114 &4221923599434245012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -443,11 +437,14 @@ MonoBehaviour:
   detectableLayerMask:
     serializedVersion: 2
     m_Bits: 16384
+  deathVfx: {fileID: 119968, guid: e73000b12fb76244cbffd6abbf8bb6e4, type: 3}
   bodyHandler: {fileID: 5723160479327719296, guid: 2fd18c106785dbc4ebdb33c92f1640ae,
     type: 3}
   spectDeathDrone: {fileID: 7689045709740466333, guid: 8d865d0000ef6324193012a2157e2249,
     type: 3}
   health: 100
+  gameManager: {fileID: 0}
+  playerGroup: 0
 --- !u!114 &6700502965268922146
 MonoBehaviour:
   m_ObjectHideFlags: 0

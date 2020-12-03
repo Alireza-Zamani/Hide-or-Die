@@ -19,6 +19,7 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 	private SpriteRenderer healthBarSprite = null;
 	private AnimatorController animatorController = null;
 
+	[SerializeField] private GameObject deathVfx = null;
 	[SerializeField] private GameObject bodyHandler = null;
 	[SerializeField] private GameObject spectDeathDrone = null;
 
@@ -181,6 +182,7 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 
 		if (photonView.IsMine)
 		{
+			PhotonNetwork.Instantiate(deathVfx.name, new Vector3(transform.position.x, transform.position.y, deathVfx.transform.position.z), Quaternion.identity);
 			GameObject newBodyHandler = PhotonNetwork.Instantiate(bodyHandler.name, transform.position, Quaternion.identity);
 			newBodyHandler.GetComponent<DeadBodyHandler>().AtatchTheDeadBody(photonView.ViewID);
 

@@ -12,8 +12,6 @@ public class Action : MonoBehaviourPunCallbacks
 	[Range(0, 5)] [SerializeField] private float radiousOfAction = 0f;
 	[SerializeField] private LayerMask actionableLayerMask = new LayerMask();
 
-	[SerializeField] private Sprite lockSprite = null;
-	[SerializeField] private Sprite unLockSprite = null;
 
 	private GameObject canvas = null;
 

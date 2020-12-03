@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1733,8 +1733,6 @@ MonoBehaviour:
   actionableLayerMask:
     serializedVersion: 2
     m_Bits: 8192
-  lockSprite: {fileID: 0}
-  unLockSprite: {fileID: 0}
   aimingPrefab: {fileID: 2704668702571661127, guid: db43570fdf9149e43aadf72e398aca41,
     type: 3}
 --- !u!4 &1604729122

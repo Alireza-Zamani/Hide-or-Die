@@ -8,6 +8,8 @@ using System;
 public class GameManager : MonoBehaviourPunCallbacks
 {
 
+	[SerializeField] private GameObject losePanel = null;
+	[SerializeField] private GameObject winPanel = null;
 	[SerializeField] private int winNeededScoreLimit = 2;
 	private bool hasGameEnded = false;
 
@@ -27,13 +29,15 @@ public class GameManager : MonoBehaviourPunCallbacks
 				if(Group == 1)
 				{
 					hasGameEnded = true;
-					photonView.RPC("RPCGameHasFinished", RpcTarget.MasterClient);
+					photonView.RPC("SetTheWinLosePanel", RpcTarget.AllBuffered, 1);
+					photonView.RPC("RPCGameHasFinished", RpcTarget.MasterClient , 1);
 					print("Group 1 won the game!!!");
 				}
 				else if(Group == 2)
 				{
 					hasGameEnded = true;
-					photonView.RPC("RPCGameHasFinished", RpcTarget.MasterClient);
+					photonView.RPC("SetTheWinLosePanel", RpcTarget.AllBuffered, 2);
+					photonView.RPC("RPCGameHasFinished", RpcTarget.MasterClient , 2);
 					print("Group 2 won the game!!!");
 				}
 			}
@@ -53,7 +57,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 			if (teamGroup1RemainedPlayers == 0)
 			{
 				SetTheGroupScore(2);
-				TheNextMatch();
+				TheNextMatch(2);
 				print("Group 2 won the match!!!");
 			}
 		} 
@@ -70,7 +74,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 			if (teamGroup2RemainedPlayers == 0)
 			{
 				SetTheGroupScore(1);
-				TheNextMatch();
+				TheNextMatch(1);
 				print("Group 1 won the match!!!");
 			}
 		}
@@ -110,24 +114,20 @@ public class GameManager : MonoBehaviourPunCallbacks
 	}
 
 
-	private void TheNextMatch()
+	private void TheNextMatch(int winnerTeam)
 	{
 		ChangeTheTeamsRoleForTheNextMatch();
 		if (PhotonNetwork.IsMasterClient)
 		{
-			Invoke("CallTheNextMatch", 3f);
+			float waitTime = 3f;
+			Invoke("CallTheNextMatch", waitTime);
 		}
 	}
 
 
 	private void CallTheNextMatch()
 	{
-		if (hasGameEnded)
-		{
-
-			PhotonNetwork.LoadLevel("Pun");
-		}
-		else
+		if (!hasGameEnded)
 		{
 			PhotonNetwork.LoadLevel("NextMatch");
 		}
@@ -176,12 +176,27 @@ public class GameManager : MonoBehaviourPunCallbacks
 		}
 	}
 
+
 	[PunRPC]
-	private void RPCGameHasFinished()
+	private void SetTheWinLosePanel(int winnerGroup)
 	{
+		if(Group == winnerGroup)
+		{
+			winPanel.SetActive(true);
+		}
+		else
+		{
+			losePanel.SetActive(true);
+		}
+	}
+
+	[PunRPC]
+	private void RPCGameHasFinished(int winnerGroup)
+	{
+		hasGameEnded = true;
 		if (PhotonNetwork.IsMasterClient)
 		{
-			Invoke("FinishGame", 2f);
+			Invoke("FinishGame", 5f);
 		}
 	}
 
