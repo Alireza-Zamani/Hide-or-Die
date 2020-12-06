@@ -111,8 +111,9 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 
 	public void OnExitBtn()
 	{
-		SceneManager.LoadScene("Pun");
+		PhotonNetwork.LeaveRoom();
 	}
+
 
 	private void SetARandomeAbilityForClients()
 	{
@@ -292,6 +293,10 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 		blueTeamStats.text = "Starting The Match in : " + timer.ToString();
 		redTeamStats.text = "Starting The Match in : " + timer.ToString();
 		*/
+		if (!matchIsStarting)
+		{
+			return;
+		}
 		blueTeamLoadBar.fillAmount = (1 - timer / startMatchWaitTimeCountDown);
 		redTeamLoadBar.fillAmount = (1 - timer / startMatchWaitTimeCountDown);
 		if (timer == 0)
@@ -376,32 +381,41 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 				canForceSelectAbility = true;
 				matchIsStarting = true;
 				timeCounter = 0f;
+				blueTeamLoadBar.fillAmount = 0;
+				redTeamLoadBar.fillAmount = 0;
 			}
 			else
 			{
 				if (matchIsStarting == true)
 				{
 					matchIsStarting = false;
+					timeCounter = 0f;
+					blueTeamLoadBar.fillAmount = 0;
+					redTeamLoadBar.fillAmount = 0;
 					startMatchWaitTimeCountDownTemp = startMatchWaitTimeCountDown;
 				}
 				if (BlueTeamPlayerCount != maxPlayerCount)
 				{
 					blueTeamStats.text = "Waiting For Players...";
+					timeCounter = 0f;
 					blueTeamLoadBar.fillAmount = 0;
 				}
 				else if (BlueTeamPlayerCount == maxPlayerCount)
 				{
 					blueTeamStats.text = "Waiting For Opponents Team...";
+					timeCounter = 0f;
 					blueTeamLoadBar.fillAmount = 0;
 				}
 				if (RedTeamPlayerCount != maxPlayerCount)
 				{
 					redTeamStats.text = "Waiting For Players...";
+					timeCounter = 0f;
 					redTeamLoadBar.fillAmount = 0;
 				}
 				else if (RedTeamPlayerCount == maxPlayerCount)
 				{
 					redTeamStats.text = "Waiting For Opponents Team...";
+					timeCounter = 0f;
 					redTeamLoadBar.fillAmount = 0;
 				}
 			}
@@ -430,6 +444,10 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 			UpdateTeams(leftedPlayerTeam, -1);
 			UpdateStats(leftedPlayerTeam);
 
+			timeCounter = 0f;
+			blueTeamLoadBar.fillAmount = 0;
+			redTeamLoadBar.fillAmount = 0;
+
 			// Set the players remainer
 			foreach (Transform trans in bluePlayersContainer.transform)
 			{
@@ -449,6 +467,11 @@ public class PunTeamAuto : MonoBehaviourPunCallbacks
 				}
 			}
 		}
+	}
+
+	public override void OnLeftRoom()
+	{
+		SceneManager.LoadScene("Pun");
 	}
 
 

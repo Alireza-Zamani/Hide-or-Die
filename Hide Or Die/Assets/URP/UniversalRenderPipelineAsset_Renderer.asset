@@ -107,16 +107,16 @@ MonoBehaviour:
     enableWrite: 1
     stencilSettings:
       overrideStencilState: 1
-      stencilReference: 3
+      stencilReference: 0
       stencilCompareFunction: 8
-      passOperation: 2
+      passOperation: 0
       failOperation: 0
       zFailOperation: 0
     cameraSettings:
       overrideCamera: 0
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
-      cameraFieldOfView: 60
+      cameraFieldOfView: 20
 --- !u!114 &-1619920040677696212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,8 +146,8 @@ MonoBehaviour:
     enableWrite: 1
     stencilSettings:
       overrideStencilState: 1
-      stencilReference: 3
-      stencilCompareFunction: 6
+      stencilReference: 0
+      stencilCompareFunction: 8
       passOperation: 0
       failOperation: 0
       zFailOperation: 0
@@ -210,14 +210,14 @@ MonoBehaviour:
   m_RendererFeatures:
   - {fileID: -5227000654026572969}
   - {fileID: 4944983088716708464}
-  - {fileID: 1060278508836008091}
   - {fileID: -1427415520831694767}
-  - {fileID: -7100625789239682179}
+  - {fileID: 1060278508836008091}
   - {fileID: 2483166566540677537}
   - {fileID: 7096736150876265166}
-  - {fileID: -4297339621698298963}
   - {fileID: -1619920040677696212}
-  m_RendererFeatureMap: 57fb025899f675b770fa4567eb1ba0449bb026aaafddb60e5198f28525cd30ec7d1b64257782759da191c8fcd5fa7522ce1aa7d9edab7c62ad1b76e161c85cc42c9dde424ee384e9
+  - {fileID: -4297339621698298963}
+  - {fileID: -7100625789239682179}
+  m_RendererFeatureMap: 57fb025899f675b770fa4567eb1ba0445198f28525cd30ec9bb026aaafddb60ea191c8fcd5fa7522ce1aa7d9edab7c622c9dde424ee384e9ad1b76e161c85cc47d1b64257782759d
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   shaders:
     blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}

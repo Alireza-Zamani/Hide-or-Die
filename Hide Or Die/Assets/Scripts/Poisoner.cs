@@ -11,16 +11,26 @@ public class Poisoner : TrapAbstract
 	[SerializeField] private GameObject poisonPrefab = null;
 	private GameObject newPoison = null;
 	private Poison poisonClas = null;
+	private GameObject trapSetBtn = null;
+
 
 	private void Start()
 	{
 		punSpawner = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PunSpawner>();
-		float lifeTimeRate = punSpawner.CountDownTimer + 100;
+		trapSetBtn = GameObject.FindGameObjectWithTag("UI").transform.GetChild(6).gameObject;
+
+		float lifeTimeRate = punSpawner.CountDownTimerForTrapUsebality;
 		if (photonView.IsMine)
 		{
+			Invoke("TrapBtnTurnOff", lifeTimeRate);
 			Destroy(this, lifeTimeRate);
 		}
 		poisonPrefab = Resources.Load("Poison", typeof(GameObject)) as GameObject;
+	}
+
+	private void TrapBtnTurnOff()
+	{
+		trapSetBtn.SetActive(false);
 	}
 
 

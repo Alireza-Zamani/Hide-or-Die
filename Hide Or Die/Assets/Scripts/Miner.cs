@@ -11,22 +11,30 @@ public class Miner : TrapAbstract
 	[SerializeField] private GameObject minePrefab = null;
 	private GameObject newMine = null;
 	private Mine mineClas = null;
+	private GameObject trapSetBtn = null;
 
 
 	private void Start()
 	{
 		punSpawner = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PunSpawner>();
-		float lifeTimeRate = punSpawner.CountDownTimer + 100;
+		trapSetBtn = GameObject.FindGameObjectWithTag("UI").transform.GetChild(6).gameObject;
+		float lifeTimeRate = punSpawner.CountDownTimerForTrapUsebality;
 		if (photonView.IsMine)
 		{
+			Invoke("TrapBtnTurnOff", lifeTimeRate);
 			Destroy(this , lifeTimeRate);
 		}
 		minePrefab = Resources.Load("Mine", typeof(GameObject)) as GameObject;
 	}
 
+
+	private void TrapBtnTurnOff()
+	{
+		trapSetBtn.SetActive(false);
+	}
+
 	public override void SetTrap()
 	{
-		print("Setted");
 		newMine = PhotonNetwork.Instantiate(minePrefab.name, transform.position, Quaternion.identity);
 		mineClas = newMine.GetComponent<Mine>();
 		mineClas.SetTheTag(gameObject.tag);

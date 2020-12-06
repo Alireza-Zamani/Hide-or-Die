@@ -15,7 +15,7 @@ public class TrapObjectiveInteractability : MonoBehaviourPunCallbacks, IInteract
 	{
 		punSpawner = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<PunSpawner>();
 		
-		float lifeTimeRate = punSpawner.CountDownTimer + 100f;
+		float lifeTimeRate = punSpawner.CountDownTimerForTrapUsebality;
 		if (TrapClassName == "TrapDetectorBeeper")
 		{
 			lifeTimeRate += 15f;
@@ -37,6 +37,7 @@ public class TrapObjectiveInteractability : MonoBehaviourPunCallbacks, IInteract
 				iplayer.HasTrapSetter(true);
 
 				iplayer.AddComponent(TrapClassName);
+				iplayer.ActionBtnTurnOnOrOff(false);
 
 				if (photonView.IsMine)
 				{

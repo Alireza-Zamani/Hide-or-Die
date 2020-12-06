@@ -20,6 +20,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 	//Fields
 	[Range(0, 2000)] [SerializeField] protected float moveSpeed = 1000f;
 	[Range(0, 50)] [SerializeField] protected float viewDistance = 10f;
+	[SerializeField] private LayerMask fovLayerMask = new LayerMask();
 
 
 
@@ -72,6 +73,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 	public virtual void SetTheFOVSettings()
 	{
 		fielOfView.ViewDistance = viewDistance;
+		fielOfView.fovLayerMask = fovLayerMask;
 	}
 
 	public virtual void Update()

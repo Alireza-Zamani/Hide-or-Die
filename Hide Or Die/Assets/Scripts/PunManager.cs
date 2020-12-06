@@ -199,6 +199,23 @@ public class PunManager : MonoBehaviourPunCallbacks
 		}
 	}
 
+	private void Start()
+	{
+		if (PhotonNetwork.IsConnected)
+		{
+			if (PhotonNetwork.InRoom)
+			{
+				PhotonNetwork.LeaveRoom();
+			}
+			if (PhotonNetwork.InLobby)
+			{
+				PhotonNetwork.LeaveLobby();
+			}
+			PhotonNetwork.Disconnect();
+		}
+	}
+
+
 	public void ConnectedToServerBtn()
 	{
 		if(string.IsNullOrEmpty(nickName.text))

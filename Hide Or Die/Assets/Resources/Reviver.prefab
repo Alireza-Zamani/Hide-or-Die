@@ -207,6 +207,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2000
   viewDistance: 30
+  fovLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
   dronePrefab: {fileID: 7689045709740466333, guid: 31f979f34d4b81a4a9922eec26215efb,
     type: 3}
 --- !u!114 &3739296205695652378

@@ -135,36 +135,38 @@ public class Action : MonoBehaviourPunCallbacks
 		uiBtns.onWeaponMenuCloseBtnSelectDelegate -= OnCloseShopBtn;
 	}
 
+	#region Weapons
+
 	private void OnSaberBuyBtn()
 	{
 		weaponManager.AddNewWeapon(saberPrefab);
 		shopCanvas.SetActive(false);
 	}
-	
+
 	private void OnMaceBuyBtn()
 	{
 		weaponManager.AddNewWeapon(macePrefab);
 		shopCanvas.SetActive(false);
 	}
-	
+
 	private void OnClubBuyBtn()
 	{
 		weaponManager.AddNewWeapon(clubPrefab);
 		shopCanvas.SetActive(false);
 	}
-	
+
 	private void OnKnifeBuyBtn()
 	{
 		weaponManager.AddNewWeapon(knifePrefab);
 		shopCanvas.SetActive(false);
 	}
-	
+
 	private void OnPistolBuyBtn()
 	{
 		weaponManager.AddNewWeapon(pistolPrefab);
 		shopCanvas.SetActive(false);
 	}
-		
+
 	private void OnWeaponSelect()
 	{
 		if (!weaponManager.currentWeapon)
@@ -188,10 +190,10 @@ public class Action : MonoBehaviourPunCallbacks
 			}
 			weaponManager.currentWeapon.Attack();
 		}
-		
-		
+
+
 	}
-	
+
 	private void OnWeaponDeSelect()
 	{
 		if (weaponManager.currentWeaponType == WeaponAbstract.WeaponTypes.Gun)
@@ -200,7 +202,9 @@ public class Action : MonoBehaviourPunCallbacks
 			movementClass.enabled = true;
 		}
 	}
-	
+
+	#endregion
+
 	private void OnActionBtn()
 	{
 		photonView.RPC("Interact", RpcTarget.AllBuffered);
@@ -233,7 +237,6 @@ public class Action : MonoBehaviourPunCallbacks
 		shopCanvas.SetActive(false);
 	}
 
-
 	private void OnLockBtn()
 	{
 		if (GetComponent<CollisionHandler>().HasLock == 0)
@@ -245,7 +248,6 @@ public class Action : MonoBehaviourPunCallbacks
 		photonView.RPC("Lock", RpcTarget.AllBuffered);
 		print("Door Locked");
 	}
-
 
 	private void OnSetTrapBtn()
 	{
@@ -261,7 +263,6 @@ public class Action : MonoBehaviourPunCallbacks
 			Destroy(trapClass);
 		}
 	}
-
 
 	private void CallAbilityIsStarting()
 	{
@@ -320,6 +321,7 @@ public class Action : MonoBehaviourPunCallbacks
 		ability.ExecuteAbility();
 	}
 
+
 	[PunRPC]
 	public void Lock()
 	{
@@ -377,9 +379,12 @@ public class Action : MonoBehaviourPunCallbacks
 	[PunRPC]
 	public void Interact()
 	{
+		// See if there are interactable objects
 		RaycastHit2D[] hit = Physics2D.CircleCastAll(transform.position, radiousOfAction, Vector2.up, 10, actionableLayerMask);
 		float dist = Mathf.Infinity;
 		GameObject newInteractable = null;
+
+		// Get the closest interactable from the founded ones
 		foreach (RaycastHit2D coll in hit)
 		{
 			if (coll.collider.gameObject.GetComponent<IInteractable>() != null)

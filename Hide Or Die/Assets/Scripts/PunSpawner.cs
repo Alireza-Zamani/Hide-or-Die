@@ -18,8 +18,10 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 	[Header("CountDown Conditions")]
 	[Range(0,60)] [SerializeField] private float countDownTimer = 10f;
+	[Range(0, 60)] [SerializeField] private float countDownTimerForTrapUsebality = 50f;
 	private float countDownTimerTemp = 0f;
 	public float CountDownTimer { get => countDownTimer; set => countDownTimer = value; }
+	public float CountDownTimerForTrapUsebality { get => countDownTimerForTrapUsebality; set => countDownTimerForTrapUsebality = value; }
 	[SerializeField] private Image enterGameWaitLoadBar = null;
 	[SerializeField] private Text timerCounter = null;
 	[SerializeField] private Text disconnectionError = null;
@@ -74,6 +76,8 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 		if (PhotonNetwork.IsMasterClient)
 		{
+			PhotonNetwork.CurrentRoom.IsOpen = false;
+			PhotonNetwork.CurrentRoom.IsVisible = false;
 			Invoke("CheckIfAllThePlayersHaveJoined", 10f);
 		}
 	}
@@ -292,6 +296,11 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 		if(otherPlayer != PhotonNetwork.LocalPlayer)
 		{
 			int disconnectedPlayerGroup = (int)otherPlayer.CustomProperties["Group"];
+			if(disconnectedPlayerGroup == 0)
+			{
+				return;
+			}
+			otherPlayer.CustomProperties["Group"] = 0;
 			if (disconnectedPlayerGroup == 1)
 			{
 				gameManager.TeamGroup1RemainedPlayers--;

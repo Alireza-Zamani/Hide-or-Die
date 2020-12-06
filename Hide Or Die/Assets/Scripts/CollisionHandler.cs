@@ -103,6 +103,10 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 	{
 		if (photonView.IsMine)
 		{
+			if(actionBtn == null)
+			{
+				actionBtn = GameObject.FindGameObjectWithTag("UI").transform.GetChild(1).gameObject;
+			}
 			actionBtn.SetActive(activity);
 		}
 	}

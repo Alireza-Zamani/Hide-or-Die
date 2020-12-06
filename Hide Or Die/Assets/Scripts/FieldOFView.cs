@@ -14,7 +14,7 @@ public class FieldOFView : MonoBehaviour
 	[Range(0, 50)] [SerializeField] private float viewDistance = 10f;
 	public float ViewDistance { get => viewDistance; set => viewDistance = value; }
 
-	[SerializeField] private LayerMask fovLayerMask = new LayerMask();
+	public LayerMask fovLayerMask = new LayerMask();
 
 	private float startingAngle = 0f;
 	private Vector3 origin;

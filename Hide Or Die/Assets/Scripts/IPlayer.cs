@@ -7,6 +7,7 @@ public interface IPlayer
 
 	void AddComponent(string component);
 
+	void ActionBtnTurnOnOrOff(bool availibility);
 
 	bool HasTrapGetter();
 

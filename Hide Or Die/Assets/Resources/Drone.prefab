@@ -185,3 +185,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1000
   viewDistance: 20
+  fovLayerMask:
+    serializedVersion: 2
+    m_Bits: 0

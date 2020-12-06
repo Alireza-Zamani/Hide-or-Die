@@ -40,6 +40,7 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 	public int playerGroup = 0;
 
 	private Button abilityBtn = null;
+	private Button actionBtn = null;
 
 	private float abilityCoolDownTimer = 10f;
 	private float abilitytimer = 0f;
@@ -62,6 +63,8 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 	{
 		playerMovement = GetComponent<PlayerMovement>();
 		canvas = GameObject.FindGameObjectWithTag("UI").gameObject;
+
+		actionBtn = canvas.transform.GetChild(1).transform.gameObject.GetComponent<Button>();
 
 		abilityBtn = canvas.transform.GetChild(2).transform.gameObject.GetComponent<Button>();
 
@@ -106,11 +109,7 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 
 	}
 
-	[PunRPC]
-	private void RPCSetThePlayerGroup(int playerGroup)
-	{
-		this.playerGroup = playerGroup;
-	}
+	
 
 	public void AddAbility()
 	{
@@ -287,10 +286,20 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 		abilityBtn.interactable = false;
 	}
 
+	public void ActionBtnTurnOnOrOff(bool availibility)
+	{
+		actionBtn.gameObject.SetActive(availibility);
+	}
 
 	private void ResetStucked()
 	{
 		playerMovement.IsStucked = false;
+	}
+
+	[PunRPC]
+	private void RPCSetThePlayerGroup(int playerGroup)
+	{
+		this.playerGroup = playerGroup;
 	}
 
 	[PunRPC]
