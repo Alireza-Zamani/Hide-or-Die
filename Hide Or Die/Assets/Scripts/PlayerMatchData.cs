@@ -94,7 +94,7 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 			}
 		}
 	}
-
+	
 	private void SetThePlayersGroup()
 	{
 		if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group"))

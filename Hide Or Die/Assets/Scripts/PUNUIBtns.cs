@@ -46,6 +46,7 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 
 	private void Awake()
 	{
+		// Get the classes that we can choose then add the to the whole abilities list
 		foreach(Transform trans in blueTeamClasses.transform)
 		{
 			blueTeamAbilities.Add(trans.gameObject);
@@ -59,6 +60,7 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 
 	private void Update()
 	{
+		// If we have choosed an ability we have to wait to choose the another this prevents auto ability selecting and self ability selecting to be in the same time
 		if (shouldWait)
 		{
 			waitingtimer += Time.deltaTime;
@@ -72,13 +74,15 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 
 	public void ClassBtn(string className)
 	{
+		// Wait if we have choosed any ability just right now
 		if (shouldWait)
 		{
 			return;
 		}
 		shouldWait = true;
 		ChoosedAbility = true;
-		// See which team he is in
+
+		// See which team he is in by checking which panel is open
 		if (blueTeamClasses.activeInHierarchy)
 		{
 			teamNumber = 1;
@@ -91,14 +95,16 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 		// Chaneg the color of ability to green only for us
 		SetTheChoosedAbilityToBeGreen(className , teamNumber , true);
 
-		// change this ability for all players to be off
+		// Change this ability for all players to be off
 		photonView.RPC("RPCSetTheChoosedAbilities", RpcTarget.AllBuffered, className , teamNumber);
 
-		// Set the Hashtable for team
-		if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Class"))
+		// Set the Hashtable for the class that has been choosen this will be used while spawning the hero in the game play
+		if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Class") && PhotonNetwork.LocalPlayer.CustomProperties["Class"] != null)
 		{
-			// change this ability for all players to be off because we have selected another ability
+			// Chaneg the color of ability to white only for us
 			SetTheChoosedAbilityToBeGreen(PhotonNetwork.LocalPlayer.CustomProperties["Class"].ToString(), teamNumber, false);
+
+			// change this ability for all players to be off because we have selected another ability
 			photonView.RPC("RPCReSetTheChoosedAbilities", RpcTarget.AllBuffered, PhotonNetwork.LocalPlayer.CustomProperties["Class"], teamNumber);
 			PhotonNetwork.LocalPlayer.CustomProperties["Class"] = className;
 		}
@@ -118,6 +124,7 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 
 	private void SetTheChoosedAbilityToBeGreen(string className, int teamNumber , bool activity)
 	{
+		// Check which team we are in then in that team find the choosed heros cart and change its image to green cart or white cart according to activity value
 		Transform parentOfClass = null;
 		if (teamNumber == 1)
 		{
@@ -179,10 +186,13 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 		}
 	}
 
+
+	#region RPCs
+
 	[PunRPC]
-	private void RPCPlayerContainer(string userId , string className)
+	private void RPCPlayerContainer(string userId, string className)
 	{
-		// Set the players remainer
+		// Set the players container statues according to the choosed ability
 		foreach (Transform trans in bluePlayersContainer.transform)
 		{
 			if (trans.name == userId)
@@ -206,7 +216,7 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 						trans.GetChild(1).GetComponent<Image>().sprite = jalladCharacter;
 						break;
 				}
-				
+
 				return;
 			}
 		}
@@ -240,17 +250,18 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 		}
 	}
 
-
 	[PunRPC]
-	private void RPCSetTheChoosedAbilities(string className , int teamNumber)
+	private void RPCSetTheChoosedAbilities(string className, int teamNumber)
 	{
-		
+		// Add the choosed ability to choosed ability list and then turn it off to be unavailable to be choosed by other players
 		Transform parentOfClass = null;
 		if (teamNumber == 1)
 		{
 			parentOfClass = blueTeamClasses.transform;
 			if (!blueChoosedAbilities.Contains(className))
 			{
+				print(className);
+
 				blueChoosedAbilities.Add(className);
 				foreach (Transform child in parentOfClass)
 				{
@@ -258,12 +269,11 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 					{
 						child.gameObject.transform.GetChild(2).gameObject.SetActive(false);
 						child.gameObject.transform.GetChild(3).gameObject.SetActive(true);
-						//child.gameObject.GetComponent<Button>().interactable = false;
 					}
 				}
 			}
 		}
-		else if(teamNumber == 2)
+		else if (teamNumber == 2)
 		{
 			parentOfClass = redTeamClasses.transform;
 			if (!redChoosedAbilities.Contains(className))
@@ -275,7 +285,6 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 					{
 						child.gameObject.transform.GetChild(2).gameObject.SetActive(false);
 						child.gameObject.transform.GetChild(3).gameObject.SetActive(true);
-						//child.gameObject.GetComponent<Button>().interactable = false;
 					}
 				}
 			}
@@ -285,7 +294,7 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 	[PunRPC]
 	private void RPCReSetTheChoosedAbilities(string className, int teamNumber)
 	{
-
+		// We have choosed an other ability so we have to reset the previous choosed one so we do the oposite of what we did in setting the choosed ability
 		Transform parentOfClass = null;
 		if (teamNumber == 1)
 		{
@@ -299,7 +308,6 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 					{
 						child.gameObject.transform.GetChild(2).gameObject.SetActive(true);
 						child.gameObject.transform.GetChild(3).gameObject.SetActive(false);
-						//child.gameObject.GetComponent<Button>().interactable = true;
 					}
 				}
 			}
@@ -316,12 +324,17 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 					{
 						child.gameObject.transform.GetChild(2).gameObject.SetActive(true);
 						child.gameObject.transform.GetChild(3).gameObject.SetActive(false);
-						//child.gameObject.GetComponent<Button>().interactable = true;
 					}
 				}
 			}
 		}
 	}
+
+	#endregion
+
+
+
+	#region Call Backs
 
 	public override void OnPlayerLeftRoom(Player otherPlayer)
 	{
@@ -330,5 +343,14 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 			RPCReSetTheChoosedAbilities(otherPlayer.CustomProperties["Class"].ToString(), (int)otherPlayer.CustomProperties["Team"]);
 		}
 	}
+
+	public override void OnLeftRoom()
+	{
+		PhotonNetwork.LocalPlayer.CustomProperties["Class"] = null;
+	}
+
+
+	#endregion
+
 
 }

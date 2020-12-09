@@ -26,6 +26,12 @@ public class PunManager : MonoBehaviourPunCallbacks
 	[SerializeField] private GameObject CreatRoomPanel = null;
 	[SerializeField] private GameObject JoinRoomPanel = null;
 
+	[Header("Accept Buttons")]
+	[SerializeField] private Button randomRoomAcceptBtn = null;
+	[SerializeField] private Button createRoomAcceptBtn = null;
+	[SerializeField] private Button joinRoomAcceptBtn = null;
+
+
 	[Header("Increase Decrease Btns")]
 	[SerializeField] private Text randomeRoomCountText = null;
 	[SerializeField] private Text creatRoomCountText = null;
@@ -64,13 +70,13 @@ public class PunManager : MonoBehaviourPunCallbacks
 			case 1:
 				count = int.Parse(randomeRoomCountText.text);
 				count++;
-				count = Mathf.Clamp(count, 1, 5);
+				count = Mathf.Clamp(count, 1, 4);
 				randomeRoomCountText.text = count.ToString();
 				break;
 			case 2:
 				count = int.Parse(creatRoomCountText.text);
 				count++;
-				count = Mathf.Clamp(count, 1, 5);
+				count = Mathf.Clamp(count, 1, 4);
 				creatRoomCountText.text = count.ToString();
 				break;
 		}
@@ -127,6 +133,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 	public virtual void OnJoinRandomeRoomBtn()
 	{
 		// If we had a room in lobby then join it else create one now
+		StartCoroutine(AcceptButtonTurner(randomRoomAcceptBtn, 2f));
 		joinPanel.SetActive(false);
 		waitingPanel.SetActive(true);
 		JoinRandomRoom();
@@ -165,6 +172,7 @@ public class PunManager : MonoBehaviourPunCallbacks
 			roomName = "Public Room" + randomeCode.text;
 		}
 
+		StartCoroutine(AcceptButtonTurner(createRoomAcceptBtn, 2f));
 		teamsPlayerCount = int.Parse(creatRoomCountText.text);
 		CreateRoomOptions(roomName , !privateRoomToggle.isOn , (byte)(teamsPlayerCount * 2));
 	}
@@ -182,7 +190,15 @@ public class PunManager : MonoBehaviourPunCallbacks
 			print("Room name is empty");
 			return;
 		}
+		StartCoroutine(AcceptButtonTurner(joinRoomAcceptBtn, 2f));
 		JoinRoom();
+	}
+
+	IEnumerator AcceptButtonTurner(Button value , float waitTime)
+	{
+		value.interactable = false;
+		yield return new WaitForSeconds(waitTime);
+		value.interactable = true;
 	}
 
 	#endregion
@@ -319,8 +335,11 @@ public class PunManager : MonoBehaviourPunCallbacks
 
 	public override void OnJoinRandomFailed(short returnCode, string message)
 	{
-		//print("There was no room trying to create one");
-		CreateRoom();
+		// Try to navigate user to creare one
+		joinPanel.SetActive(true);
+		waitingPanel.SetActive(false);
+		OnBookCreatRoomBtn();
+		//CreateRoom();
 	}
 
 	public override void OnJoinRoomFailed(short returnCode, string message)
