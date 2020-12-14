@@ -5,6 +5,8 @@ using UnityEngine;
 public interface IPlayer
 {
 
+	void Revived();
+
 	void AddComponent(string component);
 
 	void ActionBtnTurnOnOrOff(bool availibility);

@@ -76,6 +76,14 @@ MonoBehaviour:
   - RPCSendTheMasterWhenSpawnedThePlayer
   - DisconnectedPlayerNotSpawnedSenedFromMaster
   - SetTheWinLosePanel
+  - AddPlayerToTeamListUI
+  - RPCSetDeathInPlayerContainerDead
+  - SendGroupScoreToMaster
+  - RPCSetTheMatchScores
+  - RoundTimeFinished
+  - RPCChangeTheTimeOfRoundText
+  - RPCTeamGroup1RemainedPlayers
+  - RPCTeamGroup2RemainedPlayers
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

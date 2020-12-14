@@ -37,7 +37,9 @@ public class DeadBodyHandler : MonoBehaviourPunCallbacks
 	{
 		GameObject deadPlayer = gameObject.transform.GetChild(0).gameObject;
 		deadPlayer.SetActive(true);
-		deadPlayer.GetComponent<IPlayer>().Heal(100f);
+		IPlayer iplayer = deadPlayer.GetComponent<IPlayer>();
+		iplayer.Heal(100f);
+		iplayer.Revived();
 		deadPlayer.transform.parent = null;
 
 		if (SpectDeathDrone != null)

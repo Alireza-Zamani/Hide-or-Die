@@ -18,6 +18,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 	[Header("CountDown Conditions")]
 	[Range(0,60)] [SerializeField] private float countDownTimer = 10f;
+	
 	[Range(0, 60)] [SerializeField] private float countDownTimerForTrapUsebality = 50f;
 	private float countDownTimerTemp = 0f;
 	public float CountDownTimer { get => countDownTimer; set => countDownTimer = value; }
@@ -27,6 +28,15 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 	[SerializeField] private Text disconnectionError = null;
 	[SerializeField] private GameObject timeCounterPanel = null;
 
+	[SerializeField] private GameObject playersInGame = null;
+	[SerializeField] private GameObject blueTeamPlayersContainer = null;
+	[SerializeField] private GameObject redTeamPlayersContainer = null;
+	[SerializeField] private Text blueTeamScoreText = null;
+	[SerializeField] private Text redTeamScoreText = null;
+	[SerializeField] private Sprite healerCharacter = null;
+	[SerializeField] private Sprite rammalCharacter = null;
+	[SerializeField] private Sprite sarbazCharacter = null;
+	[SerializeField] private Sprite jalladCharacter = null;
 
 	[Header("Prefabs")]
 	[SerializeField] private GameObject[] playersPrefab = null;
@@ -63,7 +73,9 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			return;
 		}
 		SpawnHeros();
+
 		gameManager = GameObject.FindGameObjectWithTag("MainCamera").gameObject.GetComponent<GameManager>();
+
 		countDownTimerTemp = countDownTimer;
 		if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group"))
 		{
@@ -99,10 +111,10 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 		}
 	}
 
+
 	private void CheckIfAllThePlayersHaveJoined()
 	{
 		int eachTeamPlayerSize = (int)PhotonNetwork.CurrentRoom.MaxPlayers / 2;
-		print(spawnedPlayers.Count);
 		if((spawnedPlayers.Count - 1) != (eachTeamPlayerSize * 2))
 		{
 			int team1Players = 0;
@@ -158,7 +170,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			}
 
 			className = (string)PhotonNetwork.LocalPlayer.CustomProperties["Class"];
-
+			photonView.RPC("AddPlayerToTeamListUI", RpcTarget.AllBuffered, className, team);
 			GameObject spawnablePlayerPrefab = playersPrefab[0];
 			foreach (GameObject go in playersPrefab)
 			{
@@ -174,7 +186,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			if (team == 1)
 			{
 				player = PhotonNetwork.Instantiate(spawnablePlayerPrefab.name, blueTeamSpawnPoint.position, Quaternion.identity);
-
+				
 				// Set Player Statues
 				playerInterface = player.GetComponent<IPlayer>();
 				playerInterface.TeamSetter("BlueTeam");
@@ -248,6 +260,40 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 		}
 	}
 
+
+
+	[PunRPC]
+	private void AddPlayerToTeamListUI(string className , int teamNumber)
+	{
+		Transform parentContainer = null;
+		if (teamNumber == 1)
+		{
+			parentContainer = blueTeamPlayersContainer.transform;
+		}
+		else if (teamNumber == 2)
+		{
+			parentContainer = redTeamPlayersContainer.transform;
+		}
+		GameObject newPlayer = Instantiate(playersInGame, parentContainer);
+		newPlayer.name = className;
+		switch (className)
+		{
+			case "Healer":
+				newPlayer.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = healerCharacter;
+				break;
+			case "Reviver":
+				newPlayer.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = rammalCharacter;
+				break;
+			case "Spearer":
+				newPlayer.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = sarbazCharacter;
+				break;
+			case "Grenader":
+				newPlayer.transform.GetChild(0).gameObject.GetComponent<Image>().sprite = jalladCharacter;
+				break;
+		}
+		
+	}
+
 	[PunRPC]
 	private void PlayerEnteryWaiting(float CountDownTimer)
 	{
@@ -308,6 +354,32 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 			else if (disconnectedPlayerGroup == 2)
 			{
 				gameManager.TeamGroup2RemainedPlayers--;
+			}
+
+			// Player Container
+			int disconnectedPlayerTeam = (int)otherPlayer.CustomProperties["Team"];
+			string disconnectedPlayerClass = (string)otherPlayer.CustomProperties["Class"];
+			if(disconnectedPlayerTeam == 1)
+			{
+				foreach (Transform trans in blueTeamPlayersContainer.transform)
+				{
+					if (trans.name == disconnectedPlayerClass)
+					{
+						Destroy(trans.gameObject);
+						return;
+					}
+				}
+			}
+			else if (disconnectedPlayerTeam == 2)
+			{
+				foreach (Transform trans in redTeamPlayersContainer.transform)
+				{
+					if (trans.name == disconnectedPlayerClass)
+					{
+						Destroy(trans.gameObject);
+						return;
+					}
+				}
 			}
 		}
 	}

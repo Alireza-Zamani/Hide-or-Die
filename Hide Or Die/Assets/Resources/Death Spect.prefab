@@ -186,6 +186,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 1000
   viewDistance: 50
+  fovLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!95 &2082961459329672681
 Animator:
   serializedVersion: 3

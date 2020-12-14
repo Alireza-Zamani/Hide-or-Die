@@ -346,7 +346,10 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 
 	public override void OnLeftRoom()
 	{
-		PhotonNetwork.LocalPlayer.CustomProperties["Class"] = null;
+		if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Class"))
+		{
+			PhotonNetwork.LocalPlayer.CustomProperties["Class"] = null;
+		}
 	}
 
 

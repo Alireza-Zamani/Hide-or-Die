@@ -4,14 +4,25 @@ using UnityEngine;
 using Photon.Pun;
 using System.Configuration;
 using System;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+
+
+	[Range(0, 120)] [SerializeField] private float countDownTimerForRoundFinish = 90f;
+	private float timeCounter = 0f;
+
+	[SerializeField] private Text blueTeamScoreText = null;
+	[SerializeField] private Text redTeamScoreText = null;
+	[SerializeField] private Text roundText = null;
+	[SerializeField] private Text roundTimerText = null;
 
 	[SerializeField] private GameObject losePanel = null;
 	[SerializeField] private GameObject winPanel = null;
 	[SerializeField] private int winNeededScoreLimit = 2;
 	private bool hasGameEnded = false;
+	private bool roundTimeFinished = false;
 
 	private int team = 0;
 	private int group = 0;
@@ -45,7 +56,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 	}
 
 
-
+	private int group1Score = -1;
+	private int group2Score = -1;
 
 	private int teamGroup1RemainedPlayers = 0;
     public int TeamGroup1RemainedPlayers
@@ -82,6 +94,19 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	private void Start()
 	{
+		if (countDownTimerForRoundFinish >= 120)
+		{
+			roundTimerText.text = "02 : " + (countDownTimerForRoundFinish - 120).ToString();
+		}
+		else if (countDownTimerForRoundFinish >= 60)
+		{
+			roundTimerText.text = "01 : " + (countDownTimerForRoundFinish - 60).ToString();
+		}
+		else if (countDownTimerForRoundFinish > 0)
+		{
+			roundTimerText.text = "00 : " + (countDownTimerForRoundFinish).ToString();
+		}
+
 		// Set the group number
 		if (!PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Group"))
 		{
@@ -109,10 +134,51 @@ public class GameManager : MonoBehaviourPunCallbacks
 			if(team != 0)
 			{
 				GetTheGroupScore();
+				photonView.RPC("SendGroupScoreToMaster", RpcTarget.MasterClient, GroupScore , Group);
+			}
+		}
+		if (PhotonNetwork.IsMasterClient)
+		{
+			Invoke("SetTheMatchScores", 2f);
+		}
+	}
+
+	private void Update()
+	{
+		if (PhotonNetwork.IsMasterClient)
+		{
+			if (roundTimeFinished)
+			{
+				return;
+			}
+			timeCounter += Time.deltaTime;
+			if(timeCounter >= 1)
+			{
+				countDownTimerForRoundFinish--;
+				timeCounter = 0f;
+				photonView.RPC("RPCChangeTheTimeOfRoundText", RpcTarget.AllBuffered, countDownTimerForRoundFinish);
+				if(countDownTimerForRoundFinish <= 0)
+				{
+					if (!hasGameEnded)
+					{
+						
+						roundTimeFinished = true;
+						photonView.RPC("RoundTimeFinished", RpcTarget.AllBuffered);
+					}
+				}
 			}
 		}
 	}
 
+	private void SetTheMatchScores()
+	{
+		if(group1Score == -1 || group2Score == -1)
+		{
+			Invoke("SetTheMatchScores", 2f);
+			return;
+		}
+		photonView.RPC("RPCSetTheMatchScores", RpcTarget.AllBuffered, group1Score, group2Score);
+	}
 
 	private void TheNextMatch(int winnerTeam)
 	{
@@ -172,6 +238,105 @@ public class GameManager : MonoBehaviourPunCallbacks
 				{
 					PhotonNetwork.LocalPlayer.CustomProperties["Group2"] = GroupScore;
 				}
+			}
+		}
+	}
+
+
+	[PunRPC]
+	private void RPCChangeTheTimeOfRoundText(float remainedTime)
+	{
+		if (remainedTime >= 120)
+		{
+			roundTimerText.text = "02 : " + (remainedTime - 120).ToString();
+		}
+		else if (remainedTime >= 60)
+		{
+			roundTimerText.text = "01 : " + (remainedTime - 60).ToString();
+		}
+		else if(remainedTime >= 0)
+		{
+			roundTimerText.text = "00 : " + (remainedTime).ToString();
+		}
+
+	}
+
+	[PunRPC]
+	private void RoundTimeFinished()
+	{
+		if(team == 2)
+		{
+			return;
+		}
+		if (Group == 1)
+		{
+			photonView.RPC("RPCTeamGroup1RemainedPlayers", RpcTarget.AllBuffered);
+		}
+		else if (Group == 2)
+		{
+			photonView.RPC("RPCTeamGroup2RemainedPlayers", RpcTarget.AllBuffered);
+		}
+	}
+
+	[PunRPC]
+	private void RPCTeamGroup1RemainedPlayers()
+	{
+		TeamGroup1RemainedPlayers--;
+	}
+
+	[PunRPC]
+	private void RPCTeamGroup2RemainedPlayers()
+	{
+		TeamGroup2RemainedPlayers--;
+	}
+
+	[PunRPC]
+	private void RPCSetTheMatchScores(int group1Score , int group2Score)
+	{
+		roundText.text = (group1Score + group2Score + 1).ToString();
+		if(Group == 1)
+		{
+			if(team == 1)
+			{
+				blueTeamScoreText.text = group1Score.ToString();
+				redTeamScoreText.text = group2Score.ToString();
+			}
+			else if(team == 2)
+			{
+				blueTeamScoreText.text = group2Score.ToString();
+				redTeamScoreText.text = group1Score.ToString();
+			}
+		}
+		else if(Group == 2)
+		{
+			if (team == 1)
+			{
+				blueTeamScoreText.text = group2Score.ToString();
+				redTeamScoreText.text = group1Score.ToString();
+			}
+			else if (team == 2)
+			{
+				blueTeamScoreText.text = group1Score.ToString();
+				redTeamScoreText.text = group2Score.ToString();
+			}
+		}
+	}
+
+	[PunRPC]
+	private void SendGroupScoreToMaster(int groupScore , int group)
+	{
+		if(group == 1)
+		{
+			if(group1Score == -1)
+			{
+				group1Score = groupScore;
+			}
+		}
+		else if(group == 2)
+		{
+			if (group2Score == -1)
+			{
+				group2Score = groupScore;
 			}
 		}
 	}

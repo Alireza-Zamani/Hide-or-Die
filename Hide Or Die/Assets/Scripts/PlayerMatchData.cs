@@ -15,6 +15,8 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 	private Image healthBarMain = null;
 	private Image abilityCoolDownBarMain = null;
 	private GameObject canvas = null;
+	private GameObject blueTeamContainer = null;
+	private GameObject redTeamContainer = null;
 	private GameObject healthBar = null;
 	private SpriteRenderer healthBarSprite = null;
 	private AnimatorController animatorController = null;
@@ -63,7 +65,8 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 	{
 		playerMovement = GetComponent<PlayerMovement>();
 		canvas = GameObject.FindGameObjectWithTag("UI").gameObject;
-
+		blueTeamContainer = canvas.transform.GetChild(14).transform.GetChild(0).transform.GetChild(5).transform.GetChild(0).transform.GetChild(1).gameObject;
+		redTeamContainer = canvas.transform.GetChild(14).transform.GetChild(0).transform.GetChild(4).transform.GetChild(0).transform.GetChild(1).gameObject;
 		actionBtn = canvas.transform.GetChild(1).transform.gameObject.GetComponent<Button>();
 
 		abilityBtn = canvas.transform.GetChild(2).transform.gameObject.GetComponent<Button>();
@@ -109,7 +112,13 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 
 	}
 
-	
+	public void Revived()
+	{
+		if (photonView.IsMine)
+		{
+			photonView.RPC("RPCSetDeathInPlayerContainerDead", RpcTarget.AllBuffered, TeamGetter(), className, true);
+		}
+	}
 
 	public void AddAbility()
 	{
@@ -199,7 +208,7 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 					btn.interactable = false;
 				}
 			}
-
+			photonView.RPC("RPCSetDeathInPlayerContainerDead", RpcTarget.AllBuffered, TeamGetter(), className , false);
 		}
 
 		// Update the all players of teams in the game manager
@@ -211,7 +220,6 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 		{
 			gameManager.TeamGroup2RemainedPlayers--;
 		}
-
 		gameObject.SetActive(false);
 	}
 
@@ -294,6 +302,34 @@ public class PlayerMatchData : MonoBehaviourPunCallbacks , IPlayer
 	private void ResetStucked()
 	{
 		playerMovement.IsStucked = false;
+	}
+
+
+	[PunRPC]
+	private void RPCSetDeathInPlayerContainerDead(string teamNumber , string className , bool isAlive)
+	{
+		if (teamNumber == "BlueTeam")
+		{
+			foreach (Transform trans in blueTeamContainer.transform)
+			{
+				if (trans.name == className)
+				{
+					trans.GetChild(1).gameObject.SetActive(!isAlive);
+					return;
+				}
+			}
+		}
+		else if (teamNumber == "RedTeam")
+		{
+			foreach (Transform trans in redTeamContainer.transform)
+			{
+				if (trans.name == className)
+				{
+					trans.GetChild(1).gameObject.SetActive(!isAlive);
+					return;
+				}
+			}
+		}
 	}
 
 	[PunRPC]
