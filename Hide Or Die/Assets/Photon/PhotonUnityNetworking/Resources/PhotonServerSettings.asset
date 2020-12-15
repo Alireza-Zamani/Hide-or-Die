@@ -18,7 +18,7 @@ MonoBehaviour:
     AppIdVoice: 
     AppVersion: 
     UseNameServer: 1
-    FixedRegion: eu
+    FixedRegion: 
     Server: 
     Port: 0
     ProxyServer: 
@@ -27,63 +27,56 @@ MonoBehaviour:
     AuthMode: 0
     EnableLobbyStatistics: 0
     NetworkLogging: 1
-  DevRegion: us
+  DevRegion: 
   PunLogging: 0
   EnableSupportLogger: 0
   RunInBackground: 1
   StartInOfflineMode: 0
   RpcList:
+  - AddPlayerToTeamListUI
   - ChangeCharacter
+  - CheckIfThePlayerCanChooseRandomeAbility
   - ClickRpc
+  - DestroyComponent
   - DestroyRpc
   - DestroySpaceship
+  - DisconnectedPlayerNotSpawnedSenedFromMaster
+  - EnteringGameTimeCounteDown
   - Fire
   - Interact
   - Lock
+  - PlayerEnteryWaiting
   - RespawnSpaceship
+  - RoundTimeFinished
+  - RPCAttachTheDeadBody
+  - RPCChangeTheTimeOfRoundText
+  - RPCGameHasFinished
   - RPCHeal
+  - RPCMasterClientForceSelectAbility
+  - RPCObjectiveReached
+  - RPCPlayerContainer
+  - RPCResetPlayer
+  - RPCReSetTheChoosedAbilities
   - RPCReviving
+  - RPCSendTheMasterWhenSpawnedThePlayer
+  - RPCSendUserIdToMasterClient
+  - RPCSetDeathInPlayerContainerDead
+  - RPCSetisStucked
+  - RPCSetShooterTag
+  - RPCSetTheChoosedAbilities
+  - RPCSetTheMatchScores
+  - RPCSetThePlayerGroup
   - RPCSetTheTag
   - RPCTakeDamage
-  - SetLAyerAndTag
-  - UpdateStats
-  - UpdateTeams
-  - RPCSetThePlayerGroup
-  - RPCTheNextMatch
-  - RPCObjectiveCollected
-  - RPCObjectiveReached
-  - GameHasFinished
-  - RPCGameHasFinished
-  - SetTheChoosedAbilities
-  - RPCReSetTheChoosedAbilities
-  - RPCSetTheChoosedAbilities
-  - RPCChangeTeamRemainer
-  - RPCPlayerContainer
-  - RPCCloseForceSelectAbility
-  - RPCMasterClientCloseForceSelectAbility
-  - RPCSendUserIdToMasterClient
-  - CheckIfThePlayerCanChooseRandomeAbility
-  - RPCMasterClientForceSelectAbility
-  - RPCTrapClassName
-  - DestroyComponent
-  - RPCSetisStucked
-  - SetParent
-  - RPCResetPlayer
-  - RPCAttachTheDeadBody
-  - PlayerEnteryWaiting
-  - EnteringGameTimeCounteDown
-  - OnePlayerDisconnected
-  - RPCSendTheMasterWhenSpawnedThePlayer
-  - DisconnectedPlayerNotSpawnedSenedFromMaster
-  - SetTheWinLosePanel
-  - AddPlayerToTeamListUI
-  - RPCSetDeathInPlayerContainerDead
-  - SendGroupScoreToMaster
-  - RPCSetTheMatchScores
-  - RoundTimeFinished
-  - RPCChangeTheTimeOfRoundText
   - RPCTeamGroup1RemainedPlayers
   - RPCTeamGroup2RemainedPlayers
+  - RPCTrapClassName
+  - SendGroupScoreToMaster
+  - SetLAyerAndTag
+  - SetParent
+  - SetTheWinLosePanel
+  - UpdateStats
+  - UpdateTeams
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
-  DevRegionSetOnce: 1
+  ShowSettings: 0
+  DevRegionSetOnce: 0

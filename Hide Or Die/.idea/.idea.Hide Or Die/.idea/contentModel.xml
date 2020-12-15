@@ -481,6 +481,7 @@
           <e p="BuyAvailibility.cs" t="Include" />
           <e p="CameraFollow.cs" t="Include" />
           <e p="ChangeBtnToJoystick.cs" t="Include" />
+          <e p="CharacterIndicator.cs" t="Include" />
           <e p="CollisionHandler.cs" t="Include" />
           <e p="DeadBodyHandler.cs" t="Include" />
           <e p="DeathDroneMovement.cs" t="Include" />

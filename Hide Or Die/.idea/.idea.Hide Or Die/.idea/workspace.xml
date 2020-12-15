@@ -57,10 +57,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/UIBtns.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponSaber.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PlayerEnterGameDuty.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Bullet.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GunPositioning.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/AimingDirection.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/GunWeaponAbstract.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Action.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/WeaponAbstract.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MeleeWeaponPositioning.cs" />
@@ -71,6 +69,10 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/PunTeam.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PunTeamAuto.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/WeaponManager.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/GunWeaponAbstract.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Bullet.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/CharacterIndicator.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/PUNUIBtns.cs" />
       </list>
     </option>
   </component>
@@ -144,6 +146,10 @@
       <workItem from="1604580271131" duration="1689000" />
       <workItem from="1606933137357" duration="1822000" />
       <workItem from="1606998905599" duration="1231000" />
+      <workItem from="1607152196218" duration="2712000" />
+      <workItem from="1607245013143" duration="1226000" />
+      <workItem from="1607754635402" duration="893000" />
+      <workItem from="1608041065146" duration="604000" />
     </task>
     <servers />
   </component>

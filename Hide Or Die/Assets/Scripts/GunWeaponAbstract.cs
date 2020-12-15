@@ -47,7 +47,7 @@ public class GunWeaponAbstract : WeaponAbstract
         var bulletMainScript = bullet.GetComponent<Bullet>();
         
         bulletMainScript.movementDirection = aimDirection;
-        bulletMainScript.ShooterTag = gameObject.tag;
+        bulletMainScript.ShooterTag = transform.parent.tag;
 
         if (gameObject.CompareTag("RedTeam"))
             bulletMainScript.TargetTag = "BlueTeam";

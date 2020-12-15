@@ -18,28 +18,19 @@ public class Bullet : MonoBehaviourPunCallbacks
         Destroy(this.gameObject, 5f);
     }
 
-    private void Update()
-    {
-        transform.Translate(movementDirection * bulletSpeed * Time.deltaTime);
-    }
+    private void Update() => transform.Translate(movementDirection * bulletSpeed * Time.deltaTime);
 
-    public int Damage
-    {
-        get => damage;
-        set => damage = value;
-    }
-
+    public int Damage { get => damage; set => damage = value; }
+    
     public string ShooterTag
     {
         get => shooterTag;
-        set => shooterTag = value;
+        set => photonView.RPC("RPCSetShooterTag", RpcTarget.AllBuffered, value);
     }
+    [PunRPC] private void RPCSetShooterTag(string value) { shooterTag = value; }
 
-    public string TargetTag
-    {
-        get => targetTag;
-        set => targetTag = value;
-    }
+    
+    public string TargetTag { get => targetTag; set => targetTag = value; }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -48,12 +39,11 @@ public class Bullet : MonoBehaviourPunCallbacks
             return;
         }
 
-        if (other.tag != shooterTag)
+        if (other.tag != shooterTag && other.tag != "Weapon")
         {
             if (other.tag == "BlueTeam" || other.tag == "RedTeam")
-            {
                 other.GetComponent<PlayerMatchData>().TakeDamage(Damage);
-            }
+            
 
             Destroy(this.gameObject);
         }
