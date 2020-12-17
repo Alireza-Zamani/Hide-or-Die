@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 2000
-  viewDistance: 30
+  viewDistance: 17
   fovLayerMask:
     serializedVersion: 2
     m_Bits: 131073
@@ -491,6 +491,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character Indicator
       objectReference: {fileID: 0}
+    - target: {fileID: 5386434622548503791, guid: 5bf2a9925a3c397408dd1239e06f0825,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6874838699910913148, guid: 5bf2a9925a3c397408dd1239e06f0825,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -504,7 +509,7 @@ PrefabInstance:
     - target: {fileID: 6874838699910913148, guid: 5bf2a9925a3c397408dd1239e06f0825,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6874838699910913148, guid: 5bf2a9925a3c397408dd1239e06f0825,
         type: 3}

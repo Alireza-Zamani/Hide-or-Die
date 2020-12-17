@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7689045709740466406}
   - component: {fileID: 6780425264166217241}
   - component: {fileID: 2082961459329672681}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Death Spect
   m_TagString: Untagged
   m_Icon: {fileID: 0}

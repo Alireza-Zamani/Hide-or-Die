@@ -231,7 +231,7 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 
 		GameObject newTrapDetector = PhotonNetwork.Instantiate(trapObjectivePrefab.name, trapDetectorObjectivesSpawnPoint.position, Quaternion.identity);
 		newTrapDetector.GetComponent<TrapObjectiveInteractability>().TrapClassName = "TrapDetectorBeeper";
-
+		bool hasSpawnedLocker = false;
 		for (int i = 0; i < trapsSpawnCount ; i++)
 		{
 			GameObject newTrap =  PhotonNetwork.Instantiate(trapObjectivePrefab.name, trapObjectivesSpawnPoints[i].position, Quaternion.identity);
@@ -249,12 +249,19 @@ public class PunSpawner : MonoBehaviourPunCallbacks
 					trapClassName = "BearTraper";
 					break;
 				case 4:
-					trapClassName = "Locker";
+					if (hasSpawnedLocker)
+					{
+						trapClassName = "Miner";
+					}
+					else
+					{
+						trapClassName = "Locker";
+						hasSpawnedLocker = true;
+					}
 					break;
 				default:
 					trapClassName = "Miner";
 					break;
-
 			}
 			newTrap.GetComponent<TrapObjectiveInteractability>().TrapClassName = trapClassName;
 		}

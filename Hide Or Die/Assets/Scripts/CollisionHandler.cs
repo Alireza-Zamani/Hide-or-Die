@@ -33,7 +33,7 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 	private void OnTriggerEnter2D(Collider2D other)
 	{
 		// Check if we have triggered the objective reachpoint and we have objective with ourself
-		if(other.tag == "ObjectiveReachPoint" && gameObject.tag == "BlueTeam" && transform.childCount != 1)
+		if(other.tag == "ObjectiveReachPoint" && gameObject.tag == "BlueTeam" && transform.childCount != 2)
 		{
 			foreach(Transform trans in transform)
 			{
@@ -67,6 +67,7 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 
 	private void OnTriggerExit2D(Collider2D other)
 	{
+		// On off lock btn in the UI
 		if (HasLock != 0)
 		{
 			DoorInteractable doorInteractable = other.gameObject.GetComponent<DoorInteractable>();
@@ -78,7 +79,7 @@ public class CollisionHandler : MonoBehaviourPunCallbacks
 		
 
 		// If we have exited an interactable object turn off the action btn but if the object is our child then dont because we want to redo the action later
-		if (other.tag == "Interactable" && other.gameObject.transform.parent != transform && transform.childCount == 1)
+		if (other.tag == "Interactable" && other.gameObject.transform.parent != transform && transform.childCount == 2)
 		{
 			UpdateActionBtn(false);
 		}

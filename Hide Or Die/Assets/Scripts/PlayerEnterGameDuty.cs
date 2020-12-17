@@ -111,13 +111,13 @@ public class PlayerEnterGameDuty : MonoBehaviourPunCallbacks
 		if (team == 1)
 		{
 			tagName = "BlueTeam";
-			sprite.color = blueTeamColor;
+			//sprite.color = blueTeamColor;
 			gameObject.name = "Blue Player";
 		}
 		else if (team == 2)
 		{
 			tagName = "RedTeam";
-			sprite.color = redTeamColor;
+			//sprite.color = redTeamColor;
 			gameObject.name = "Red Player";
 		}
 		gameObject.tag = tagName;

@@ -9,8 +9,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviourPunCallbacks
 {
 
-
-	[Range(0, 120)] [SerializeField] private float countDownTimerForRoundFinish = 90f;
+	[Range(0, 300)] [SerializeField] private float countDownTimerForRoundFinish = 90f;
 	private float timeCounter = 0f;
 
 	[SerializeField] private Text blueTeamScoreText = null;
@@ -94,17 +93,27 @@ public class GameManager : MonoBehaviourPunCallbacks
 
 	private void Start()
 	{
-		if (countDownTimerForRoundFinish >= 120)
+		if (countDownTimerForRoundFinish >= 60)
 		{
-			roundTimerText.text = "02 : " + (countDownTimerForRoundFinish - 120).ToString();
-		}
-		else if (countDownTimerForRoundFinish >= 60)
-		{
-			roundTimerText.text = "01 : " + (countDownTimerForRoundFinish - 60).ToString();
+			float iFloat = countDownTimerForRoundFinish / 60;
+			int iInt = (int) iFloat;
+			float secondFloat = (countDownTimerForRoundFinish - (iInt * 60));
+			string secondString = secondFloat.ToString();
+			if (secondFloat < 10)
+			{
+				secondString = "0" + secondString;
+			}
+			roundTimerText.text = "0" + iInt + " : " + secondString;
 		}
 		else if (countDownTimerForRoundFinish > 0)
 		{
-			roundTimerText.text = "00 : " + (countDownTimerForRoundFinish).ToString();
+			float secondFloat = countDownTimerForRoundFinish;
+			string secondString = secondFloat.ToString();
+			if (secondFloat < 10)
+			{
+				secondString = "0" + secondString;
+			}
+			roundTimerText.text = "00" + " : " + secondString;
 		}
 
 		// Set the group number
@@ -246,18 +255,40 @@ public class GameManager : MonoBehaviourPunCallbacks
 	[PunRPC]
 	private void RPCChangeTheTimeOfRoundText(float remainedTime)
 	{
-		if (remainedTime >= 120)
+		if (remainedTime >= 60)
 		{
-			roundTimerText.text = "02 : " + (remainedTime - 120).ToString();
+			float iFloat = remainedTime / 60;
+			int iInt = (int)iFloat;
+			float secondFloat = (remainedTime - (iInt * 60));
+			string secondString = secondFloat.ToString();
+			if (secondFloat < 10)
+			{
+				secondString = "0" + secondString;
+			}
+			roundTimerText.text = "0" + iInt + " : " + secondString;
 		}
-		else if (remainedTime >= 60)
+		else if (remainedTime > 0)
 		{
-			roundTimerText.text = "01 : " + (remainedTime - 60).ToString();
+			float secondFloat = remainedTime;
+			string secondString = secondFloat.ToString();
+			if (secondFloat < 10)
+			{
+				secondString = "0" + secondString;
+			}
+			roundTimerText.text = "00" + " : " + secondString;
 		}
-		else if(remainedTime >= 0)
-		{
-			roundTimerText.text = "00 : " + (remainedTime).ToString();
-		}
+		//if (remainedTime >= 120)
+		//{
+		//	roundTimerText.text = "02 : " + (remainedTime - 120).ToString();
+		//}
+		//else if (remainedTime >= 60)
+		//{
+		//	roundTimerText.text = "01 : " + (remainedTime - 60).ToString();
+		//}
+		//else if(remainedTime >= 0)
+		//{
+		//	roundTimerText.text = "00 : " + (remainedTime).ToString();
+		//}
 
 	}
 

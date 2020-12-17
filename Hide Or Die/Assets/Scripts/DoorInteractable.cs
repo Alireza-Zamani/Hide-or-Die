@@ -7,18 +7,20 @@ using System;
 public class DoorInteractable : MonoBehaviourPunCallbacks, IInteractable
 {
 
-	private SpriteRenderer doorSprite = null;
+	private GameObject doorLock = null;
 
 	public bool isLocked = false;
 
 	private bool isOpen = false;
 
 	private GameObject door = null;
+	private GameObject doorFrame = null;
 
 	private void Start()
 	{
 		door = transform.GetChild(0).gameObject;
-		doorSprite = door.GetComponent<SpriteRenderer>();
+		doorFrame = transform.GetChild(1).gameObject;
+		doorLock = door.transform.GetChild(0).gameObject;
 	}
 
 	void IInteractable.Interact(Transform viewID)
@@ -50,15 +52,7 @@ public class DoorInteractable : MonoBehaviourPunCallbacks, IInteractable
 		else
 		{
 			isLocked = activity;
-			
-			if(activity == true)
-			{
-				doorSprite.color = Color.gray;
-			}
-			else
-			{
-				doorSprite.color = Color.blue;
-			}
+			doorLock.SetActive(activity);
 			isOpen = false;
 			OpenAndCloseDoor(true);
 			return true;
@@ -69,6 +63,7 @@ public class DoorInteractable : MonoBehaviourPunCallbacks, IInteractable
 	private void OpenAndCloseDoor(bool activity)
 	{
 		door.SetActive(activity);
+		doorFrame.SetActive(!activity);
 	}
 	
 }
