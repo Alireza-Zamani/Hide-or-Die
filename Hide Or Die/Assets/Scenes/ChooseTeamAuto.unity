@@ -1312,15 +1312,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 90
+    m_Left: 130
     m_Right: 15
     m_Top: 70
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 120, y: 150}
-  m_Spacing: {x: 20, y: 100}
+  m_CellSize: {x: 150, y: 180}
+  m_Spacing: {x: 20, y: 40}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &137483824
@@ -14551,7 +14551,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9.199951, y: -5.0999756}
+  m_AnchoredPosition: {x: 9.199951, y: -5.1000977}
   m_SizeDelta: {x: 185.15625, y: 104.61377}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1877514977
@@ -16640,15 +16640,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 90
+    m_Left: 130
     m_Right: 15
     m_Top: 70
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 120, y: 150}
-  m_Spacing: {x: 20, y: 100}
+  m_CellSize: {x: 150, y: 180}
+  m_Spacing: {x: 20, y: 40}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &2074433418
