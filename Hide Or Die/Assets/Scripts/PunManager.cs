@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
+using Firebase;
 
 public class PunManager : MonoBehaviourPunCallbacks
 {
@@ -217,6 +218,8 @@ public class PunManager : MonoBehaviourPunCallbacks
 
 	private void Start()
 	{
+		FireBaseInitialize();
+
 		if (PhotonNetwork.IsConnected)
 		{
 			if (PhotonNetwork.InRoom)
@@ -229,6 +232,23 @@ public class PunManager : MonoBehaviourPunCallbacks
 			}
 			PhotonNetwork.Disconnect();
 		}
+	}
+
+	private void FireBaseInitialize()
+	{
+		FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+		{
+			var dependencyStatus = task.Result;
+			if (dependencyStatus == DependencyStatus.Available)
+			{
+				FirebaseApp app = FirebaseApp.DefaultInstance;
+			}
+			else
+			{
+				Debug.LogError(string.Format(
+					"Could not resolve all Firebase dependencies: {0}", dependencyStatus));
+			}
+		});
 	}
 
 
