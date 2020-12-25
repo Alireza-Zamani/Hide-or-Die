@@ -57,6 +57,14 @@ public class PUNUIBtns : MonoBehaviourPunCallbacks
 			redTeamAbilities.Add(trans.gameObject);
 		}
 	}
+	
+	private void Start()
+	{
+		if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Class"))
+		{
+			PhotonNetwork.LocalPlayer.CustomProperties["Class"] = null;
+		}
+	}
 
 	private void Update()
 	{

@@ -18,8 +18,8 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 	protected Rigidbody2D rb = null;
 
 	//Fields
-	[Range(0, 2000)] [SerializeField] protected float moveSpeed = 1000f;
-	[Range(0, 50)] [SerializeField] protected float viewDistance = 10f;
+	[SerializeField] protected float moveSpeed = 1000f;
+	[SerializeField] protected float viewDistance = 10f;
 	[SerializeField] private LayerMask fovLayerMask = new LayerMask();
 
 
@@ -104,6 +104,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 		}
 	}
 
+	
 	public virtual Vector2 GetDirection()
 	{
 		//Horizontal Input
@@ -114,7 +115,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 			if (transform.localScale.x > 0)
 			{
 				Vector2 newScale = transform.localScale;
-				newScale.x = -5;
+				newScale.x = -12;
 				transform.localScale = newScale;
 			}
 		}
@@ -124,7 +125,7 @@ public abstract class MovementAbstract : MonoBehaviourPunCallbacks
 			if (transform.localScale.x < 0)
 			{
 				Vector2 newScale = transform.localScale;
-				newScale.x = 5;
+				newScale.x = 12;
 				transform.localScale = newScale;
 			}
 		}

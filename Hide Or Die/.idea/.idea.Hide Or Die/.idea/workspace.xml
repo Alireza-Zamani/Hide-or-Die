@@ -39,9 +39,7 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/Assets/Scripts/FieldOFView.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PlayerMovement.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/MovementAbstract.cs" />
         <option value="$PROJECT_DIR$/Assets/CaracterDirections.cs" />
         <option value="$PROJECT_DIR$/Assets/DamageIndicator.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/IMeleeWeapon.cs" />
@@ -68,11 +66,17 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/AbilityShield.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PunTeam.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PunTeamAuto.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/WeaponManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/GunWeaponAbstract.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/Bullet.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/CharacterIndicator.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/SpriteSorter.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/FieldOFView.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/CollisionHandler.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/AbilitySpear.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/AbilityGrenade.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/WeaponManager.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/PUNUIBtns.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/MovementAbstract.cs" />
       </list>
     </option>
   </component>
@@ -150,6 +154,11 @@
       <workItem from="1607245013143" duration="1226000" />
       <workItem from="1607754635402" duration="893000" />
       <workItem from="1608041065146" duration="604000" />
+      <workItem from="1608793820727" duration="570000" />
+      <workItem from="1608797105336" duration="17000" />
+      <workItem from="1608799585235" duration="3618000" />
+      <workItem from="1608809362631" duration="1263000" />
+      <workItem from="1608891100032" duration="2023000" />
     </task>
     <servers />
   </component>

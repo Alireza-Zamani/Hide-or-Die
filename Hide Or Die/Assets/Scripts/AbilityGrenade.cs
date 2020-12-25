@@ -44,7 +44,7 @@ public class AbilityGrenade : AbilityAbstract
 				if (transform.localScale.x > 0)
 				{
 					Vector2 newScale = transform.localScale;
-					newScale.x = -5;
+					newScale.x = -12;
 					transform.localScale = newScale;
 				}
 			}
@@ -54,7 +54,7 @@ public class AbilityGrenade : AbilityAbstract
 				if (transform.localScale.x < 0)
 				{
 					Vector2 newScale = transform.localScale;
-					newScale.x = 5;
+					newScale.x = 12;
 					transform.localScale = newScale;
 				}
 			}
